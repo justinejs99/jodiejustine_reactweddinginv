@@ -1,0 +1,81 @@
+export type AttendanceStatus = 'yes' | 'no'
+
+export interface CoupleContent {
+  groomName: string
+  groomLastName: string
+  groomParents: string
+  brideName: string
+  brideLastName: string
+  brideParents: string
+  hashtag: string
+  verse: string
+}
+
+export interface InvitationContent {
+  validPax: number
+  guestGroupName: string
+}
+
+export interface ScheduleItem {
+  time: string
+  title: string
+  subtitle?: string
+  venue: string
+  location: string
+}
+
+export interface WeddingDateContent {
+  dateText: string
+  weekday: string
+}
+
+export interface RsvpContent {
+  deadline: string
+  prompt: string
+}
+
+export interface ContactContent {
+  display: string
+  whatsAppUrl: string
+}
+
+export interface ResponseContent {
+  title: string
+  body: string
+}
+
+export interface QrContent {
+  message: string
+}
+
+export interface IntegrationContent {
+  modeLabel: string
+}
+
+export interface WeddingSiteContent {
+  couple: CoupleContent
+  invitation: InvitationContent
+  schedule: ScheduleItem[]
+  weddingDate: WeddingDateContent
+  rsvp: RsvpContent
+  contact: ContactContent
+  responses: {
+    accepted: ResponseContent
+    declined: ResponseContent
+  }
+  qr: QrContent
+  integration: IntegrationContent
+}
+
+export interface RsvpRequest {
+  attendance: AttendanceStatus
+  guestDesignation: string
+  guestCount: number
+  guestNames: string[]
+}
+
+export interface RsvpResponse {
+  success: boolean
+  message: string
+  referenceId: string
+}
