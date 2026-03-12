@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=The+Seasons:wght@400;600;700&family=Montserrat:wght@400;500;700;800&family=Luxurious+Script&family=Homemade+Apple&display=swap');
+
+:root {
+  font-family: 'Manrope', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #3f2c22;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --font-display: 'The Seasons', serif;
+  --font-body: 'Montserrat', sans-serif;
+  --ink: #39261d;
+  --ink-soft: #6f5445;
+  --accent: #b87b58;
+  --accent-deep: #8d5336;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #eeede7 0%, #afaea7 100%);
+  background-attachment: fixed;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(141, 83, 54, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(141, 83, 54, 0.035) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(circle at center, black, transparent 80%);
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
