@@ -33,15 +33,15 @@
   flex-direction: column;
   justify-content: space-between;
   grid-template-columns: 1fr;
-  aspect-ratio: 19 / 6;
-  min-height: 380px;
   padding: 52px 44px 40px;
   margin: 20px;
   position: relative;
   overflow: hidden;
   border: 1px solid rgba(65, 65, 65, 0.18);
   border-radius: 32px;
-  background: #eeede7;
+  background-image: url('./assets/images/JJ-3305.jpg');
+  background-size: cover;
+  background-position: center;  
   box-shadow: 0 26px 80px rgba(93, 67, 54, 0.13);
 }
 
