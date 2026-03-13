@@ -1,7 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=The+Seasons:wght@400;600;700&family=Montserrat:wght@400;500;700;800&family=Luxurious+Script&family=Homemade+Apple&display=swap');
 
+@font-face {
+  font-family: 'The Seasons Local';
+  src: url('./assets/fonts/the-seasons-regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 :root {
-  font-family: 'Manrope', sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color: #3f2c22;
@@ -9,12 +16,8 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --font-display: 'The Seasons', serif;
+  --font-display: 'The Seasons Local', 'The Seasons', serif;
   --font-body: 'Montserrat', sans-serif;
-  --ink: #39261d;
-  --ink-soft: #6f5445;
-  --accent: #b87b58;
-  --accent-deep: #8d5336;
 }
 
 * {
