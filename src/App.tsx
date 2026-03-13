@@ -2,6 +2,7 @@ import { FormEvent, startTransition, useEffect, useState } from 'react'
 import './App.css'
 import { getWeddingSiteContent, submitRsvp } from './services/weddingApi'
 import type { RsvpRequest, RsvpResponse, WeddingSiteContent } from './types/wedding'
+import andImage from './assets/images/and.jpg'
 
 const emptyGuests = ['', '', '']
 
@@ -110,7 +111,13 @@ function App() {
       <section className="hero-panel">
         <div className="hero-top">
           <p className="eyebrow">Wedding Invitation</p>
-          <h1>{content.couple.groomName} & {content.couple.brideName}</h1>
+          <h1 className="hero-title">
+            <span className="hero-title-line">
+              <span>{content.couple.groomName}</span>
+              <img className="hero-and-image" src={andImage} alt="and" />
+            </span>
+            <span className="hero-title-line">{content.couple.brideName}</span>
+          </h1>
         </div>
 
         <div className="hero-footer">
@@ -123,7 +130,7 @@ function App() {
 
           <div className="hero-bottom">
             <p className="hero-hash">{content.couple.hashtag}</p>
-            <strong className="hero-date">{content.weddingDate.dateText}</strong>
+            <p className="hero-date">{content.weddingDate.dateText}</p>
           </div>
         </div>
       </section>
@@ -138,16 +145,24 @@ function App() {
             to witness and celebrate the wedding of
           </p>
           
-          <div className="groom-section">
-            <h2 className="groom-name"><span className="seasons-font">{content.couple.groomName}</span> <span className="luxurious-font">{content.couple.groomLastName}</span></h2>
-            <p className="family-parents">{content.couple.groomParents}</p>
-          </div>
-          
-          <p className="and-text">and</p>
-          
-          <div className="bride-section">
-            <h2 className="bride-name"><span className="seasons-font">{content.couple.brideName}</span> <span className="luxurious-font">{content.couple.brideLastName}</span></h2>
-            <p className="family-parents">{content.couple.brideParents}</p>
+          <div className="family-sections"> 
+              <div className="groom-section">
+                <h2 className="groom-name">
+                  <span className="groom-first-name">{content.couple.groomName}</span> 
+                  <span className="groom-last-name">{content.couple.groomLastName}</span>
+                </h2>
+                <p className="family-parents">{content.couple.groomParents}</p>
+              </div>
+              
+              <p className="and-text">and</p>
+              
+              <div className="bride-section">
+                <h2 className="bride-name">
+                  <span className="bride-first-name">{content.couple.brideName}</span> 
+                  <span className="bride-last-name">{content.couple.brideLastName}</span>
+                </h2>
+                <p className="family-parents">{content.couple.brideParents}</p>
+              </div>
           </div>
           
           <div className="bible-verse">
@@ -189,9 +204,8 @@ function App() {
             <h2>Will you be attending our wedding?</h2>
             <p>{content.rsvp.prompt}</p>
           </div>
-          <div className="status-note">Submission mode: {content.integration.modeLabel}</div>
         </div>
-
+        <div className="status-note">Submission mode: {content.integration.modeLabel}</div>
         <form className="rsvp-form" onSubmit={handleSubmit}>
           <label className="field wide-field">
             <span>Invitation name</span>
