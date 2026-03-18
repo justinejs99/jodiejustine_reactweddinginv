@@ -172,19 +172,15 @@ function App() {
         
         <div className="panel event-details">
           <p className="section-kicker">Wedding Date</p>
-          <div className="date-display">{content.weddingDate.dateText}</div>
-          <p className="date-weekday">{content.weddingDate.weekday}</p>
-          <p className="date-note">Kindly RSVP by {content.rsvp.deadline}.</p>
-          <a className="text-link" href={content.contact.whatsAppUrl} target="_blank" rel="noreferrer">
-            Contact for queries
-          </a>
+          <p className="day-display">{content.weddingDate.weekday}</p>
+          <p className="date-display">{content.weddingDate.dateText}</p>
           <p className="section-kicker">Schedule Of Events</p>
           <div className="timeline">
             {content.schedule.map((eventItem) => (
               <div className="timeline-item" key={eventItem.title}>
                 <div className="timeline-time">{eventItem.time}</div>
                 <div>
-                  <h3>{eventItem.title}</h3>
+                  <p>{eventItem.title}</p>
                   {eventItem.subtitle ? <p className="timeline-subtitle">{eventItem.subtitle}</p> : null}
                   <p>{eventItem.venue}</p>
                   <p>{eventItem.location}</p>
@@ -203,6 +199,10 @@ function App() {
             <p className="section-kicker">RSVP</p>
             <h2>Will you be attending our wedding?</h2>
             <p>{content.rsvp.prompt}</p>
+            <p className="date-note">Kindly RSVP by {content.rsvp.deadline}.</p>
+            <a className="text-link" href={content.contact.whatsAppUrl} target="_blank" rel="noreferrer">
+            Contact for queries
+          </a>
           </div>
         </div>
         <div className="status-note">Submission mode: {content.integration.modeLabel}</div>
