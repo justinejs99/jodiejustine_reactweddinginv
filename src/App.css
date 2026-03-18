@@ -161,7 +161,6 @@
 }
 
 .eyebrow,
-.section-kicker,
 .card-label,
 .status-note,
 .date-chip span {
@@ -222,7 +221,6 @@
 }
 
 .eyebrow,
-.section-kicker,
 .card-label,
 .status-note,
 .hero-panel .date-chip span {
@@ -243,24 +241,30 @@
 }
 
 .timeline {
-  display: grid;
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
   margin-top: 24px;
 }
 
 .timeline-item {
+  font-family: var(--font-body);
   display: grid;
-  grid-template-columns: 122px 1fr;
-  gap: 18px;
-  padding: 20px;
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.58);
+  grid-template-columns: 80px 1fr;
+  gap: 50px;
+  padding: 10px 0;
+  border-radius: 0;
+  background: transparent;
+  border-bottom: 2px solid #d4d4d4;
 }
 
-.timeline-item h3,
+.timeline-item:last-child {
+  border-bottom: none;
+}
+
 .guest-fields-heading h3 {
-  margin: 0 0 8px;
-  font-size: 17.6px;
+  margin: 0px;
+  font-size: 20px;
   color: #414141;
 }
 
@@ -274,16 +278,28 @@
   color: #414141;
 }
 
-.timeline-time,
-.date-display {
-  font-family: var(--font-display);
-  font-size: 24px;
-  color: #414141;
-}
-
-.timeline-subtitle {
+.timeline-time {
+  font-family: var(--font-body);
+  font-size: 14px;
   color: #414141;
   font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1.4;
+  width: max-content;
+  padding-right: 20px;
+}
+
+.timeline-item .timeline-subtitle {
+  color: #414141;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.timeline-item p {
+  font-size: 14px;
+  line-height: 1.4;
+  font-style: italic;
+  color: #666666;
 }
 
 .family-details {
@@ -302,6 +318,19 @@
   align-items: center;
   text-align: center;
   gap: 20px;
+}
+
+.section-kicker{ 
+  font-family: var(--font-body);
+  font-size: 25px;
+  padding: 0px; 
+  margin: 0px; 
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #414141;
+  line-height: 1.4;
+  text-align: left;
+  align-self: flex-start;
 }
 
 .family-invitation-text {
@@ -401,13 +430,24 @@
 }
 
 .date-display {
-  font-size: 48px;
+  display: inline-block;
   line-height: 0.95;
-  margin: 24px 0 12px;
+  margin: 25px 0px 20px 10px;
+  font-family: var(--font-body);
+  font-size: 35px;
+  color: #414141;
+  vertical-align: top;
 }
 
-.date-weekday {
-  font-size: 18.4px;
+.day-display {
+  display: inline-block;
+  font-size: 60px;
+  font-family: 'Luxurious Script', cursive;
+  font-weight: 400;
+  margin: 10px 0px 40px 0px;
+  padding: 0px;
+  line-height: 0.95;
+  vertical-align: top;
 }
 
 .date-note {
