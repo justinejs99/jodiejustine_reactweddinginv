@@ -70,3 +70,17 @@ CREATE TABLE IF NOT EXISTS guests (
   seat_no INT CHECK (seat_no BETWEEN 1 AND 10),
   FOREIGN KEY (group_id) REFERENCES guest_groups(id) ON DELETE CASCADE
 );
+
+-- Reception check-in: one record per guest group
+CREATE TABLE IF NOT EXISTS checkin_records (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  group_id INT NOT NULL UNIQUE,
+  checked_in BOOLEAN NOT NULL DEFAULT FALSE,
+  checked_in_at DATETIME,
+  adult_count INT NOT NULL DEFAULT 0,
+  kids_count INT NOT NULL DEFAULT 0,
+  gift_count INT NOT NULL DEFAULT 0,
+  souvenir_count INT NOT NULL DEFAULT 0,
+  titipan_gift_count INT NOT NULL DEFAULT 0,
+  FOREIGN KEY (group_id) REFERENCES guest_groups(id) ON DELETE CASCADE
+);
