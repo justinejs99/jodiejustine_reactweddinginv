@@ -3,8 +3,7 @@ import './App.css'
 import { getWeddingSiteContent, submitRsvp } from './services/weddingApi'
 import type { RsvpRequest, RsvpResponse, WeddingSiteContent } from './types/wedding'
 import andImage from './assets/images/and.jpg'
-
-const emptyGuests = ['', '', '']
+import filmImage from './assets/images/FilmJJ.png'
 
 function App() {
   const [content, setContent] = useState<WeddingSiteContent | null>(null)
@@ -14,9 +13,8 @@ function App() {
   const [response, setResponse] = useState<RsvpResponse | null>(null)
   const [formError, setFormError] = useState('')
   const [attendance, setAttendance] = useState<RsvpRequest['attendance']>('yes')
-  const [guestNames, setGuestNames] = useState<string[]>(emptyGuests)
-  const [guestCount, setGuestCount] = useState(1)
-  const [guestDesignation, setGuestDesignation] = useState('Mr. / Mrs. / Ms.')
+  const [selectedGuests, setSelectedGuests] = useState<boolean[]>([])
+  const [guestDesignation] = useState('Mr. / Mrs. / Ms.')
 
   useEffect(() => {
     let isMounted = true
@@ -30,7 +28,7 @@ function App() {
         }
 
         setContent(siteContent)
-        setGuestCount(Math.min(siteContent.invitation.validPax, 3))
+        setSelectedGuests(new Array(siteContent.invitation.validPax).fill(false))
       } catch (error) {
         if (!isMounted) {
           return
@@ -51,11 +49,11 @@ function App() {
     }
   }, [])
 
-  function updateGuestName(index: number, value: string) {
-    setGuestNames((currentGuests) => {
-      const nextGuests = [...currentGuests]
-      nextGuests[index] = value
-      return nextGuests
+  function toggleGuest(index: number) {
+    setSelectedGuests((current) => {
+      const next = [...current]
+      next[index] = !next[index]
+      return next
     })
   }
 
@@ -67,10 +65,10 @@ function App() {
     }
 
     if (attendance === 'yes') {
-      const filledGuests = guestNames.slice(0, guestCount).filter((guestName) => guestName.trim())
+      const checkedCount = selectedGuests.filter(Boolean).length
 
-      if (filledGuests.length !== guestCount) {
-        setFormError('Please enter a name for each attending guest.')
+      if (checkedCount === 0) {
+        setFormError('Please select at least one attending guest.')
         return
       }
     }
@@ -82,8 +80,10 @@ function App() {
       const result = await submitRsvp({
         attendance,
         guestDesignation,
-        guestCount,
-        guestNames: attendance === 'yes' ? guestNames.slice(0, guestCount) : [],
+        guestCount: selectedGuests.filter(Boolean).length,
+        guestNames: attendance === 'yes'
+          ? content.invitation.guestNames.filter((_, i) => selectedGuests[i])
+          : [],
       })
 
       startTransition(() => {
@@ -104,7 +104,7 @@ function App() {
     return <main className="shell loading-state">{loadError || 'Invitation content is unavailable.'}</main>
   }
 
-  const attendingGuests = guestNames.slice(0, guestCount)
+  const attendingGuests = content.invitation.guestNames
 
   return (
     <main className="shell">
@@ -169,6 +169,8 @@ function App() {
             <p className="verse-reference">{content.couple.verse}</p>
           </div>
         </div>
+
+        <img className="film-image" src={filmImage} alt="" />
         
         <div className="panel event-details">
           <p className="section-kicker">Wedding Date</p>
@@ -193,29 +195,43 @@ function App() {
 
       </section>
 
+      <img className="film-image" src={filmImage} alt="" />
+
       <section className="panel rsvp-panel">
         <div className="rsvp-heading">
           <div>
             <p className="section-kicker">RSVP</p>
-            <h2>Will you be attending our wedding?</h2>
-            <p>{content.rsvp.prompt}</p>
-            <p className="date-note">Kindly RSVP by {content.rsvp.deadline}.</p>
-            <a className="text-link" href={content.contact.whatsAppUrl} target="_blank" rel="noreferrer">
-            Contact for queries
-          </a>
+            <p className="valid-for">This invitation is valid for <strong>{content.invitation.validPax} pax</strong></p>
+            <p className="date-note">Kindly RSVP by <strong>{content.rsvp.deadline}</strong></p>
           </div>
         </div>
-        <div className="status-note">Submission mode: {content.integration.modeLabel}</div>
-        <form className="rsvp-form" onSubmit={handleSubmit}>
-          <label className="field wide-field">
-            <span>Invitation name</span>
-            <input
-              value={guestDesignation}
-              onChange={(event) => setGuestDesignation(event.target.value)}
-              placeholder="Mr. / Mrs. / Ms."
-            />
-          </label>
 
+        {response ? (
+          <div className="rsvp-submitted">
+            {attendance === 'yes' && (
+              <>
+                <p className="bold-text">Please screenshot this QR code<br />for check in at the venue</p>
+                <div className="qr-placeholder" aria-label="QR code placeholder">
+                  <div className="qr-inner">
+                    <span>QR CODE HERE</span>
+                  </div>
+                </div>
+              </>
+            )}
+
+            <p className="bold-text" style={{ paddingBottom: 0 }}>{attendance === 'yes' ? content.responses.accepted.title : content.responses.declined.title}</p>
+            <p className="normal-text" style={{ paddingBottom: 20 }}>{attendance === 'yes' ? content.responses.accepted.body : content.responses.declined.body}</p>
+
+            <div className="submitted-contact">
+              <p className="bold-text" style={{ paddingBottom: 0 }}>For any queries please contact:</p>
+              <a className="text-link" href={content.contact.whatsAppUrl} target="_blank" rel="noreferrer">
+                {content.contact.display}
+              </a>
+            </div>
+          </div>
+        ) : (
+        <form className="rsvp-form" onSubmit={handleSubmit}>
+          <p className="bold-text">Will you be attending our wedding?</p>
           <div className="attendance-toggle" role="radiogroup" aria-label="Attendance response">
             <button
               className={attendance === 'yes' ? 'toggle-button active' : 'toggle-button'}
@@ -233,77 +249,32 @@ function App() {
             </button>
           </div>
 
-          <div className="field-row">
-            <label className="field">
-              <span>Guest count</span>
-              <select
-                value={guestCount}
-                onChange={(event) => setGuestCount(Number(event.target.value))}
-                disabled={attendance === 'no'}
-              >
-                {Array.from({ length: content.invitation.validPax }, (_, index) => index + 1).map((count) => (
-                  <option key={count} value={count}>
-                    {count} guest{count > 1 ? 's' : ''}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="field">
-              <span>RSVP deadline</span>
-              <input value={content.rsvp.deadline} disabled />
-            </label>
-          </div>
+          <p className="bold-text">Who will be attending?</p>
 
           <div className="guest-fields">
-            <div className="guest-fields-heading">
-              <h3>Who will be attending?</h3>
-              <p>{attendance === 'yes' ? 'Complete the guest names below.' : 'Guest names are not required for a decline.'}</p>
-            </div>
-
             {attendingGuests.map((guestName, index) => (
-              <label className="field" key={`guest-${index + 1}`}>
-                <span>Guest {index + 1}</span>
+              <label className="guest-checkbox" key={`guest-${index + 1}`}>
                 <input
-                  value={guestName}
-                  onChange={(event) => updateGuestName(index, event.target.value)}
-                  placeholder={`Guest ${index + 1} name`}
+                  type="checkbox"
+                  checked={selectedGuests[index] ?? false}
+                  onChange={() => toggleGuest(index)}
                   disabled={attendance === 'no'}
                 />
+                <p className='normal-text'>{guestName}</p>
               </label>
             ))}
           </div>
 
           {formError ? <p className="form-message error">{formError}</p> : null}
-          {response ? <p className="form-message success">{response.message}</p> : null}
 
-          <button className="submit-button" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Sending RSVP...' : 'Send RSVP'}
-          </button>
-        </form>
-      </section>
-
-      <section className="closing-grid">
-        <article className="panel thank-you-panel">
-          <p className="section-kicker">Thank You</p>
-          <h2>{attendance === 'yes' ? content.responses.accepted.title : content.responses.declined.title}</h2>
-          <p>{attendance === 'yes' ? content.responses.accepted.body : content.responses.declined.body}</p>
-        </article>
-
-        <article className="panel qr-panel">
-          <p className="section-kicker">Venue Check-In</p>
-          <h2>Please screenshot this QR code</h2>
-          <p>{content.qr.message}</p>
-          <div className="qr-placeholder" aria-label="QR code placeholder">
-            <div className="qr-inner">
-              <span>QR CODE</span>
-              <small>Connect this block to a backend-generated guest token.</small>
-            </div>
+          <div className="submit-row">
+            <button className="submit-button" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Sending RSVP...' : 'RSVP'}
+            </button>
           </div>
-          <a className="text-link" href={content.contact.whatsAppUrl} target="_blank" rel="noreferrer">
-            {content.contact.display}
-          </a>
-        </article>
+        </form>
+        )}
+
       </section>
     </main>
   )
