@@ -14,7 +14,6 @@ function App() {
   const [formError, setFormError] = useState('')
   const [attendance, setAttendance] = useState<RsvpRequest['attendance']>('yes')
   const [selectedGuests, setSelectedGuests] = useState<boolean[]>([])
-  const [guestDesignation] = useState('Mr. / Mrs. / Ms.')
 
   useEffect(() => {
     let isMounted = true
@@ -79,10 +78,9 @@ function App() {
     try {
       const result = await submitRsvp({
         attendance,
-        guestDesignation,
-        guestCount: selectedGuests.filter(Boolean).length,
-        guestNames: attendance === 'yes'
-          ? content.invitation.guestNames.filter((_, i) => selectedGuests[i])
+        groupId: content.invitation.groupId,
+        guestIds: attendance === 'yes'
+          ? content.invitation.guests.filter((_, i) => selectedGuests[i]).map(g => g.id)
           : [],
       })
 
@@ -104,7 +102,7 @@ function App() {
     return <main className="shell loading-state">{loadError || 'Invitation content is unavailable.'}</main>
   }
 
-  const attendingGuests = content.invitation.guestNames
+  const guests = content.invitation.guests
 
   return (
     <main className="shell">
@@ -123,9 +121,8 @@ function App() {
         <div className="hero-footer">
           <div className="hero-middle">
             <p className="card-label">Dear</p>
-            <h2 className="guest-designation">{guestDesignation}</h2>
-            <p className="guest-group-name">{content.invitation.guestGroupName}</p>
-            <div className="pax-badge">This invitation is valid for {content.invitation.validPax} pax</div>
+            <p className="guest-designation">{content.invitation.guestGroupName}</p>
+            <div className="pax-badge">This invitation is valid for <strong>{content.invitation.validPax} pax</strong></div>
           </div>
 
           <div className="hero-bottom">
@@ -208,19 +205,72 @@ function App() {
 
         {response ? (
           <div className="rsvp-submitted">
-            {attendance === 'yes' && (
-              <>
-                <p className="bold-text">Please screenshot this QR code<br />for check in at the venue</p>
-                <div className="qr-placeholder" aria-label="QR code placeholder">
-                  <div className="qr-inner">
-                    <span>QR CODE HERE</span>
+            {attendance === 'yes' && (() => {
+              const attending = guests.filter((_, i) => selectedGuests[i])
+              const notAttending = guests.filter((_, i) => !selectedGuests[i])
+              return (
+                <>
+                  <div className="qrcode-bg">
+                    {attending.length > 0 ? (
+                      <>
+                        <div className="rsvp-status-row">
+                          <p className="bold-text" style={{ paddingBottom: 4 }}>Attending</p>
+                          <button className="edit-rsvp-button" type="button" onClick={() => setResponse(null)}>Edit RSVP</button>
+                        </div>
+                        {attending.map(g => (
+                          <p className="normal-text" key={g.id} style={{ paddingBottom: 0 }}>
+                            {g.designation} {g.firstName} {g.lastName}
+                          </p>
+                        ))}
+                        {notAttending.length > 0 && (
+                          <>
+                            <p className="bold-text" style={{ paddingBottom: 4, paddingTop: 20 }}>Not attending</p>
+                            {notAttending.map(g => (
+                              <p className="normal-text" key={g.id} style={{ paddingBottom: 0 }}>
+                                {g.designation} {g.firstName} {g.lastName}
+                              </p>
+                            ))}
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <div className="rsvp-status-row">
+                          <p className="bold-text" style={{ paddingBottom: 4 }}>Not attending</p>
+                          <button className="edit-rsvp-button" type="button" onClick={() => setResponse(null)}>Edit RSVP</button>
+                        </div>
+                        {notAttending.map(g => (
+                          <p className="normal-text" key={g.id} style={{ paddingBottom: 0 }}>
+                            {g.designation} {g.firstName} {g.lastName}
+                          </p>
+                        ))}
+                      </>
+                    )}
                   </div>
-                </div>
-              </>
+
+                  <div className="qrcode-bg">
+                    <p className="bold-text">Please screenshot this QR code<br />for check in at the venue</p>
+                    <div className="qr-placeholder" aria-label="QR code placeholder">
+                      <div className="qr-inner">
+                        <span>QR CODE HERE</span>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )
+            })()}
+
+            {attendance === 'no' && (
+              <div className="submit-row" style={{ justifyContent: 'flex-start', marginBottom: 20 }}>
+                <button className="submit-button" type="button" onClick={() => setResponse(null)}>
+                  Edit RSVP
+                </button>
+              </div>
             )}
 
-            <p className="bold-text" style={{ paddingBottom: 0 }}>{attendance === 'yes' ? content.responses.accepted.title : content.responses.declined.title}</p>
-            <p className="normal-text" style={{ paddingBottom: 20 }}>{attendance === 'yes' ? content.responses.accepted.body : content.responses.declined.body}</p>
+            <p className="bold-text-thankyou" style={{ paddingBottom: 0}}>{attendance === 'yes' ? content.responses.accepted.title : content.responses.declined.title}</p>
+            <p className="normal-text-thankyou" style={{ paddingBottom: 20 }}>{attendance === 'yes' ? content.responses.accepted.body : content.responses.declined.body}</p> 
+            
 
             <div className="submitted-contact">
               <p className="bold-text" style={{ paddingBottom: 0 }}>For any queries please contact:</p>
@@ -228,6 +278,8 @@ function App() {
                 {content.contact.display}
               </a>
             </div>
+
+      
           </div>
         ) : (
         <form className="rsvp-form" onSubmit={handleSubmit}>
@@ -252,15 +304,15 @@ function App() {
           <p className="bold-text">Who will be attending?</p>
 
           <div className="guest-fields">
-            {attendingGuests.map((guestName, index) => (
-              <label className="guest-checkbox" key={`guest-${index + 1}`}>
+            {guests.map((guest, index) => (
+              <label className="guest-checkbox" key={guest.id}>
                 <input
                   type="checkbox"
                   checked={selectedGuests[index] ?? false}
                   onChange={() => toggleGuest(index)}
                   disabled={attendance === 'no'}
                 />
-                <p className='normal-text'>{guestName}</p>
+                <p className='normal-text'>{guest.designation} {guest.firstName} {guest.lastName}</p>
               </label>
             ))}
           </div>
