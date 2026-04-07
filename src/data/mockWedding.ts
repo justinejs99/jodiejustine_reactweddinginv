@@ -14,6 +14,7 @@ export const weddingSiteContent: WeddingSiteContent = {
   invitation: {
     validPax: 3,
     guestGroupName: 'Guest Group Name',
+    guestNames: ['Guest 1', 'Guest 2', 'Guest 3'],
   },
   schedule: [
     {
@@ -38,11 +39,10 @@ export const weddingSiteContent: WeddingSiteContent = {
   ],
   weddingDate: {
     dateText: '10.10.26',
-    weekday: 'Saturday',
+    weekday: 'Saturday, ',
   },
   rsvp: {
     deadline: 'Sat, 26/09/26',
-    prompt: 'Confirm attendance, reserve your seats, and prepare the guest list that will later be stored in your backend database.',
   },
   contact: {
     display: 'wa.me/6281389834762',
@@ -50,11 +50,11 @@ export const weddingSiteContent: WeddingSiteContent = {
   },
   responses: {
     accepted: {
-      title: 'Thank you for your response',
+      title: 'Thank you for your response!',
       body: "We can't wait to see you there.",
     },
     declined: {
-      title: 'We will miss celebrating with you',
+      title: 'We will miss celebrating with you!',
       body: 'We truly appreciate your love and support, even from afar.',
     },
   },
