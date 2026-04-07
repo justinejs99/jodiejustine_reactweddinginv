@@ -152,6 +152,103 @@ app.post('/api/rsvp', async (req, res) => {
   }
 });
 
+// ── Reception check-in endpoints ─────────────────────────────────────────────
+
+// GET /api/reception/group?id=2
+app.get('/api/reception/group', async (req, res) => {
+  const groupId = Number(req.query.id);
+
+  if (!groupId || isNaN(groupId) || groupId < 1) {
+    return res.status(400).json({ error: 'Invalid group id' });
+  }
+
+  try {
+    const [groupRows] = await pool.query(
+      'SELECT * FROM guest_groups WHERE id = ?',
+      [groupId]
+    );
+
+    if (groupRows.length === 0) {
+      return res.status(404).json({ error: 'Guest group not found' });
+    }
+
+    const [guestRows] = await pool.query(
+      'SELECT * FROM guests WHERE group_id = ?',
+      [groupId]
+    );
+
+    const [checkinRows] = await pool.query(
+      'SELECT * FROM checkin_records WHERE group_id = ?',
+      [groupId]
+    );
+
+    const adults = guestRows.filter(g => g.designation !== 'Child');
+    const kids = guestRows.filter(g => g.designation === 'Child');
+
+    // Construct display name from first 2 adults, e.g. "Mr. Sinaga Gany & Mrs. Yuliani Thio"
+    const displayParts = adults
+      .slice(0, 2)
+      .map(g => `${g.designation} ${g.first_name} ${g.last_name}`);
+    const groupName = displayParts.length > 0
+      ? displayParts.join(' & ')
+      : groupRows[0].group_name;
+
+    const tableNo = guestRows.length > 0 ? guestRows[0].table_no : null;
+    const checkedIn = checkinRows.length > 0 ? Boolean(checkinRows[0].checked_in) : false;
+
+    res.json({
+      groupId: groupRows[0].id,
+      groupName,
+      tableNo,
+      adultPax: adults.length,
+      kidsPax: kids.length,
+      checkedIn,
+    });
+  } catch (error) {
+    console.error('Error fetching reception group:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST /api/reception/checkin
+app.post('/api/reception/checkin', async (req, res) => {
+  const { groupId, adultCount, kidsCount, giftCount, souvenirCount, titipanGiftCount } = req.body;
+  const safeGroupId = Number(groupId);
+
+  if (!safeGroupId || isNaN(safeGroupId) || safeGroupId < 1) {
+    return res.status(400).json({ error: 'Invalid group id' });
+  }
+
+  try {
+    await pool.query(
+      `INSERT INTO checkin_records
+         (group_id, checked_in, checked_in_at, adult_count, kids_count, gift_count, souvenir_count, titipan_gift_count)
+       VALUES (?, TRUE, NOW(), ?, ?, ?, ?, ?)
+       ON DUPLICATE KEY UPDATE
+         checked_in       = TRUE,
+         checked_in_at    = NOW(),
+         adult_count      = VALUES(adult_count),
+         kids_count       = VALUES(kids_count),
+         gift_count       = VALUES(gift_count),
+         souvenir_count   = VALUES(souvenir_count),
+         titipan_gift_count = VALUES(titipan_gift_count)`,
+      [
+        safeGroupId,
+        Number(adultCount) || 0,
+        Number(kidsCount) || 0,
+        Number(giftCount) || 0,
+        Number(souvenirCount) || 0,
+        Number(titipanGiftCount) || 0,
+      ]
+    );
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error saving check-in:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Wedding API server running on http://localhost:${PORT}`);
 });
