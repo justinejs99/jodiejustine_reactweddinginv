@@ -106,7 +106,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 15px;   
   text-align: center;
   background: rgba(238, 237, 231, 0.65);
   border-radius: 20px;
@@ -114,11 +114,17 @@
   margin: 0px 50px; 
 }
 
-.hero-middle .guest-designation,
 .hero-middle .guest-group-name {
   margin: 0;
   font-family: var(--font-display);
   font-size: 16px;
+  color: #414141;
+}
+
+.hero-middle .guest-designation{ 
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 25px;
   color: #414141;
 }
 
@@ -163,14 +169,14 @@
 }
 
 .pax-badge {
-  letter-spacing: 0.15em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-size: 10px;
-  font-weight: 700px;
+  font-size: 11px;
+  font-weight: 500;
   margin: 0px; 
   font-family: var(--font-body);
-  width: fit-content;
-  padding: 10px 14px;
+  width: max-content;
+  padding: 13px;
   border-radius: 10px;
   margin: 0px;
   background: #eeede7;
@@ -371,10 +377,10 @@
 }
 
 .family-invitation-text,
-.bold-text,
+.bold-text, .bold-text-thankyou, 
 .valid-for,
 .date-note,
-.normal-text,
+.normal-text, .normal-text-thankyou, 
 .text-link {
   font-family: var(--font-body);
   font-size: 13px;
@@ -411,13 +417,24 @@
   padding: 0px 0px 20px;
   font-weight: 700;
   text-align: left;
-  align-self: flex-start;
+  align-self: center;
 }
 
 .normal-text {
   font-weight: 500;
   text-align: left;
-  align-self: flex-start;
+  align-self: center;
+}
+
+.bold-text-thankyou {
+  padding: 0px 0px 20px;
+  font-weight: 700;
+  align-self: left;
+}
+
+.normal-text-thankyou {
+  font-weight: 500;
+  align-self: left;
 }
 
 .text-link {
@@ -470,6 +487,7 @@
   background: #d0cdba;
   color: #414141;
   font-weight: 700;
+  cursor: pointer;
 }
 
 .submit-row {
@@ -497,6 +515,10 @@
 
 .guest-checkbox input:disabled {
   opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.guest-checkbox:has(input:disabled) {
   cursor: not-allowed;
 }
 
@@ -535,6 +557,13 @@
   color: red;
 }
 
+.qrcode-bg{ 
+  background: #d0cdba;
+  padding: 20px 20px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
 .qr-placeholder {
   display: grid;
   place-items: center;
@@ -544,7 +573,7 @@
     linear-gradient(rgba(98, 66, 48, 0.14) 1px, transparent 1px),
     #fffaf6;
   background-size: 18px 18px;
-  margin: 00px 0px 20px; 
+  margin: 0; 
 }
 
 .qr-inner {
@@ -584,4 +613,26 @@
   margin: 0px;
 }
 
+.rsvp-status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edit-rsvp-button {
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #414141;
+  line-height: 1.4;
+  font-style: italic;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  align-self: center;
+}
 
