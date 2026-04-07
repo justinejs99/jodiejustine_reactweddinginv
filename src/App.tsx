@@ -219,7 +219,7 @@ function App() {
                         </div>
                         {attending.map(g => (
                           <p className="normal-text" key={g.id} style={{ paddingBottom: 0 }}>
-                            {g.designation} {g.firstName} {g.lastName}{g.tableNo ? ` [Table ${g.tableNo}]` : ''}
+                            {g.designation} {g.firstName} {g.lastName}{g.tableNo ? <strong> - [Table {g.tableNo}]</strong> : ''}
                           </p>
                         ))}
                         {notAttending.length > 0 && (
