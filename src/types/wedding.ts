@@ -14,6 +14,7 @@ export interface CoupleContent {
 export interface InvitationContent {
   validPax: number
   guestGroupName: string
+  guestNames: string[]
 }
 
 export interface ScheduleItem {
@@ -31,7 +32,6 @@ export interface WeddingDateContent {
 
 export interface RsvpContent {
   deadline: string
-  prompt: string
 }
 
 export interface ContactContent {
