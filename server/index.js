@@ -106,6 +106,12 @@ app.post('/api/rsvp', async (req, res) => {
   }
 
   try {
+    // Reset all guests in the group to Pending before recording new response
+    await pool.query(
+      'UPDATE guests SET attendance = ? WHERE group_id = ?',
+      ['Pending', safeGroupId]
+    );
+
     if (attendance === 'yes') {
       if (!Array.isArray(guestIds) || guestIds.length === 0) {
         return res.status(400).json({ error: 'At least one guest must be selected' });
