@@ -14,8 +14,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 18px;
+  padding: 30px 16px 20px;
   background: transparent;
+  max-width: 1232px; /* 820px cards + 16px side padding each side */
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .header-icon-btn {
@@ -57,9 +61,9 @@
 .header-eyebrow {
   margin: 0 0 2px;
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #414141;
 }
@@ -67,10 +71,10 @@
 .header-names {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 28px;
+  font-size: 35px;
   font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.1em;
   color: #414141;
   display: flex;
   align-items: baseline;
@@ -94,7 +98,8 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 20px 16px 32px;
+  padding: 10px 20px 20px;
+  height: 100%;
 }
 
 /* ─── Status / loading / success / error cards ───────────────────────────── */
@@ -112,7 +117,7 @@
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #414141;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -126,14 +131,18 @@
 .success-text {
   margin: 0;
   font-size: 12px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
 }
 
 .success-name {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: 22px;
-  letter-spacing: 0.04em;
+  font-family: var(--font-body);
+  font-size: 20px;
+}
+
+.status-card-actions {
+  display: flex;
+  gap: 12px;
 }
 
 /* ─── QR Scan card ───────────────────────────────────────────────────────── */
@@ -155,9 +164,59 @@
   font-family: var(--font-body);
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #414141;
+}
+
+/* ─── Manual entry fallback ─────────────────────────────────────────────── */
+
+.manual-entry-form {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+}
+
+.manual-entry-input {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1.5px solid #b8b5a8;
+  border-radius: 8px;
+  background: #ffffff;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: #414141;
+  outline: none;
+}
+
+.manual-entry-input:focus {
+  border-color: #4a4640;
+}
+
+/* hide browser number spinners */
+.manual-entry-input::-webkit-outer-spin-button,
+.manual-entry-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.manual-entry-btn {
+  padding: 9px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #4a4640;
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.manual-entry-btn:hover {
+  background: #333030;
 }
 
 .scan-card-inner {
@@ -193,11 +252,12 @@
 
 .details-layout {
   width: 100%;
-  max-width: 820px;
+  max-width: 1200px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 3.5fr 2fr;
   gap: 14px;
-  align-items: start;
+  align-items: stretch;
+  /* align-self: stretch; */
 }
 
 @media (max-width: 600px) {
@@ -219,9 +279,9 @@
   margin: 0;
   padding: 10px 18px;
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #414141;
   text-align: center;
@@ -231,18 +291,32 @@
   background: #ffffff;
   margin: 0 12px 12px;
   border-radius: 10px;
-  padding: 20px 18px;
+  padding: 0 20px;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.detail-card-body-counter {
+  background: #ffffff;
+  margin: 0 12px 12px;
+  border-radius: 10px;
+  padding: 15px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 /* ─── Invitation details content ─────────────────────────────────────────── */
 
 .guest-name-display {
-  margin: 0 0 18px;
+  margin: 0;
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 25px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.1em;
   color: #414141;
   line-height: 1.35;
   text-align: center;
@@ -250,18 +324,19 @@
 
 .detail-list {
   margin: 0;
-  padding: 0;
+  padding: 0 20px;
   display: grid;
   grid-template-columns: auto 1fr;
-  row-gap: 10px;
-  column-gap: 16px;
+  width: fit-content;
+  align-self: center;
+  row-gap: 5px;
 }
 
 .detail-list dt {
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 18px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #414141;
   white-space: nowrap;
@@ -271,11 +346,12 @@
 .detail-list dd {
   margin: 0;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 500;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
   color: #414141;
   align-self: center;
+  padding-left: 20px; 
 }
 
 .status-out {
@@ -299,9 +375,9 @@
 
 .counter-label {
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 18px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #414141;
 }
@@ -309,17 +385,17 @@
 .counter-controls {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .counter-value {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 600;
   min-width: 36px;
   text-align: center;
   color: #414141;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.1em;
 }
 
 .counter-btn {
@@ -376,7 +452,7 @@
   font-family: var(--font-body);
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
   transition: background 0.15s;
