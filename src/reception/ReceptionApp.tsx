@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { Html5Qrcode } from 'html5-qrcode'
+import { useCallback, useEffect, useRef, useState, FormEvent } from 'react'
 import { appConfig } from '../lib/config'
 import andImage from '../assets/images/and.jpg'
 import './ReceptionApp.css'
@@ -73,6 +72,29 @@ async function fetchCheckinGroup(groupId: number): Promise<CheckinGroup> {
   return response.json() as Promise<CheckinGroup>
 }
 
+async function fetchCheckinGroupByName(name: string): Promise<CheckinGroup> {
+  if (appConfig.useMockApi) {
+    await new Promise((r) => setTimeout(r, 600))
+    return {
+      groupId: 2,
+      groupName: 'Mr. Sinaga Gany & Mrs. Yuliani Thio',
+      tableNo: 4,
+      adultPax: 2,
+      kidsPax: 0,
+      checkedIn: false,
+    }
+  }
+
+  const response = await fetch(
+    `${appConfig.apiBaseUrl}/api/reception/group?name=${encodeURIComponent(name)}`,
+  )
+  if (!response.ok) {
+    if (response.status === 404) throw new Error('Guest group not found.')
+    throw new Error('Failed to load guest information.')
+  }
+  return response.json() as Promise<CheckinGroup>
+}
+
 async function submitCheckin(
   groupId: number,
   form: RegistrationForm,
@@ -100,37 +122,48 @@ interface QrScannerProps {
 
 function QrScanner({ onGroupId, onError }: QrScannerProps) {
   const hasScannedRef = useRef(false)
-  const scannerRef = useRef<Html5Qrcode | null>(null)
+  const scannerRef = useRef<{ stop: () => Promise<void> } | null>(null)
 
   useEffect(() => {
+    let cancelled = false
     hasScannedRef.current = false
 
-    const scanner = new Html5Qrcode(SCANNER_ELEMENT_ID, { verbose: false })
-    scannerRef.current = scanner
+    import('html5-qrcode').then(({ Html5Qrcode }) => {
+      if (cancelled) return
 
-    scanner
-      .start(
-        { facingMode: 'environment' },
-        { fps: 10, qrbox: { width: 240, height: 240 } },
-        (decodedText) => {
-          if (hasScannedRef.current) return
-          const groupId = extractGroupId(decodedText)
-          if (groupId !== null) {
-            hasScannedRef.current = true
-            scanner.stop().catch(() => {})
-            onGroupId(groupId)
-          }
-        },
-        () => {
-          // per-frame scan errors – silently ignored
-        },
-      )
-      .catch(() => {
-        onError('Camera access denied. Please allow camera permissions and reload.')
-      })
+      // Clear any leftover DOM from a previous mount (React StrictMode remounts twice in dev)
+      const el = document.getElementById(SCANNER_ELEMENT_ID)
+      if (el) el.innerHTML = ''
+
+      const scanner = new Html5Qrcode(SCANNER_ELEMENT_ID, { verbose: false })
+      scannerRef.current = scanner
+
+      scanner
+        .start(
+          { facingMode: 'environment' },
+          { fps: 10, qrbox: { width: 240, height: 240 } },
+          (decodedText: string) => {
+            if (hasScannedRef.current || cancelled) return
+            const groupId = extractGroupId(decodedText)
+            if (groupId !== null) {
+              hasScannedRef.current = true
+              scanner.stop().catch(() => {})
+              onGroupId(groupId)
+            }
+          },
+          () => {
+            // per-frame scan errors – silently ignored
+          },
+        )
+        .catch(() => {
+          if (!cancelled) onError('Camera access denied. Please allow camera permissions and reload.')
+        })
+    })
 
     return () => {
-      scanner.stop().catch(() => {})
+      cancelled = true
+      scannerRef.current?.stop().catch(() => {})
+      scannerRef.current = null
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -234,6 +267,7 @@ export default function ReceptionApp() {
   const [group, setGroup] = useState<CheckinGroup | null>(null)
   const [errorMsg, setErrorMsg] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [manualId, setManualId] = useState('')
   const [form, setForm] = useState<RegistrationForm>({
     adultCount: 0,
     kidsCount: 0,
@@ -265,6 +299,34 @@ export default function ReceptionApp() {
     setErrorMsg(msg)
     setView('error')
   }, [])
+
+  // Auto-load from URL param: /reception.html?group=2
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const groupParam = params.get('group')
+    if (groupParam) {
+      const id = parseInt(groupParam, 10)
+      if (!isNaN(id) && id > 0) handleGroupId(id)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  async function handleManualSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const name = manualId.trim()
+    if (!name) return
+    setManualId('')
+    setView('loading')
+    try {
+      const data = await fetchCheckinGroupByName(name)
+      setGroup(data)
+      setForm({ adultCount: 0, kidsCount: 0, giftCount: 0, souvenirCount: 0, titipanGiftCount: 0 })
+      setView('details')
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : 'Failed to load guest.')
+      setView('error')
+    }
+  }
 
   function setCounter(field: keyof RegistrationForm, value: number) {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -302,6 +364,16 @@ export default function ReceptionApp() {
             <div className="scan-card-inner">
               <QrScanner onGroupId={handleGroupId} onError={handleScanError} />
             </div>
+            <form className="manual-entry-form" onSubmit={handleManualSubmit}>
+              <input
+                className="manual-entry-input"
+                type="text"
+                placeholder="Enter group name"
+                value={manualId}
+                onChange={(e) => setManualId(e.target.value)}
+              />
+              <button type="submit" className="manual-entry-btn">Go</button>
+            </form>
           </div>
         )}
 
@@ -327,9 +399,14 @@ export default function ReceptionApp() {
           <div className="status-card">
             <p className="success-text">Check-in saved for</p>
             <p className="success-name">{group.groupName.toUpperCase()}</p>
-            <button type="button" className="submit-btn" onClick={handleHome}>
-              Next Guest
-            </button>
+            <div className="status-card-actions">
+              <button type="button" className="submit-btn" onClick={() => setView('details')}>
+                Edit
+              </button>
+              <button type="button" className="submit-btn" onClick={handleHome}>
+                Next Guest
+              </button>
+            </div>
           </div>
         )}
 
@@ -345,11 +422,17 @@ export default function ReceptionApp() {
                   <dt>Table No</dt>
                   <dd>{group.tableNo ?? '—'}</dd>
 
+                  <dt className="counter-divider" />
+                  <dd className="counter-divider" />
+
                   <dt>Adult</dt>
                   <dd>{group.adultPax}</dd>
 
                   <dt>Kids</dt>
                   <dd>{group.kidsPax}</dd>
+
+                  <dt className="counter-divider" />
+                  <dd className="counter-divider" />
 
                   <dt>Status</dt>
                   <dd className={group.checkedIn ? 'status-in' : 'status-out'}>
@@ -362,7 +445,7 @@ export default function ReceptionApp() {
             {/* Right – Registration Details */}
             <div className="detail-card registration-card">
               <p className="detail-card-header">Registration Details</p>
-              <div className="detail-card-body">
+              <div className="detail-card-body-counter">
                 <CounterRow
                   label="Adult"
                   value={form.adultCount}
