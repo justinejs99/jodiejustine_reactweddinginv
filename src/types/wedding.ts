@@ -1,4 +1,5 @@
 export type AttendanceStatus = 'yes' | 'no'
+export type GuestAttendance = 'Yes' | 'No' | 'Pending'
 
 export interface CoupleContent {
   groomName: string
@@ -11,10 +12,21 @@ export interface CoupleContent {
   verse: string
 }
 
+export interface Guest {
+  id: number
+  designation: 'Mr.' | 'Mrs.' | 'Ms.' | 'Child'
+  firstName: string
+  lastName: string
+  attendance: GuestAttendance
+  tableNo: number | null
+  seatNo: number | null
+}
+
 export interface InvitationContent {
+  groupId: number
   validPax: number
   guestGroupName: string
-  guestNames: string[]
+  guests: Guest[]
 }
 
 export interface ScheduleItem {
@@ -69,9 +81,8 @@ export interface WeddingSiteContent {
 
 export interface RsvpRequest {
   attendance: AttendanceStatus
-  guestDesignation: string
-  guestCount: number
-  guestNames: string[]
+  groupId: number
+  guestIds: number[]
 }
 
 export interface RsvpResponse {
