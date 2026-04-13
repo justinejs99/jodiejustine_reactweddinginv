@@ -156,13 +156,25 @@ app.post('/api/rsvp', async (req, res) => {
 
 // GET /api/reception/group?id=2
 app.get('/api/reception/group', async (req, res) => {
-  const groupId = Number(req.query.id);
-
-  if (!groupId || isNaN(groupId) || groupId < 1) {
-    return res.status(400).json({ error: 'Invalid group id' });
-  }
+  let groupId = Number(req.query.id);
+  const nameQuery = req.query.name ? String(req.query.name).trim() : null;
 
   try {
+    // Look up by name if no numeric id provided
+    if (nameQuery && (!groupId || isNaN(groupId))) {
+      const [nameRows] = await pool.query(
+        'SELECT id FROM guest_groups WHERE group_name LIKE ? LIMIT 1',
+        [`%${nameQuery}%`]
+      );
+      if (nameRows.length === 0) {
+        return res.status(404).json({ error: 'Guest group not found' });
+      }
+      groupId = nameRows[0].id;
+    }
+
+    if (!groupId || isNaN(groupId) || groupId < 1) {
+      return res.status(400).json({ error: 'Invalid group id or name' });
+    }
     const [groupRows] = await pool.query(
       'SELECT * FROM guest_groups WHERE id = ?',
       [groupId]
