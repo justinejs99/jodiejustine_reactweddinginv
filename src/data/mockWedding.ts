@@ -12,9 +12,14 @@ export const weddingSiteContent: WeddingSiteContent = {
     verse: 'Matthew 19:6\n"Therefore what God has joined together,\nlet no one separate."',
   },
   invitation: {
+    groupId: 2,
     validPax: 3,
-    guestGroupName: 'Guest Group Name',
-    guestNames: ['Guest 1', 'Guest 2', 'Guest 3'],
+    guestGroupName: 'Gany Family',
+    guests: [
+      { id: 2, designation: 'Mr.', firstName: 'Sinaga', lastName: 'Gany', attendance: 'Yes', tableNo: 4, seatNo: 1 },
+      { id: 3, designation: 'Mrs.', firstName: 'Yuliani', lastName: 'Thio', attendance: 'Yes', tableNo: 4, seatNo: 2 },
+      { id: 4, designation: 'Mr.', firstName: 'Henry', lastName: 'Gany', attendance: 'Yes', tableNo: 5, seatNo: 3 },
+    ],
   },
   schedule: [
     {
@@ -69,15 +74,14 @@ export const weddingSiteContent: WeddingSiteContent = {
 export async function mockSubmitRsvp(request: RsvpRequest): Promise<RsvpResponse> {
   await new Promise((resolve) => window.setTimeout(resolve, 800))
 
-  const trimmedGuestLabel = request.guestDesignation.trim() || 'Guest'
-  const suffix = Math.random().toString(36).slice(2, 8).toUpperCase()
+  const attendingCount = request.guestIds.length
   const message = request.attendance === 'yes'
-    ? `Thank you, ${trimmedGuestLabel}. Your RSVP for ${request.guestCount} guest${request.guestCount > 1 ? 's have' : ' has'} been saved.`
-    : `Thank you, ${trimmedGuestLabel}. We have recorded your regret response.`
+    ? `Your RSVP for ${attendingCount} guest${attendingCount > 1 ? 's have' : ' has'} been saved.`
+    : 'We have recorded your regret response.'
 
   return {
     success: true,
     message,
-    referenceId: `RSVP-${suffix}`,
+    referenceId: `RSVP-G${request.groupId}`,
   }
 }
