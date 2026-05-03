@@ -22,7 +22,7 @@
 }
 
 .hero-panel,
-.story-grid,
+.story-grid, 
 .rsvp-panel {
   display: grid;
   gap: 0;
@@ -636,3 +636,71 @@
   align-self: center;
 }
 
+/* Ensure the shell dynamically adjusts to any phone screen */
+.shell {
+  width: min(480px, 100vw); /* Maximum width of 480px or full viewport width */
+  margin: 0 auto;
+  min-height: 100vh; /* Ensure it takes up the full height of the viewport */
+  height: 100%; /* Adjust height dynamically */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+}
+
+.shell,
+.shell * {
+  color: #414141;
+}
+
+/* Ensure the loading state dynamically adjusts to any phone screen */
+.loading-state {
+  display: grid;
+  min-height: 100vh; /* Full height of the viewport */
+  height: 100%; /* Adjust height dynamically */
+  place-items: center;
+  font-family: var(--font-body);
+  color: #414141;
+}
+
+/* Styles for .pax-badge */
+.pax-badge {
+  font-size: 14px;
+  padding: 10px;
+  text-align: center;
+  display: inline-block;
+}
+
+.pax-badge strong {
+  font-weight: bold;
+}
+
+/* Styles for .verse-reference */
+.verse-reference {
+  font-family: var(--font-body);
+  font-size: 16px;
+  text-align: center;
+  line-height: 1.5;
+  margin: 10px 0;
+  padding: 0;
+  color: #414141;
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 768px) {
+  .pax-badge {
+    font-size: 12px;
+    padding: 8px;
+    word-wrap: break-word;
+  }
+
+  .pax-badge strong {
+    font-size: 14px;
+  }
+
+  .verse-reference {
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 8px 0;
+  }
+}
