@@ -1,11 +1,16 @@
 .shell {
-  width: min(480px, 100vw);
+  width: min(430px, 100vw);
+  height: min(932px, 100vh);
   margin: 0 auto;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   padding: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.shell::-webkit-scrollbar {
+  display: none;
 }
 
 .shell,
@@ -28,6 +33,8 @@
   gap: 0;
   width: 100%;
   margin: 0;
+  border: 0;
+  outline: 0;
 }
 
 .hero-panel {
@@ -35,8 +42,8 @@
   flex-direction: column;
   justify-content: space-between;
   grid-template-columns: 1fr;
-  aspect-ratio: 2500 / 3750;
-  padding: 36px 28px 28px;
+  min-height: min(932px, 100vh);
+  padding: 15% 28px 28px;
   position: relative;
   overflow: hidden;
   border: 0;
@@ -58,6 +65,12 @@
   backdrop-filter: blur(18px);
   box-shadow: none;
   padding: 36px;
+  min-height: min(932px, 100vh);
+  box-sizing: border-box;
+}
+
+.rsvp-panel {
+  margin-top: -1px;
 }
 
 .hero-top {
@@ -71,7 +84,7 @@
   align-items: center;
   gap: 8px;
   font-family: var(--font-display);
-  font-size: 70px;
+  font-size: clamp(42px, 14.6vw, 70px);
   line-height: 0.92;
   font-weight: 400;
   color: #414141;
@@ -111,7 +124,7 @@
   background: rgba(238, 237, 231, 0.65);
   border-radius: 20px;
   padding: 20px 20px;
-  margin: 0px 50px; 
+  margin: 0px 0px; 
 }
 
 .hero-middle .guest-group-name {
@@ -124,7 +137,7 @@
 .hero-middle .guest-designation{ 
   margin: 0;
   font-family: var(--font-display);
-  font-size: 25px;
+  font-size: clamp(18px, 5.2vw, 25px);
   color: #414141;
 }
 
@@ -171,16 +184,19 @@
 .pax-badge {
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-size: 11px;
+  font-size: clamp(11px, 2.5vw, 13px);
   font-weight: 500;
   margin: 0px; 
   font-family: var(--font-body);
-  width: max-content;
-  padding: 13px;
+  width: 100%;
+  padding: 10px 13px;
   border-radius: 10px;
-  margin: 0px;
   background: #eeede7;
   color: #414141;
+  box-sizing: border-box;
+  white-space: nowrap;
+  text-align: center;
+  display: block;
 }
 
 .story-grid {
@@ -188,8 +204,12 @@
 }
 
 .event-details {
-  background: #eeede7;
+  background: #eeede7;}
+
+.event-details .section-kicker:first-of-type {
+  padding-top: 15%;
 }
+
 
 .timeline {
   display: flex;
@@ -202,7 +222,7 @@
   font-family: var(--font-body);
   display: grid;
   grid-template-columns: 80px 1fr;
-  gap: 50px;
+  gap: 45px;
   padding: 10px 0;
   border-radius: 0;
   background: transparent;
@@ -232,9 +252,17 @@
 }
 
 .timeline-item .timeline-subtitle {
-  color: #414141;
+  color: #666666;
   font-style: italic;
   font-weight: 400;
+}
+
+.timeline-item p.timeline-title {
+  font-size: 14px;
+  line-height: 1.4;
+  font-style: normal;
+  color: #414141;
+  font-weight: 500;
 }
 
 .timeline-item p {
@@ -251,13 +279,113 @@
   padding: 0;
 }
 
+.film-image-full {
+  margin-left: -36px;
+  margin-right: -36px;
+  margin-top: -36px;
+  width: calc(100% + 72px);
+  max-width: none;
+}
+
+/* Film strip looping slider */
+.film-strip-slider {
+  margin-left: -36px;
+  margin-right: -36px;
+  margin-top: -36px;
+  overflow: hidden;
+  width: calc(100% + 72px);
+}
+
+.film-strip-track {
+  display: flex;
+  animation: film-scroll 15s linear infinite;
+  width: max-content;
+}
+
+.film-strip-track img {
+  width: calc(100vw);
+  max-width: 430px;
+  height: auto;
+  display: block;
+  flex-shrink: 0;
+}
+
+@keyframes film-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
+/* Polaroid Slider */
+.polaroid-slider {
+  margin-left: -36px;
+  margin-right: -36px;
+  margin-bottom: -36px;
+  padding: 15% 0 0;
+  overflow: hidden;
+}
+
+.polaroid-track {
+  display: flex;
+  gap: 16px;
+  animation: polaroid-scroll 20s linear infinite;
+  width: max-content;
+}
+
+@keyframes polaroid-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.polaroid-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.polaroid {
+  flex-shrink: 0;
+  background: #fff;
+  padding: 10px 10px 32px;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: rotate(var(--rotation, 0deg));
+  transition: transform 0.3s ease;
+}
+
+.polaroid:nth-child(odd) {
+  --rotation: -2deg;
+}
+
+.polaroid:nth-child(even) {
+  --rotation: 2deg;
+}
+
+.polaroid img {
+  width: 140px;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+  border-radius: 2px;
+  background: #d4d4d4;
+}
+
+.polaroid .polaroid-caption {
+  font-family: 'Homemade Apple', cursive;
+  font-size: 10px;
+  color: #414141;
+  text-align: center;
+  margin-top: 8px;
+}
+
 .family-details {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  gap: 60px;
+  gap: 0;
 }
 
 .family-sections{ 
@@ -266,12 +394,13 @@
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  gap: 20px;
+  gap: clamp(15px, 1.5vh, 20px);
+  height: 50%;
 }
 
 .section-kicker{ 
   font-family: var(--font-body);
-  font-size: 25px;
+  font-size: clamp(18px, 5.2vw, 25px);
   padding: 0px; 
   margin: 0px; 
   font-weight: 700;
@@ -293,12 +422,12 @@
 .bride-first-name{ 
   align-self: flex-start;
   font-family: var(--font-display);
-  font-size: 80px;
+  font-size: clamp(55px, 19vw, 90px);
   font-weight: 400px; 
   text-transform: uppercase;
   line-height: 0.88;
   letter-spacing: -0.01em;
-  padding-left: 35px; 
+  padding-left: clamp(15px, 7.3vw, 35px); 
   
 }
 
@@ -307,10 +436,10 @@
   align-self: flex-end;
   font-family: 'Luxurious Script', cursive;
   font-weight: 400;
-  font-size: 70px;
+  font-size: clamp(50px, 17vw, 80px);
   line-height: 1;
   margin-top: -20px;
-  padding-right: 35px; 
+  padding-right: clamp(15px, 7.3vw, 35px); 
 }
 
 .groom-name,
@@ -326,17 +455,25 @@
 
 .family-parents {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: clamp(8px, 2.8vw, 13px);
   text-transform: uppercase;
   color: #414141;
   margin: 0;
+  white-space: nowrap;
 }
 
-.and-text {
+/* .and-text {
   font-family: var(--font-display);
-  font-size: 25px;
+  font-size: clamp(18px, 5.2vw, 25px);
   color: #414141;
   margin: 8px 0;
+} */
+
+.family-and-image {
+  height: clamp(40px, 3vw, 50px);
+  width: auto;
+  object-fit: contain;
+  mix-blend-mode: multiply;
 }
 
 .bible-verse {
@@ -348,7 +485,7 @@
 
 .verse-reference {
   font-family: 'Homemade Apple', cursive;
-  font-size: 16px;
+  font-size: clamp(13px, 3.3vw, 16px);
   color: #414141;
   margin: 0;
   line-height: 1.8;
@@ -360,14 +497,14 @@
   line-height: 0.95;
   margin: 25px 0px 20px 10px;
   font-family: var(--font-body);
-  font-size: 35px;
+  font-size: clamp(24px, 7.3vw, 35px);
   color: #414141;
   vertical-align: top;
 }
 
 .day-display {
   display: inline-block;
-  font-size: 60px;
+  font-size: clamp(36px, 12.5vw, 60px);
   font-family: 'Luxurious Script', cursive;
   font-weight: 400;
   margin: 10px 0px 40px 0px;
@@ -396,6 +533,8 @@
   font-weight: 700;
   text-align: left;
   align-self: flex-start;
+  font-size: clamp(10px, 3.1vw, 13px);
+  white-space: nowrap;
 }
 
 .valid-for,
@@ -449,7 +588,6 @@
 .rsvp-heading {
   display: flex;
   justify-content: space-between;
-  gap: 20px;
   align-items: flex-start;
 }
 
@@ -636,71 +774,7 @@
   align-self: center;
 }
 
-/* Ensure the shell dynamically adjusts to any phone screen */
-.shell {
-  width: min(480px, 100vw); /* Maximum width of 480px or full viewport width */
-  margin: 0 auto;
-  min-height: 100vh; /* Ensure it takes up the full height of the viewport */
-  height: 100%; /* Adjust height dynamically */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 0;
-}
-
-.shell,
-.shell * {
-  color: #414141;
-}
-
-/* Ensure the loading state dynamically adjusts to any phone screen */
-.loading-state {
-  display: grid;
-  min-height: 100vh; /* Full height of the viewport */
-  height: 100%; /* Adjust height dynamically */
-  place-items: center;
-  font-family: var(--font-body);
-  color: #414141;
-}
-
-/* Styles for .pax-badge */
-.pax-badge {
-  font-size: 14px;
-  padding: 10px;
-  text-align: center;
-  display: inline-block;
-}
 
 .pax-badge strong {
   font-weight: bold;
-}
-
-/* Styles for .verse-reference */
-.verse-reference {
-  font-family: var(--font-body);
-  font-size: 16px;
-  text-align: center;
-  line-height: 1.5;
-  margin: 10px 0;
-  padding: 0;
-  color: #414141;
-}
-
-/* Responsive styles for smaller screens */
-@media (max-width: 768px) {
-  .pax-badge {
-    font-size: 12px;
-    padding: 8px;
-    word-wrap: break-word;
-  }
-
-  .pax-badge strong {
-    font-size: 14px;
-  }
-
-  .verse-reference {
-    font-size: 14px;
-    line-height: 1.4;
-    margin: 8px 0;
-  }
 }
