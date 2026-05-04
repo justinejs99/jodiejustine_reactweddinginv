@@ -27,8 +27,8 @@ export async function getWeddingSiteContent(): Promise<WeddingSiteContent> {
       },
     }
   }
-
-  return requestJson<WeddingSiteContent>('/api/wedding')
+  const groupId = new URLSearchParams(window.location.search).get('group') || '1'
+  return requestJson<WeddingSiteContent>(`/api/wedding?group=${groupId}`)
 }
 
 export async function submitRsvp(request: RsvpRequest): Promise<RsvpResponse> {
