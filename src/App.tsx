@@ -4,6 +4,11 @@ import { getWeddingSiteContent, submitRsvp } from './services/weddingApi'
 import type { RsvpRequest, RsvpResponse, WeddingSiteContent } from './types/wedding'
 import andImage from './assets/images/and.jpg'
 import filmImage from './assets/images/FilmJJ.png'
+import photoA from './assets/images/a.jpg'
+import photoB from './assets/images/b.jpg'
+import photoC from './assets/images/c.jpg'
+import photoD from './assets/images/d.jpg'
+import photoE from './assets/images/e.jpg'
 
 function App() {
   const [content, setContent] = useState<WeddingSiteContent | null>(null)
@@ -151,7 +156,8 @@ function App() {
                 <p className="family-parents">{content.couple.groomParents}</p>
               </div>
               
-              <p className="and-text">and</p>
+              {/* <p className="and-text">and</p> */}
+              <img className="family-and-image" src={andImage} alt="and" />
               
               <div className="bride-section">
                 <h2 className="bride-name">
@@ -167,9 +173,14 @@ function App() {
           </div>
         </div>
 
-        <img className="film-image" src={filmImage} alt="" />
-        
         <div className="panel event-details">
+          <div className="film-strip-slider">
+            <div className="film-strip-track">
+              <img src={filmImage} alt="" />
+              <img src={filmImage} alt="" />
+              <img src={filmImage} alt="" />
+            </div>
+          </div>
           <p className="section-kicker">Wedding Date</p>
           <p className="day-display">{content.weddingDate.weekday}</p>
           <p className="date-display">{content.weddingDate.dateText}</p>
@@ -179,7 +190,7 @@ function App() {
               <div className="timeline-item" key={eventItem.title}>
                 <div className="timeline-time">{eventItem.time}</div>
                 <div>
-                  <p>{eventItem.title}</p>
+                  <p className="timeline-title">{eventItem.title}</p>
                   {eventItem.subtitle ? <p className="timeline-subtitle">{eventItem.subtitle}</p> : null}
                   <p>{eventItem.venue}</p>
                   <p>{eventItem.location}</p>
@@ -187,12 +198,56 @@ function App() {
               </div>
             ))}
           </div>
+
+          <div className="polaroid-slider">
+            <div className="polaroid-track">
+              <div className="polaroid">
+                <img src={photoA} alt="Photo 1" />
+                <p className="polaroid-caption">memories</p>
+              </div>
+              <div className="polaroid">
+                <img src={photoB} alt="Photo 2" />
+                <p className="polaroid-caption">together</p>
+              </div>
+              <div className="polaroid">
+                <img src={photoC} alt="Photo 3" />
+                <p className="polaroid-caption">forever</p>
+              </div>
+              <div className="polaroid">
+                <img src={photoD} alt="Photo 4" />
+                <p className="polaroid-caption">love</p>
+              </div>
+              <div className="polaroid">
+                <img src={photoE} alt="Photo 5" />
+                <p className="polaroid-caption">us</p>
+              </div>
+              {/* Duplicated for seamless loop */}
+              <div className="polaroid">
+                <img src={photoA} alt="Photo 1" />
+                <p className="polaroid-caption">memories</p>
+              </div>
+              <div className="polaroid">
+                <img src={photoB} alt="Photo 2" />
+                <p className="polaroid-caption">together</p>
+              </div>
+              <div className="polaroid">
+                <img src={photoC} alt="Photo 3" />
+                <p className="polaroid-caption">forever</p>
+              </div>
+              <div className="polaroid">
+                <img src={photoD} alt="Photo 4" />
+                <p className="polaroid-caption">love</p>
+              </div>
+              <div className="polaroid">
+                <img src={photoE} alt="Photo 5" />
+                <p className="polaroid-caption">us</p>
+              </div>
+            </div>
+          </div>
         </div>
 
 
       </section>
-
-      <img className="film-image" src={filmImage} alt="" />
 
       <section className="panel rsvp-panel">
         <div className="rsvp-heading">
