@@ -1,5 +1,4 @@
-CREATE DATABASE IF NOT EXISTS wedding_db;
-USE wedding_db;
+-- Run this in phpMyAdmin after selecting database: u491096763_JodieJJWedInv
 
 CREATE TABLE IF NOT EXISTS couple (
   id INT PRIMARY KEY AUTO_INCREMENT,
