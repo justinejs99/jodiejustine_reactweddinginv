@@ -62,7 +62,11 @@ function App() {
     }
 
     let isCancelled = false
-    const qrTargetUrl = new URL(`reception.html?group=${content.invitation.groupId}`, window.location.href).toString()
+    
+    // Ensure the URL is constructed correctly relative to the current app path
+    const baseUrl = window.location.href.split('?')[0].split('#')[0]
+    const baseDir = baseUrl.endsWith('/') ? baseUrl : baseUrl.substring(0, baseUrl.lastIndexOf('/') + 1)
+    const qrTargetUrl = new URL(`reception.html?group=${content.invitation.groupId}`, baseDir).toString()
 
     QRCode.toDataURL(qrTargetUrl, {
       width: 280,
