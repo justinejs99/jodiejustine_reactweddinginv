@@ -19,8 +19,15 @@ async function requestJson<T>(path: string, options?: RequestInit): Promise<T> {
 
 export async function getWeddingSiteContent(): Promise<WeddingSiteContent> {
   const params = new URLSearchParams(window.location.search)
-  const group = params.get('group') || params.get('invitation_name') || '1'
-  return requestJson<WeddingSiteContent>(`/api/wedding.php?group=${encodeURIComponent(group)}`)
+  const name = params.get('invitation_name')
+  const group = params.get('group')
+
+  if (name) {
+    return requestJson<WeddingSiteContent>(`/api/wedding.php?name=${encodeURIComponent(name)}`)
+  }
+
+  const groupId = group || '1'
+  return requestJson<WeddingSiteContent>(`/api/wedding.php?group=${encodeURIComponent(groupId)}`)
 }
 
 export async function submitRsvp(request: RsvpRequest): Promise<RsvpResponse> {
