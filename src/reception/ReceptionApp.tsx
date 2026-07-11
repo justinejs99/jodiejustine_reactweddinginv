@@ -153,35 +153,48 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
       mirrorFixIntervalId = window.setInterval(enforceUnmirroredPreview, 150)
 
       const startScanner = async () => {
-        let cameraConfig: string | { facingMode: 'environment' } = { facingMode: 'environment' }
+        const onDecode = (decodedText: string) => {
+          if (hasScannedRef.current || cancelled) return
+          const groupId = extractGroupId(decodedText)
+          if (groupId !== null) {
+            hasScannedRef.current = true
+            scanner.stop().catch(() => {})
+            onGroupId(groupId)
+          }
+        }
+
+        const onScanError = () => {
+          // per-frame scan errors – silently ignored
+          enforceUnmirroredPreview()
+        }
+
+        const cameraAttempts: Array<string | MediaTrackConstraints> = []
 
         try {
           const cameras = await Html5Qrcode.getCameras()
-          const backCamera = cameras.find((camera) => /(back|rear|environment)/i.test(camera.label))
-          if (backCamera) {
-            cameraConfig = backCamera.id
+          // Desktop-first behavior: use the first available camera device.
+          if (cameras.length > 0) {
+            cameraAttempts.push(cameras[0].id)
           }
         } catch {
-          // Fallback to facingMode when camera enumeration is not available.
+          // Ignore and continue with fallback attempts.
         }
 
-        await scanner.start(
-          cameraConfig,
-          config,
-          (decodedText: string) => {
-            if (hasScannedRef.current || cancelled) return
-            const groupId = extractGroupId(decodedText)
-            if (groupId !== null) {
-              hasScannedRef.current = true
-              scanner.stop().catch(() => {})
-              onGroupId(groupId)
-            }
-          },
-          () => {
-            // per-frame scan errors – silently ignored
-            enforceUnmirroredPreview()
-          },
-        )
+        // Fallback if camera enumeration is unavailable.
+        cameraAttempts.push({ facingMode: 'user' })
+        cameraAttempts.push({ facingMode: 'environment' })
+
+        let lastError: unknown = null
+        for (const attempt of cameraAttempts) {
+          try {
+            await scanner.start(attempt, config, onDecode, onScanError)
+            return
+          } catch (error) {
+            lastError = error
+          }
+        }
+
+        throw lastError ?? new Error('Unable to start camera scanner.')
       }
 
       startScanner()
