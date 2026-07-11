@@ -51,7 +51,7 @@ function extractGroupId(text: string): number | null {
 }
 
 async function fetchCheckinGroup(groupId: number): Promise<CheckinGroup> {
-  const response = await fetch(`${appConfig.apiBaseUrl}/api/reception/group?id=${groupId}`)
+  const response = await fetch(`${appConfig.apiBaseUrl}/api/reception-group.php?id=${groupId}`)
   if (!response.ok) {
     if (response.status === 404) throw new Error('Guest group not found.')
     throw new Error('Failed to load guest information.')
@@ -61,7 +61,7 @@ async function fetchCheckinGroup(groupId: number): Promise<CheckinGroup> {
 
 async function fetchCheckinGroupByName(name: string): Promise<CheckinGroup> {
   const response = await fetch(
-    `${appConfig.apiBaseUrl}/api/reception/group?name=${encodeURIComponent(name)}`,
+    `${appConfig.apiBaseUrl}/api/reception-group.php?name=${encodeURIComponent(name)}`,
   )
   if (!response.ok) {
     if (response.status === 404) throw new Error('Guest group not found.')
@@ -74,7 +74,7 @@ async function submitCheckin(
   groupId: number,
   form: RegistrationForm,
 ): Promise<void> {
-  const response = await fetch(`${appConfig.apiBaseUrl}/api/reception/checkin`, {
+  const response = await fetch(`${appConfig.apiBaseUrl}/api/reception-checkin.php`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ groupId, ...form }),
