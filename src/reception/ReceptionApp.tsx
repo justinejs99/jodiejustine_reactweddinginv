@@ -139,6 +139,8 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
       const config = {
         fps: 10,
         qrbox: { width: 240, height: 240 },
+        disableFlip: true,
+        flip: { horizontal: false, vertical: false }
       }
 
       const startScanner = async () => {

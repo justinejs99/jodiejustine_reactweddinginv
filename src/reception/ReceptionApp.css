@@ -273,6 +273,7 @@
 
 #reception-qr-reader video {
   border-radius: 8px;
+  transform: scaleX(1) !important;
 }
 
 #reception-qr-reader img {
