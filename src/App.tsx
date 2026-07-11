@@ -2,6 +2,7 @@ import { FormEvent, startTransition, useEffect, useState } from 'react'
 import './App.css'
 import { getWeddingSiteContent, submitRsvp } from './services/weddingApi'
 import type { RsvpRequest, RsvpResponse, WeddingSiteContent } from './types/wedding'
+import QRCode from 'qrcode'
 import andImage from './assets/images/and.jpg'
 import filmImage from './assets/images/FilmJJ.png'
 import photoA from './assets/images/a.jpg'
@@ -19,6 +20,7 @@ function App() {
   const [formError, setFormError] = useState('')
   const [attendance, setAttendance] = useState<RsvpRequest['attendance']>('yes')
   const [selectedGuests, setSelectedGuests] = useState<boolean[]>([])
+  const [qrCodeDataUrl, setQrCodeDataUrl] = useState('')
 
   useEffect(() => {
     let isMounted = true
@@ -52,6 +54,36 @@ function App() {
       isMounted = false
     }
   }, [])
+
+  useEffect(() => {
+    if (!content) {
+      setQrCodeDataUrl('')
+      return
+    }
+
+    let isCancelled = false
+    const qrTargetUrl = new URL(`reception.html?group=${content.invitation.groupId}`, window.location.href).toString()
+
+    QRCode.toDataURL(qrTargetUrl, {
+      width: 280,
+      margin: 1,
+      errorCorrectionLevel: 'M',
+    })
+      .then((dataUrl) => {
+        if (!isCancelled) {
+          setQrCodeDataUrl(dataUrl)
+        }
+      })
+      .catch(() => {
+        if (!isCancelled) {
+          setQrCodeDataUrl('')
+        }
+      })
+
+    return () => {
+      isCancelled = true
+    }
+  }, [content])
 
   function toggleGuest(index: number) {
     setSelectedGuests((current) => {
@@ -305,11 +337,19 @@ function App() {
 
                   <div className="qrcode-bg">
                     <p className="bold-text">Please screenshot this QR code<br />for check in at the venue</p>
-                    <div className="qr-placeholder" aria-label="QR code placeholder">
-                      <div className="qr-inner">
-                        <span>QR CODE HERE</span>
+                    {qrCodeDataUrl ? (
+                      <div className="qr-placeholder" aria-label="Generated QR code">
+                        <div className="qr-inner">
+                          <img src={qrCodeDataUrl} alt="Reception check-in QR code" />
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="qr-placeholder" aria-label="QR code loading">
+                        <div className="qr-inner">
+                          <span>Generating QR...</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </>
               )
@@ -338,7 +378,7 @@ function App() {
           </div>
         ) : (
         <form className="rsvp-form" onSubmit={handleSubmit}>
-          <p className="bold-text">Will you be attending our WOOOOOODINGGGG?</p>
+          <p className="bold-text">Will you be attending our wedding?</p>
           <div className="attendance-toggle" role="radiogroup" aria-label="Attendance response">
             <button
               className={attendance === 'yes' ? 'toggle-button active' : 'toggle-button'}

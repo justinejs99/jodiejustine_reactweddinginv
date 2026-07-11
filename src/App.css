@@ -71,6 +71,12 @@
 
 .rsvp-panel {
   margin-top: -1px;
+  align-content: start;
+  row-gap: 12px;
+}
+
+.rsvp-form {
+  margin: 0;
 }
 
 .hero-top {
@@ -729,6 +735,14 @@
   background-size: 24px 24px;
   color: #414141;
   text-align: center;
+}
+
+.qr-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: #fff;
 }
 
 .rsvp-submitted {
