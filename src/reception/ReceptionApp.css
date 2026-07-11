@@ -189,11 +189,14 @@
 
 .qr-reader-element video {
   transform: scaleX(1) !important;
+  -webkit-transform: scaleX(1) !important;
 }
 
-/* Ensure any internal scan regions or overlays aren't flipped either */
-.qr-reader-element {
-  transform: none !important;
+/* Force everything inside the scanner container to NOT flip */
+#qr-reader-element video,
+#qr-reader-element {
+  transform: scaleX(1) !important;
+  -webkit-transform: scaleX(1) !important;
 }
 
 .manual-entry-form {

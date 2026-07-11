@@ -109,7 +109,7 @@ interface QrScannerProps {
 
 function QrScanner({ onGroupId, onError }: QrScannerProps) {
   const hasScannedRef = useRef(false)
-  const scannerRef = useRef<{ stop: () => Promise<void> } | null>(null)
+  const scannerRef = useRef<any>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -118,21 +118,24 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
     import('html5-qrcode').then(({ Html5Qrcode }) => {
       if (cancelled) return
 
-      // Clear any leftover DOM from a previous mount (React StrictMode remounts twice in dev)
+      // Clear any leftover DOM from a previous mount
       const el = document.getElementById(SCANNER_ELEMENT_ID)
       if (el) el.innerHTML = ''
 
       const scanner = new Html5Qrcode(SCANNER_ELEMENT_ID, { verbose: false })
       scannerRef.current = scanner
 
+      // Define the config once
+      const config = { 
+        fps: 10, 
+        qrbox: { width: 240, height: 240 },
+        disableFlip: true 
+      }
+
       scanner
         .start(
           { facingMode: 'environment' },
-          { 
-            fps: 10, 
-            qrbox: { width: 240, height: 240 },
-            disableFlip: true // This prevents the camera from being mirrored
-          },
+          config,
           (decodedText: string) => {
             if (hasScannedRef.current || cancelled) return
             const groupId = extractGroupId(decodedText)
@@ -144,6 +147,15 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
           },
           () => {
             // per-frame scan errors – silently ignored
+            
+            // AGGRESSIVE MIRROR FIX: 
+            // html5-qrcode often reapplies the mirror style whenever the video feed updates.
+            // We find the video element and force it to be scaleX(1) every tick if needed.
+            const video = document.querySelector(`#${SCANNER_ELEMENT_ID} video`) as HTMLVideoElement;
+            if (video && (video.style.transform.includes('-1') || !video.style.transform)) {
+               video.style.setProperty('transform', 'scaleX(1)', 'important');
+               video.style.setProperty('-webkit-transform', 'scaleX(1)', 'important');
+            }
           },
         )
         .catch(() => {
