@@ -107,9 +107,10 @@ async function submitCheckin(
 interface QrScannerProps {
   onGroupId: (groupRef: string) => void
   onError: (msg: string) => void
+  facingMode: 'environment' | 'user'
 }
 
-function QrScanner({ onGroupId, onError }: QrScannerProps) {
+function QrScanner({ onGroupId, onError, facingMode }: QrScannerProps) {
   const hasScannedRef = useRef(false)
   const scannerRef = useRef<{ stop: () => Promise<void> } | null>(null)
 
@@ -162,12 +163,18 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
         try {
           const cameras = await Html5Qrcode.getCameras()
           if (cameras.length > 0) {
-            const backCamera = cameras.find((camera) => /back|rear|environment/i.test(camera.label))
-            if (backCamera) {
-              cameraAttempts.push(backCamera.id)
+            const preferredPattern = facingMode === 'environment'
+              ? /back|rear|environment/i
+              : /front|user|facetime/i
+
+            const preferredCamera = cameras.find((camera) => preferredPattern.test(camera.label))
+            if (preferredCamera) {
+              cameraAttempts.push(preferredCamera.id)
             }
-            if (!backCamera) {
-              cameraAttempts.push(cameras[0].id)
+
+            const fallbackCamera = cameras.find((camera) => camera.id !== preferredCamera?.id)
+            if (fallbackCamera) {
+              cameraAttempts.push(fallbackCamera.id)
             }
           }
         } catch {
@@ -175,8 +182,8 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
         }
 
         // Fallback if camera enumeration is unavailable.
-        cameraAttempts.push({ facingMode: 'environment' })
-        cameraAttempts.push({ facingMode: 'user' })
+        cameraAttempts.push({ facingMode })
+        cameraAttempts.push({ facingMode: facingMode === 'environment' ? 'user' : 'environment' })
 
         let lastError: unknown = null
         for (const attempt of cameraAttempts) {
@@ -289,6 +296,7 @@ function PageHeader({ onHomeClick }: PageHeaderProps) {
 
 export default function ReceptionApp() {
   const [view, setView] = useState<View>('scanning')
+  const [cameraFacingMode, setCameraFacingMode] = useState<'environment' | 'user'>('environment')
   const [group, setGroup] = useState<CheckinGroup | null>(null)
   const [errorMsg, setErrorMsg] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -398,9 +406,23 @@ export default function ReceptionApp() {
         {/* ── SCANNING ── */}
         {view === 'scanning' && (
           <div className="scan-card-outer">
-            <p className="scan-card-label">Scan QR Code</p>
+            <div className="scan-card-top">
+              <p className="scan-card-label">Scan QR Code</p>
+              <button
+                type="button"
+                className="camera-toggle-btn"
+                onClick={() => setCameraFacingMode((current) => current === 'environment' ? 'user' : 'environment')}
+              >
+                {cameraFacingMode === 'environment' ? 'Front Camera' : 'Back Camera'}
+              </button>
+            </div>
             <div className="scan-card-inner">
-              <QrScanner onGroupId={handleGroupId} onError={handleScanError} />
+              <QrScanner
+                key={cameraFacingMode}
+                onGroupId={handleGroupId}
+                onError={handleScanError}
+                facingMode={cameraFacingMode}
+              />
             </div>
             <form className="manual-entry-form manual-entry-form-stacked" onSubmit={handleManualSubmit}>
               <div className="manual-entry-input-row">
