@@ -187,14 +187,17 @@
 
 /* ─── Manual entry fallback ─────────────────────────────────────────────── */
 
-.qr-reader-element video {
-  transform: scaleX(1) !important;
-  -webkit-transform: scaleX(1) !important;
+.qr-reader-element,
+#reception-qr-reader {
+  transform: none !important;
+  -webkit-transform: none !important;
 }
 
-/* Force everything inside the scanner container to NOT flip */
-#qr-reader-element video,
-#qr-reader-element {
+/* Force all scanner media layers to stay non-mirrored */
+.qr-reader-element video,
+.qr-reader-element canvas,
+#reception-qr-reader video,
+#reception-qr-reader canvas {
   transform: scaleX(1) !important;
   -webkit-transform: scaleX(1) !important;
 }

@@ -109,11 +109,27 @@ interface QrScannerProps {
 
 function QrScanner({ onGroupId, onError }: QrScannerProps) {
   const hasScannedRef = useRef(false)
-  const scannerRef = useRef<any>(null)
+  const scannerRef = useRef<{ stop: () => Promise<void> } | null>(null)
 
   useEffect(() => {
     let cancelled = false
+    let mirrorFixIntervalId: number | null = null
     hasScannedRef.current = false
+
+    const enforceUnmirroredPreview = () => {
+      const root = document.getElementById(SCANNER_ELEMENT_ID)
+      if (!root) return
+
+      root.style.setProperty('transform', 'none', 'important')
+      root.style.setProperty('-webkit-transform', 'none', 'important')
+
+      const mediaNodes = root.querySelectorAll('video, canvas')
+      mediaNodes.forEach((node) => {
+        const media = node as HTMLElement
+        media.style.setProperty('transform', 'scaleX(1)', 'important')
+        media.style.setProperty('-webkit-transform', 'scaleX(1)', 'important')
+      })
+    }
 
     import('html5-qrcode').then(({ Html5Qrcode }) => {
       if (cancelled) return
@@ -125,16 +141,32 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
       const scanner = new Html5Qrcode(SCANNER_ELEMENT_ID, { verbose: false })
       scannerRef.current = scanner
 
-      // Define the config once
-      const config = { 
-        fps: 10, 
+      const config = {
+        fps: 10,
         qrbox: { width: 240, height: 240 },
-        disableFlip: true 
+        disableFlip: true,
       }
 
-      scanner
-        .start(
-          { facingMode: 'environment' },
+      // Some mobile browsers re-apply mirror styles after camera starts.
+      // Keep forcing a non-mirrored preview while scanner is mounted.
+      enforceUnmirroredPreview()
+      mirrorFixIntervalId = window.setInterval(enforceUnmirroredPreview, 150)
+
+      const startScanner = async () => {
+        let cameraConfig: string | { facingMode: 'environment' } = { facingMode: 'environment' }
+
+        try {
+          const cameras = await Html5Qrcode.getCameras()
+          const backCamera = cameras.find((camera) => /(back|rear|environment)/i.test(camera.label))
+          if (backCamera) {
+            cameraConfig = backCamera.id
+          }
+        } catch {
+          // Fallback to facingMode when camera enumeration is not available.
+        }
+
+        await scanner.start(
+          cameraConfig,
           config,
           (decodedText: string) => {
             if (hasScannedRef.current || cancelled) return
@@ -147,17 +179,12 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
           },
           () => {
             // per-frame scan errors – silently ignored
-            
-            // AGGRESSIVE MIRROR FIX: 
-            // html5-qrcode often reapplies the mirror style whenever the video feed updates.
-            // We find the video element and force it to be scaleX(1) every tick if needed.
-            const video = document.querySelector(`#${SCANNER_ELEMENT_ID} video`) as HTMLVideoElement;
-            if (video && (video.style.transform.includes('-1') || !video.style.transform)) {
-               video.style.setProperty('transform', 'scaleX(1)', 'important');
-               video.style.setProperty('-webkit-transform', 'scaleX(1)', 'important');
-            }
+            enforceUnmirroredPreview()
           },
         )
+      }
+
+      startScanner()
         .catch(() => {
           if (!cancelled) onError('Camera access denied. Please allow camera permissions and reload.')
         })
@@ -165,6 +192,9 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
 
     return () => {
       cancelled = true
+      if (mirrorFixIntervalId !== null) {
+        window.clearInterval(mirrorFixIntervalId)
+      }
       scannerRef.current?.stop().catch(() => {})
       scannerRef.current = null
     }
