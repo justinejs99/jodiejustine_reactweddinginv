@@ -128,7 +128,11 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
       scanner
         .start(
           { facingMode: 'environment' },
-          { fps: 10, qrbox: { width: 240, height: 240 } },
+          { 
+            fps: 10, 
+            qrbox: { width: 240, height: 240 },
+            disableFlip: true // This prevents the camera from being mirrored
+          },
           (decodedText: string) => {
             if (hasScannedRef.current || cancelled) return
             const groupId = extractGroupId(decodedText)
