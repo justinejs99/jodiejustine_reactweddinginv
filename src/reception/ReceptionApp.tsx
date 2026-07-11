@@ -51,19 +51,6 @@ function extractGroupId(text: string): number | null {
 }
 
 async function fetchCheckinGroup(groupId: number): Promise<CheckinGroup> {
-  if (appConfig.useMockApi) {
-    // Mock data – mirrors the sample guest data
-    await new Promise((r) => setTimeout(r, 600))
-    return {
-      groupId,
-      groupName: 'Mr. Sinaga Gany & Mrs. Yuliani Thio',
-      tableNo: 4,
-      adultPax: 2,
-      kidsPax: 0,
-      checkedIn: false,
-    }
-  }
-
   const response = await fetch(`${appConfig.apiBaseUrl}/api/reception/group?id=${groupId}`)
   if (!response.ok) {
     if (response.status === 404) throw new Error('Guest group not found.')
@@ -73,18 +60,6 @@ async function fetchCheckinGroup(groupId: number): Promise<CheckinGroup> {
 }
 
 async function fetchCheckinGroupByName(name: string): Promise<CheckinGroup> {
-  if (appConfig.useMockApi) {
-    await new Promise((r) => setTimeout(r, 600))
-    return {
-      groupId: 2,
-      groupName: 'Mr. Sinaga Gany & Mrs. Yuliani Thio',
-      tableNo: 4,
-      adultPax: 2,
-      kidsPax: 0,
-      checkedIn: false,
-    }
-  }
-
   const response = await fetch(
     `${appConfig.apiBaseUrl}/api/reception/group?name=${encodeURIComponent(name)}`,
   )
@@ -99,11 +74,6 @@ async function submitCheckin(
   groupId: number,
   form: RegistrationForm,
 ): Promise<void> {
-  if (appConfig.useMockApi) {
-    await new Promise((r) => setTimeout(r, 500))
-    return
-  }
-
   const response = await fetch(`${appConfig.apiBaseUrl}/api/reception/checkin`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
