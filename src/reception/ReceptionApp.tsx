@@ -52,22 +52,38 @@ function extractGroupId(text: string): number | null {
 
 async function fetchCheckinGroup(groupId: number): Promise<CheckinGroup> {
   const response = await fetch(`${appConfig.apiBaseUrl}/api/reception-group.php?id=${groupId}`)
-  if (!response.ok) {
-    if (response.status === 404) throw new Error('Guest group not found.')
-    throw new Error('Failed to load guest information.')
+  
+  const contentType = response.headers.get('content-type')
+  if (!contentType || !contentType.includes('application/json')) {
+    throw new Error('Server configuration error (non-JSON response).')
   }
-  return response.json() as Promise<CheckinGroup>
+
+  const data = await response.json()
+  if (!response.ok) {
+    throw new Error(data.error || 'Guest group not found.')
+  }
+  return data as CheckinGroup
 }
 
 async function fetchCheckinGroupByName(name: string): Promise<CheckinGroup> {
   const response = await fetch(
     `${appConfig.apiBaseUrl}/api/reception-group.php?name=${encodeURIComponent(name)}`,
   )
-  if (!response.ok) {
-    if (response.status === 404) throw new Error('Guest group not found.')
-    throw new Error('Failed to load guest information.')
+  
+  const contentType = response.headers.get('content-type')
+  if (!contentType || !contentType.includes('application/json')) {
+    const text = await response.text()
+    console.error('Server returned non-JSON response:', text)
+    throw new Error('Server configuration error. Please check backend logs.')
   }
-  return response.json() as Promise<CheckinGroup>
+
+  const data = await response.json()
+  
+  if (!response.ok) {
+    throw new Error(data.error || 'Failed to load guest information.')
+  }
+  
+  return data as CheckinGroup
 }
 
 async function submitCheckin(
