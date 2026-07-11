@@ -29,30 +29,32 @@ const SCANNER_ELEMENT_ID = 'reception-qr-reader'
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function extractGroupId(text: string): number | null {
+function extractGroupRef(text: string): string | null {
   const trimmed = text.trim()
 
-  // Try parsing as a URL (e.g. https://…?group=2)
+  // Try parsing as a URL (e.g. https://.../reception.html?group=2 or ?group=abc123)
   try {
     const url = new URL(trimmed)
     const group = url.searchParams.get('group')
+    const token = url.searchParams.get('token')
     if (group) {
-      const id = parseInt(group, 10)
-      if (!isNaN(id) && id > 0) return id
+      return group
     }
+    if (token) return token
   } catch {
-    // Not a URL – fall through
+    // Not a URL, fall through.
   }
 
-  // Try as a plain integer
-  const num = parseInt(trimmed, 10)
-  if (!isNaN(num) && num > 0 && String(num) === trimmed) return num
+  // Accept raw token/id from QR payload.
+  if (trimmed.length > 0) return trimmed
 
   return null
 }
 
-async function fetchCheckinGroup(groupId: number): Promise<CheckinGroup> {
-  const response = await fetch(`${appConfig.apiBaseUrl}/api/reception-group.php?id=${groupId}`)
+async function fetchCheckinGroup(groupRef: string): Promise<CheckinGroup> {
+  const response = await fetch(
+    `${appConfig.apiBaseUrl}/api/reception-group.php?id=${encodeURIComponent(groupRef)}`,
+  )
   
   const contentType = response.headers.get('content-type')
   if (!contentType || !contentType.includes('application/json')) {
@@ -103,7 +105,7 @@ async function submitCheckin(
 // ─── QR Scanner ───────────────────────────────────────────────────────────────
 
 interface QrScannerProps {
-  onGroupId: (groupId: number) => void
+  onGroupId: (groupRef: string) => void
   onError: (msg: string) => void
 }
 
@@ -133,11 +135,11 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
       const startScanner = async () => {
         const onDecode = (decodedText: string) => {
           if (hasScannedRef.current || cancelled) return
-          const groupId = extractGroupId(decodedText)
-          if (groupId !== null) {
+          const groupRef = extractGroupRef(decodedText)
+          if (groupRef !== null) {
             hasScannedRef.current = true
             scanner.stop().catch(() => {})
-            onGroupId(groupId)
+            onGroupId(groupRef)
           }
         }
 
@@ -149,17 +151,22 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
 
         try {
           const cameras = await Html5Qrcode.getCameras()
-          // Desktop-first behavior: use the first available camera device.
           if (cameras.length > 0) {
-            cameraAttempts.push(cameras[0].id)
+            const backCamera = cameras.find((camera) => /back|rear|environment/i.test(camera.label))
+            if (backCamera) {
+              cameraAttempts.push(backCamera.id)
+            }
+            if (!backCamera) {
+              cameraAttempts.push(cameras[0].id)
+            }
           }
         } catch {
           // Ignore and continue with fallback attempts.
         }
 
         // Fallback if camera enumeration is unavailable.
-        cameraAttempts.push({ facingMode: 'user' })
         cameraAttempts.push({ facingMode: 'environment' })
+        cameraAttempts.push({ facingMode: 'user' })
 
         let lastError: unknown = null
         for (const attempt of cameraAttempts) {
@@ -285,10 +292,10 @@ export default function ReceptionApp() {
     titipanGiftCount: 0,
   })
 
-  const handleGroupId = useCallback(async (groupId: number) => {
+  const handleGroupId = useCallback(async (groupRef: string) => {
     setView('loading')
     try {
-      const data = await fetchCheckinGroup(groupId)
+      const data = await fetchCheckinGroup(groupRef)
       setGroup(data)
       setForm({
         adultCount: data.adultRsvpYes ?? data.adultPax,
@@ -309,13 +316,17 @@ export default function ReceptionApp() {
     setView('error')
   }, [])
 
-  // Auto-load from URL param: /reception.html?group=2
+  // Auto-load from URL param: /reception.html?group=2 or /reception.html?group=abc123
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const groupParam = params.get('group')
+    const tokenParam = params.get('token')
     if (groupParam) {
-      const id = parseInt(groupParam, 10)
-      if (!isNaN(id) && id > 0) handleGroupId(id)
+      handleGroupId(groupParam)
+      return
+    }
+    if (tokenParam) {
+      handleGroupId(tokenParam)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

@@ -5,7 +5,6 @@ require __DIR__ . '/db.php';
 try {
     $conn = db();
     $groupId = isset($_GET['group']) ? $_GET['group'] : null;
-    $token = $_GET['token'] ?? null;
     $name = $_GET['name'] ?? null;
 
     $group = null;
@@ -36,9 +35,7 @@ try {
     }
 
     if (!$group) {
-        if ($token) {
-            $group = fetchOneRow($conn, 'SELECT * FROM groups_final WHERE qr_token = ?', 's', [$token]);
-        } else if ($groupId && $groupId !== '1') {
+        if ($groupId !== null && $groupId !== '' && ctype_digit((string)$groupId) && (int)$groupId > 0) {
             $group = fetchOneRow($conn, 'SELECT * FROM groups_final WHERE group_id = ?', 'i', [(int)$groupId]);
         } else {
             // Default fallback: No specific guest group
