@@ -237,7 +237,8 @@ export default function ReceptionApp() {
   const [group, setGroup] = useState<CheckinGroup | null>(null)
   const [errorMsg, setErrorMsg] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [manualId, setManualId] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [form, setForm] = useState<RegistrationForm>({
     adultCount: 0,
     kidsCount: 0,
@@ -252,8 +253,8 @@ export default function ReceptionApp() {
       const data = await fetchCheckinGroup(groupId)
       setGroup(data)
       setForm({
-        adultCount: 0,
-        kidsCount: 0,
+        adultCount: data.adultPax,
+        kidsCount: data.kidsPax,
         giftCount: 0,
         souvenirCount: 0,
         titipanGiftCount: 0,
@@ -283,14 +284,22 @@ export default function ReceptionApp() {
 
   async function handleManualSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    const name = manualId.trim()
-    if (!name) return
-    setManualId('')
+    const fullName = `${firstName.trim()} ${lastName.trim()}`.trim()
+    if (!fullName) return
+    
+    setFirstName('')
+    setLastName('')
     setView('loading')
     try {
-      const data = await fetchCheckinGroupByName(name)
+      const data = await fetchCheckinGroupByName(fullName)
       setGroup(data)
-      setForm({ adultCount: 0, kidsCount: 0, giftCount: 0, souvenirCount: 0, titipanGiftCount: 0 })
+      setForm({
+        adultCount: data.adultPax,
+        kidsCount: data.kidsPax,
+        giftCount: 0, 
+        souvenirCount: 0, 
+        titipanGiftCount: 0 
+      })
       setView('details')
     } catch (err) {
       setErrorMsg(err instanceof Error ? err.message : 'Failed to load guest.')
@@ -338,11 +347,18 @@ export default function ReceptionApp() {
               <input
                 className="manual-entry-input"
                 type="text"
-                placeholder="Enter group name"
-                value={manualId}
-                onChange={(e) => setManualId(e.target.value)}
+                placeholder="First Name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
               />
-              <button type="submit" className="manual-entry-btn">Go</button>
+              <input
+                className="manual-entry-input"
+                type="text"
+                placeholder="Last Name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+              <button type="submit" className="manual-entry-btn">Find</button>
             </form>
           </div>
         )}
@@ -367,12 +383,19 @@ export default function ReceptionApp() {
         {/* ── SUCCESS ── */}
         {view === 'success' && group && (
           <div className="status-card">
-            <p className="success-text">Check-in saved for</p>
-            <p className="success-name">{group.groupName.toUpperCase()}</p>
+            <svg className="success-icon" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" width="60" height="60">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            <div style={{ textAlign: 'center' }}>
+              <p className="success-text">Check-in Successful!</p>
+              <h2 className="success-name" style={{ textTransform: 'none', margin: '10px 0' }}>{group.groupName}</h2>
+              {group.tableNo && (
+                <p className="success-table" style={{ fontSize: '18px', fontWeight: 'bold', marginTop: '8px', textTransform: 'none' }}>
+                  Table number {group.tableNo}
+                </p>
+              )}
+            </div>
             <div className="status-card-actions">
-              <button type="button" className="submit-btn" onClick={() => setView('details')}>
-                Edit
-              </button>
               <button type="button" className="submit-btn" onClick={handleHome}>
                 Next Guest
               </button>
@@ -387,7 +410,7 @@ export default function ReceptionApp() {
             <div className="detail-card">
               <p className="detail-card-header">Invitation Details</p>
               <div className="detail-card-body">
-                <p className="guest-name-display">{group.groupName.toUpperCase()}</p>
+                <p className="guest-name-display">{group.groupName}</p>
                 <dl className="detail-list">
                   <dt>Table No</dt>
                   <dd>{group.tableNo ?? '—'}</dd>
