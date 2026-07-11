@@ -144,6 +144,7 @@ function App() {
   }
 
   const guests = content.invitation.guests
+  const hasValidGroup = content.invitation.groupId > 0
 
   return (
     <main className="shell">
@@ -161,9 +162,15 @@ function App() {
 
         <div className="hero-footer">
           <div className="hero-middle">
-            <p className="card-label">Dear</p>
-            <p className="guest-designation">{content.invitation.guestGroupName}</p>
-            <div className="pax-badge">This invitation is valid for <strong>{content.invitation.validPax} pax</strong></div>
+            {hasValidGroup ? (
+              <>
+                <p className="card-label">Dear</p>
+                <p className="guest-designation">{content.invitation.guestGroupName}</p>
+                <div className="pax-badge">This invitation is valid for <strong>{content.invitation.validPax} pax</strong></div>
+              </>
+            ) : (
+              <div style={{ height: '80px' }} /> 
+            )}
           </div>
 
           <div className="hero-bottom">
@@ -285,149 +292,153 @@ function App() {
 
       </section>
 
-      <section className="panel rsvp-panel">
-        <div className="rsvp-heading">
-          <div>
-            <p className="section-kicker">RSVP</p>
-            <p className="valid-for">This invitation is valid for <strong>{content.invitation.validPax} pax</strong></p>
-            <p className="date-note">Kindly RSVP by <strong>{content.rsvp.deadline}</strong></p>
+      {hasValidGroup && (
+        <section className="panel rsvp-panel">
+          <div className="rsvp-heading">
+            <div>
+              <p className="section-kicker">RSVP</p>
+              <p className="valid-for">This invitation is valid for <strong>{content.invitation.validPax} pax</strong></p>
+              <p className="date-note">Kindly RSVP by <strong>{content.rsvp.deadline}</strong></p>
+            </div>
           </div>
-        </div>
 
-        {response ? (
-          <div className="rsvp-submitted">
-            {attendance === 'yes' && (() => {
-              const attending = guests.filter((_, i) => selectedGuests[i])
-              const notAttending = guests.filter((_, i) => !selectedGuests[i])
-              return (
-                <>
-                  <div className="qrcode-bg">
-                    {attending.length > 0 ? (
-                      <>
-                        <div className="rsvp-status-row">
-                          <p className="bold-text" style={{ paddingBottom: 4 }}>Attending</p>
-                          <button className="edit-rsvp-button" type="button" onClick={() => setResponse(null)}>Edit RSVP</button>
-                        </div>
-                        {attending.map(g => (
-                          <p className="normal-text" key={g.id} style={{ paddingBottom: 0 }}>
-                            {g.designation} {g.firstName} {g.lastName}{g.tableNo ? <strong> - [Table {g.tableNo}]</strong> : ''}
-                          </p>
-                        ))}
-                        {notAttending.length > 0 && (
-                          <>
-                            <p className="bold-text" style={{ paddingBottom: 4, paddingTop: 20 }}>Not attending</p>
-                            {notAttending.map(g => (
-                              <p className="normal-text" key={g.id} style={{ paddingBottom: 0 }}>
-                                {g.designation} {g.firstName} {g.lastName}
-                              </p>
-                            ))}
-                          </>
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        <div className="rsvp-status-row">
-                          <p className="bold-text" style={{ paddingBottom: 4 }}>Not attending</p>
-                          <button className="edit-rsvp-button" type="button" onClick={() => setResponse(null)}>Edit RSVP</button>
-                        </div>
-                        {notAttending.map(g => (
-                          <p className="normal-text" key={g.id} style={{ paddingBottom: 0 }}>
-                            {g.designation} {g.firstName} {g.lastName}
-                          </p>
-                        ))}
-                      </>
-                    )}
-                  </div>
+          {/* ... existing response logic ... */}
+          {response ? (
+            <div className="rsvp-submitted">
+              {attendance === 'yes' && (() => {
+                const attending = guests.filter((_, i) => selectedGuests[i])
+                const notAttending = guests.filter((_, i) => !selectedGuests[i])
+                return (
+                  <>
+                    <div className="qrcode-bg">
+                      {attending.length > 0 ? (
+                        <>
+                          <div className="rsvp-status-row">
+                            <p className="bold-text" style={{ paddingBottom: 4 }}>Attending</p>
+                            <button className="edit-rsvp-button" type="button" onClick={() => setResponse(null)}>Edit RSVP</button>
+                          </div>
+                          {attending.map(g => (
+                            <p className="normal-text" key={g.id} style={{ paddingBottom: 0 }}>
+                              {g.designation} {g.firstName} {g.lastName}{g.tableNo ? <strong> - [Table {g.tableNo}]</strong> : ''}
+                            </p>
+                          ))}
+                          {notAttending.length > 0 && (
+                            <>
+                              <p className="bold-text" style={{ paddingBottom: 4, paddingTop: 20 }}>Not attending</p>
+                              {notAttending.map(g => (
+                                <p className="normal-text" key={g.id} style={{ paddingBottom: 0 }}>
+                                  {g.designation} {g.firstName} {g.lastName}
+                                </p>
+                              ))}
+                            </>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <div className="rsvp-status-row">
+                            <p className="bold-text" style={{ paddingBottom: 4 }}>Not attending</p>
+                            <button className="edit-rsvp-button" type="button" onClick={() => setResponse(null)}>Edit RSVP</button>
+                          </div>
+                          {notAttending.map(g => (
+                            <p className="normal-text" key={g.id} style={{ paddingBottom: 0 }}>
+                              {g.designation} {g.firstName} {g.lastName}
+                            </p>
+                          ))}
+                        </>
+                      )}
+                    </div>
 
-                  <div className="qrcode-bg">
-                    <p className="bold-text">Please screenshot this QR code<br />for check in at the venue</p>
-                    {qrCodeDataUrl ? (
-                      <div className="qr-placeholder" aria-label="Generated QR code">
-                        <div className="qr-inner">
-                          <img src={qrCodeDataUrl} alt="Reception check-in QR code" />
+                    <div className="qrcode-bg">
+                      <p className="bold-text">Please screenshot this QR code<br />for check in at the venue</p>
+                      {qrCodeDataUrl ? (
+                        <div className="qr-placeholder" aria-label="Generated QR code">
+                          <div className="qr-inner">
+                            <img src={qrCodeDataUrl} alt="Reception check-in QR code" />
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="qr-placeholder" aria-label="QR code loading">
-                        <div className="qr-inner">
-                          <span>Generating QR...</span>
+                      ) : (
+                        <div className="qr-placeholder" aria-label="QR code loading">
+                          <div className="qr-inner">
+                            <span>Generating QR...</span>
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                </>
-              )
-            })()}
+                      )}
+                    </div>
+                  </>
+                )
+              })()}
 
-            {attendance === 'no' && (
-              <div className="submit-row" style={{ justifyContent: 'flex-start', marginBottom: 20 }}>
-                <button className="submit-button" type="button" onClick={() => setResponse(null)}>
-                  Edit RSVP
-                </button>
+              {attendance === 'no' && (
+                <div className="submit-row" style={{ justifyContent: 'flex-start', marginBottom: 20 }}>
+                  <button className="submit-button" type="button" onClick={() => setResponse(null)}>
+                    Edit RSVP
+                  </button>
+                </div>
+              )}
+
+              <p className="bold-text-thankyou" style={{ paddingBottom: 0}}>{attendance === 'yes' ? content.responses.accepted.title : content.responses.declined.title}</p>
+              <p className="normal-text-thankyou" style={{ paddingBottom: 20 }}>{attendance === 'yes' ? content.responses.accepted.body : content.responses.declined.body}</p> 
+              
+
+              <div className="submitted-contact">
+                <p className="bold-text" style={{ paddingBottom: 0 }}>For any queries please contact:</p>
+                <a className="text-link" href={content.contact.whatsAppUrl} target="_blank" rel="noreferrer">
+                  {content.contact.display}
+                </a>
               </div>
-            )}
 
-            <p className="bold-text-thankyou" style={{ paddingBottom: 0}}>{attendance === 'yes' ? content.responses.accepted.title : content.responses.declined.title}</p>
-            <p className="normal-text-thankyou" style={{ paddingBottom: 20 }}>{attendance === 'yes' ? content.responses.accepted.body : content.responses.declined.body}</p> 
-            
-
-            <div className="submitted-contact">
-              <p className="bold-text" style={{ paddingBottom: 0 }}>For any queries please contact:</p>
-              <a className="text-link" href={content.contact.whatsAppUrl} target="_blank" rel="noreferrer">
-                {content.contact.display}
-              </a>
+        
+            </div>
+          ) : (
+          <form className="rsvp-form" onSubmit={handleSubmit}>
+            <p className="bold-text">Will you be attending our wedding?</p>
+            <div className="attendance-toggle" role="radiogroup" aria-label="Attendance response">
+              <button
+                className={attendance === 'yes' ? 'toggle-button active' : 'toggle-button'}
+                type="button"
+                onClick={() => setAttendance('yes')}
+              >
+                Yes, with joy!
+              </button>
+              <button
+                className={attendance === 'no' ? 'toggle-button active' : 'toggle-button'}
+                type="button"
+                onClick={() => setAttendance('no')}
+              >
+                Regretfully, I can't attend
+              </button>
             </div>
 
-      
-          </div>
-        ) : (
-        <form className="rsvp-form" onSubmit={handleSubmit}>
-          <p className="bold-text">Will you be attending our wedding?</p>
-          <div className="attendance-toggle" role="radiogroup" aria-label="Attendance response">
-            <button
-              className={attendance === 'yes' ? 'toggle-button active' : 'toggle-button'}
-              type="button"
-              onClick={() => setAttendance('yes')}
-            >
-              Yes, with joy!
-            </button>
-            <button
-              className={attendance === 'no' ? 'toggle-button active' : 'toggle-button'}
-              type="button"
-              onClick={() => setAttendance('no')}
-            >
-              Regretfully, I can't attend
-            </button>
-          </div>
+            <p className="bold-text">Who will be attending?</p>
 
-          <p className="bold-text">Who will be attending?</p>
+            <div className="guest-fields">
+              {guests.map((guest, index) => (
+                <label className="guest-checkbox" key={guest.id}>
+                  <input
+                    type="checkbox"
+                    checked={selectedGuests[index] ?? false}
+                    onChange={() => toggleGuest(index)}
+                    disabled={attendance === 'no'}
+                  />
+                  <p className='normal-text'>{guest.designation} {guest.firstName} {guest.lastName}</p>
+                </label>
+              ))}
+            </div>
 
-          <div className="guest-fields">
-            {guests.map((guest, index) => (
-              <label className="guest-checkbox" key={guest.id}>
-                <input
-                  type="checkbox"
-                  checked={selectedGuests[index] ?? false}
-                  onChange={() => toggleGuest(index)}
-                  disabled={attendance === 'no'}
-                />
-                <p className='normal-text'>{guest.designation} {guest.firstName} {guest.lastName}</p>
-              </label>
-            ))}
-          </div>
+            {formError ? <p className="form-message error">{formError}</p> : null}
 
-          {formError ? <p className="form-message error">{formError}</p> : null}
+            <div className="submit-row">
+              <button className="submit-button" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Sending RSVP...' : 'RSVP'}
+              </button>
+            </div>
+          </form>
+          )}
 
-          <div className="submit-row">
-            <button className="submit-button" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Sending RSVP...' : 'RSVP'}
-            </button>
-          </div>
-        </form>
-        )}
-
-      </section>
+        </section>
+      )}
     </main>
+
   )
 }
 

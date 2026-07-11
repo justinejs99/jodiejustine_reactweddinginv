@@ -38,16 +38,45 @@ try {
     if (!$group) {
         if ($token) {
             $group = fetchOneRow($conn, 'SELECT * FROM groups_final WHERE qr_token = ?', 's', [$token]);
-        } else if ($groupId) {
+        } else if ($groupId && $groupId !== '1') {
             $group = fetchOneRow($conn, 'SELECT * FROM groups_final WHERE group_id = ?', 'i', [(int)$groupId]);
         } else {
-            // Default fallback
-            $group = fetchOneRow($conn, 'SELECT * FROM groups_final WHERE group_id = 1', '', []);
+            // Default fallback: No specific guest group
+            $group = null;
         }
     }
 
     if (!$group) {
-        jsonResponse(['error' => 'Guest group not found'], 404);
+        // Return blank/generic invitation if no group found
+        jsonResponse([
+            'couple' => [
+                'groomName' => 'Jodie', 'groomLastName' => 'Setiawan',
+                'brideName' => 'Justine', 'brideLastName' => 'Joy',
+                'groomParents' => 'SON OF MR. HARLY SETIAWAN & MRS. SUSAN DARMANTO',
+                'brideParents' => 'DAUGHTER OF MR. RONY SUTRISNO & MRS. VIVI ISWANTI',
+                'hashtag' => '#JODohnyaJJ', 'verse' => 'Matthew 19:6'
+            ],
+            'invitation' => [
+                'groupId' => 0,
+                'validPax' => 0,
+                'guestGroupName' => '',
+                'guests' => []
+            ],
+            'integration' => ['modeLabel' => 'Live Mode'],
+            'schedule' => [
+                ['time' => '09:00 WITA', 'title' => 'Holy Matrimony', 'venue' => 'Hotel Mercure', 'location' => 'Ballroom 5'],
+                ['time' => '18:30 WITA', 'title' => 'Wedding Reception', 'venue' => 'Hotel Mercure', 'location' => 'Ballroom 3']
+            ],
+            'weddingDate' => ['dateText' => '10.10.26', 'weekday' => 'Saturday, '],
+            'rsvp' => ['deadline' => 'Sat, 26/09/26'],
+            'contact' => ['display' => 'wa.me/6281389834762', 'whatsAppUrl' => 'https://wa.me/6281389834762'],
+            'responses' => [
+                'accepted' => ['title' => 'Thank you!', 'body' => "We can't wait to see you!"],
+                'declined' => ['title' => 'We will miss you!', 'body' => 'Thank you for your love.']
+            ],
+            'qr' => ['message' => 'Screenshot this for check-in.']
+        ]);
+        exit;
     }
 
     $actualId = (int)$group['group_id'];
