@@ -411,9 +411,16 @@ export default function ReceptionApp() {
               <button
                 type="button"
                 className="camera-toggle-btn"
+                aria-label={cameraFacingMode === 'environment' ? 'Switch to front camera' : 'Switch to back camera'}
+                title={cameraFacingMode === 'environment' ? 'Switch to front camera' : 'Switch to back camera'}
                 onClick={() => setCameraFacingMode((current) => current === 'environment' ? 'user' : 'environment')}
               >
-                {cameraFacingMode === 'environment' ? 'Front Camera' : 'Back Camera'}
+                <svg className="camera-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M14 4h-4l-2 2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+                  <path d="M18 20h-2l-2-2h-2a2 2 0 0 1-2-2v-1" />
+                  <path d="M15 9h5v5" />
+                  <path d="M20 9l-6 6" />
+                </svg>
               </button>
             </div>
             <div className="scan-card-inner">
