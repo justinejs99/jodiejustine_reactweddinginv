@@ -187,6 +187,15 @@
 
 /* ─── Manual entry fallback ─────────────────────────────────────────────── */
 
+.qr-reader-element video {
+  transform: scaleX(1) !important;
+}
+
+/* Ensure any internal scan regions or overlays aren't flipped either */
+.qr-reader-element {
+  transform: none !important;
+}
+
 .manual-entry-form {
   width: 100%;
   display: flex;
