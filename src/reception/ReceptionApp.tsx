@@ -10,6 +10,7 @@ interface CheckinGroup {
   groupName: string
   tableNo: number | null
   adultPax: number
+  adultRsvpYes?: number | null
   kidsPax: number
   checkedIn: boolean
 }
@@ -269,7 +270,7 @@ export default function ReceptionApp() {
       const data = await fetchCheckinGroup(groupId)
       setGroup(data)
       setForm({
-        adultCount: data.adultPax,
+        adultCount: data.adultRsvpYes ?? data.adultPax,
         kidsCount: data.kidsPax,
         giftCount: 0,
         souvenirCount: 0,
@@ -310,7 +311,7 @@ export default function ReceptionApp() {
       const data = await fetchCheckinGroupByName(fullName)
       setGroup(data)
       setForm({
-        adultCount: data.adultPax,
+        adultCount: data.adultRsvpYes ?? data.adultPax,
         kidsCount: data.kidsPax,
         giftCount: 0, 
         souvenirCount: 0, 
@@ -408,7 +409,7 @@ export default function ReceptionApp() {
             </svg>
             <div style={{ textAlign: 'center' }}>
               <p className="success-text">Check-in Successful!</p>
-              <h2 className="success-name" style={{ textTransform: 'none', margin: '10px 0' }}>{group.groupName}</h2>
+              <h2 className="guest-name-display" style={{ textTransform: 'none', margin: '10px 0' }}>{group.groupName}</h2>
               {group.tableNo && (
                 <p className="success-table" style={{ fontSize: '18px', fontWeight: 'bold', marginTop: '8px', textTransform: 'none' }}>
                   Table number {group.tableNo}
@@ -416,6 +417,9 @@ export default function ReceptionApp() {
               )}
             </div>
             <div className="status-card-actions">
+              <button type="button" className="submit-btn" onClick={() => setView('details')}>
+                Edit Details
+              </button>
               <button type="button" className="submit-btn" onClick={handleHome}>
                 Next Guest
               </button>

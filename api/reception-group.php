@@ -137,6 +137,8 @@ try {
     $guestGroupIdCol = pickColumn($guestColumns, ['group_id', 'groupid', 'id_group'], 'group_id in guests_final');
     $guestFirstNameCol = pickColumn($guestColumns, ['first_name', 'firstname', 'first'], 'first_name in guests_final');
     $guestLastNameCol = pickColumn($guestColumns, ['last_name', 'lastname', 'last'], 'last_name in guests_final');
+    $guestAgeGroupCol = pickColumn($guestColumns, ['age_group', 'agegroup'], 'age_group in guests_final');
+    $guestRsvpCol = pickColumn($guestColumns, ['guest_rsvp_status', 'rsvp_status', 'status'], 'guest_rsvp_status in guests_final', false);
 
     $needsGuestJoin = ($adultCol === null || $kidsCol === null);
 
@@ -235,11 +237,37 @@ try {
         exit;
     }
 
+    // Default registration adult count should follow RSVP "yes" count when available.
+    $adultRsvpYes = null;
+    if ($guestRsvpCol !== null) {
+        $rsvpSql = "SELECT COUNT(*) AS total FROM guests_final WHERE {$guestGroupIdCol} = ? "
+            . "AND LOWER(COALESCE({$guestAgeGroupCol}, '')) = 'adult' "
+            . "AND LOWER(COALESCE({$guestRsvpCol}, '')) IN ('yes', 'accepted', 'attending', 'confirm', 'confirmed')";
+
+        if ($conn instanceof mysqli) {
+            $rsvpStmt = $conn->prepare($rsvpSql);
+            if (!$rsvpStmt) throw new Exception("Database query error (RSVP): " . $conn->error);
+            $groupIdForRsvp = (int)$row['id'];
+            $rsvpStmt->bind_param('i', $groupIdForRsvp);
+            $rsvpStmt->execute();
+            $rsvpResult = $rsvpStmt->get_result();
+            $rsvpRow = $rsvpResult->fetch_assoc();
+            $adultRsvpYes = isset($rsvpRow['total']) ? (int)$rsvpRow['total'] : 0;
+        } else {
+            $rsvpStmt = $conn->prepare($rsvpSql);
+            if (!$rsvpStmt) throw new Exception('Database query error (RSVP).');
+            $rsvpStmt->execute([(int)$row['id']]);
+            $rsvpRow = $rsvpStmt->fetch(PDO::FETCH_ASSOC);
+            $adultRsvpYes = isset($rsvpRow['total']) ? (int)$rsvpRow['total'] : 0;
+        }
+    }
+
     echo json_encode([
         'groupId' => (int)$row['id'],
         'groupName' => $row['invitation_name'],
         'tableNo' => $row['table_no'] ? (int)$row['table_no'] : null,
         'adultPax' => (int)$row['adult_pax'],
+        'adultRsvpYes' => $adultRsvpYes,
         'kidsPax' => (int)$row['kids_pax'],
         'checkedIn' => (bool)$row['checked_in']
     ]);
