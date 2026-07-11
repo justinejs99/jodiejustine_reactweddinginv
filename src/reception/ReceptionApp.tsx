@@ -113,6 +113,15 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
   const hasScannedRef = useRef(false)
   const scannerRef = useRef<{ stop: () => Promise<void> } | null>(null)
 
+  const safeStopScanner = async (instance: { stop: () => Promise<void> } | null) => {
+    if (!instance) return
+    try {
+      await instance.stop()
+    } catch {
+      // Ignore stop errors when scanner has already stopped.
+    }
+  }
+
   useEffect(() => {
     let cancelled = false
     hasScannedRef.current = false
@@ -138,7 +147,7 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
           const groupRef = extractGroupRef(decodedText)
           if (groupRef !== null) {
             hasScannedRef.current = true
-            scanner.stop().catch(() => {})
+            void safeStopScanner(scanner)
             onGroupId(groupRef)
           }
         }
@@ -189,7 +198,7 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
 
     return () => {
       cancelled = true
-      scannerRef.current?.stop().catch(() => {})
+      void safeStopScanner(scannerRef.current)
       scannerRef.current = null
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
