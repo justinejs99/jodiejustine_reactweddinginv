@@ -338,7 +338,7 @@ function App() {
           </div>
         ) : (
         <form className="rsvp-form" onSubmit={handleSubmit}>
-          <p className="bold-text">Will you be attending our wedding?</p>
+          <p className="bold-text">Will you be attending our WOOOOOODINGGGG?</p>
           <div className="attendance-toggle" role="radiogroup" aria-label="Attendance response">
             <button
               className={attendance === 'yes' ? 'toggle-button active' : 'toggle-button'}
