@@ -343,22 +343,26 @@ export default function ReceptionApp() {
             <div className="scan-card-inner">
               <QrScanner onGroupId={handleGroupId} onError={handleScanError} />
             </div>
-            <form className="manual-entry-form" onSubmit={handleManualSubmit}>
-              <input
-                className="manual-entry-input"
-                type="text"
-                placeholder="First Name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-              <input
-                className="manual-entry-input"
-                type="text"
-                placeholder="Last Name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-              <button type="submit" className="manual-entry-btn">Find</button>
+            <form className="manual-entry-form" onSubmit={handleManualSubmit} style={{ flexDirection: 'column' }}>
+              <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+                <input
+                  className="manual-entry-input"
+                  type="text"
+                  placeholder="First Name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+                <input
+                  className="manual-entry-input"
+                  type="text"
+                  placeholder="Last Name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </div>
+              <button type="submit" className="manual-entry-btn" style={{ alignSelf: 'flex-end', marginTop: '4px' }}>
+                Find
+              </button>
             </form>
           </div>
         )}

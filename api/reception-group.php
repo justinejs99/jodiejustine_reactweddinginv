@@ -20,9 +20,9 @@ if ($id) {
     $stmt = $conn->prepare("SELECT id, invitation_name, table_no, adult_pax, kids_pax, checked_in FROM groups_final WHERE id = ? OR qr_token = ?");
     $stmt->bind_param("ss", $id, $id);
 } else {
-    // Search by invitation name
-    $search = "%" . $name . "%";
-    $stmt = $conn->prepare("SELECT id, invitation_name, table_no, adult_pax, kids_pax, checked_in FROM groups_final WHERE invitation_name LIKE ?");
+    // Search by invitation name - case insensitive and trimmed
+    $search = "%" . trim($name) . "%";
+    $stmt = $conn->prepare("SELECT id, invitation_name, table_no, adult_pax, kids_pax, checked_in FROM groups_final WHERE LOWER(invitation_name) LIKE LOWER(?)");
     $stmt->bind_param("s", $search);
 }
 
