@@ -187,21 +187,6 @@
 
 /* ─── Manual entry fallback ─────────────────────────────────────────────── */
 
-.qr-reader-element,
-#reception-qr-reader {
-  transform: none !important;
-  -webkit-transform: none !important;
-}
-
-/* Force all scanner media layers to stay non-mirrored */
-.qr-reader-element video,
-.qr-reader-element canvas,
-#reception-qr-reader video,
-#reception-qr-reader canvas {
-  transform: scaleX(1) !important;
-  -webkit-transform: scaleX(1) !important;
-}
-
 .manual-entry-form {
   width: 100%;
   display: flex;

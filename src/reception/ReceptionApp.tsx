@@ -113,23 +113,7 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
 
   useEffect(() => {
     let cancelled = false
-    let mirrorFixIntervalId: number | null = null
     hasScannedRef.current = false
-
-    const enforceUnmirroredPreview = () => {
-      const root = document.getElementById(SCANNER_ELEMENT_ID)
-      if (!root) return
-
-      root.style.setProperty('transform', 'none', 'important')
-      root.style.setProperty('-webkit-transform', 'none', 'important')
-
-      const mediaNodes = root.querySelectorAll('video, canvas')
-      mediaNodes.forEach((node) => {
-        const media = node as HTMLElement
-        media.style.setProperty('transform', 'scaleX(1)', 'important')
-        media.style.setProperty('-webkit-transform', 'scaleX(1)', 'important')
-      })
-    }
 
     import('html5-qrcode').then(({ Html5Qrcode }) => {
       if (cancelled) return
@@ -144,13 +128,7 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
       const config = {
         fps: 10,
         qrbox: { width: 240, height: 240 },
-        disableFlip: true,
       }
-
-      // Some mobile browsers re-apply mirror styles after camera starts.
-      // Keep forcing a non-mirrored preview while scanner is mounted.
-      enforceUnmirroredPreview()
-      mirrorFixIntervalId = window.setInterval(enforceUnmirroredPreview, 150)
 
       const startScanner = async () => {
         const onDecode = (decodedText: string) => {
@@ -165,7 +143,6 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
 
         const onScanError = () => {
           // per-frame scan errors – silently ignored
-          enforceUnmirroredPreview()
         }
 
         const cameraAttempts: Array<string | MediaTrackConstraints> = []
@@ -205,9 +182,6 @@ function QrScanner({ onGroupId, onError }: QrScannerProps) {
 
     return () => {
       cancelled = true
-      if (mirrorFixIntervalId !== null) {
-        window.clearInterval(mirrorFixIntervalId)
-      }
       scannerRef.current?.stop().catch(() => {})
       scannerRef.current = null
     }
@@ -290,18 +264,6 @@ function PageHeader({ onHomeClick }: PageHeaderProps) {
           Justine
         </h1>
       </div>
-
-      <button
-        type="button"
-        className="header-icon-btn"
-        aria-label="Search guest"
-        disabled
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
-      </button>
     </header>
   )
 }
