@@ -360,8 +360,8 @@ export default function ReceptionApp() {
             <div className="scan-card-inner">
               <QrScanner onGroupId={handleGroupId} onError={handleScanError} />
             </div>
-            <form className="manual-entry-form" onSubmit={handleManualSubmit} style={{ flexDirection: 'column' }}>
-              <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+            <form className="manual-entry-form manual-entry-form-stacked" onSubmit={handleManualSubmit}>
+              <div className="manual-entry-input-row">
                 <input
                   className="manual-entry-input"
                   type="text"
@@ -377,7 +377,7 @@ export default function ReceptionApp() {
                   onChange={(e) => setLastName(e.target.value)}
                 />
               </div>
-              <button type="submit" className="manual-entry-btn" style={{ alignSelf: 'flex-end', marginTop: '4px' }}>
+              <button type="submit" className="manual-entry-btn manual-entry-submit">
                 Find
               </button>
             </form>
@@ -407,12 +407,12 @@ export default function ReceptionApp() {
             <svg className="success-icon" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" width="60" height="60">
               <polyline points="20 6 9 17 4 12" />
             </svg>
-            <div style={{ textAlign: 'center' }}>
+            <div className="success-copy">
               <p className="success-text">Check-in Successful!</p>
-              <h2 className="guest-name-display" style={{ textTransform: 'none', margin: '10px 0' }}>{group.groupName}</h2>
+              <h2 className="success-name">{group.groupName}</h2>
               {group.tableNo && (
-                <p className="success-table" style={{ fontSize: '18px', fontWeight: 'bold', marginTop: '8px', textTransform: 'none' }}>
-                  Table number {group.tableNo}
+                <p className="success-table">
+                  TABLE NUMBER: {group.tableNo}
                 </p>
               )}
             </div>
