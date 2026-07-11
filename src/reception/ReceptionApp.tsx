@@ -416,10 +416,11 @@ export default function ReceptionApp() {
                 onClick={() => setCameraFacingMode((current) => current === 'environment' ? 'user' : 'environment')}
               >
                 <svg className="camera-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M14 4h-4l-2 2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
-                  <path d="M18 20h-2l-2-2h-2a2 2 0 0 1-2-2v-1" />
-                  <path d="M15 9h5v5" />
-                  <path d="M20 9l-6 6" />
+                  <path d="M5 8h2.7l1.7-2h5.2l1.7 2H19a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z" />
+                  <path d="M9.4 11.2a3.3 3.3 0 0 1 5.3-.9" />
+                  <path d="M14.2 9.8h1.9v1.9" />
+                  <path d="M14.6 13a3.3 3.3 0 0 1-5.3.9" />
+                  <path d="M9.8 14.4H7.9v-1.9" />
                 </svg>
               </button>
             </div>
