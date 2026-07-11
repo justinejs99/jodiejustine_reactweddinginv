@@ -22,6 +22,12 @@
   box-sizing: border-box;
 }
 
+.reception-header::after {
+  content: "";
+  width: 48px; /* matching .header-icon-btn width */
+  flex-shrink: 0;
+}
+
 .header-icon-btn {
   display: flex;
   align-items: center;
@@ -301,6 +307,28 @@
 }
 
 @media (max-width: 600px) {
+  .reception-header {
+    padding: 20px 12px 15px;
+  }
+
+  .header-names {
+    font-size: 26px;
+  }
+
+  .reception-header::after {
+    width: 40px; /* smaller for mobile if needed, but home btn is 48px */
+  }
+
+  /* Make home btn match the balanced empty space */
+  .header-icon-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .reception-header::after {
+    width: 40px;
+  }
+
   .reception-main {
     padding: 16px 12px 20px;
     justify-content: center;
@@ -345,8 +373,8 @@
 
 #reception-qr-reader video {
   border-radius: 8px;
-  transform: scaleX(1) !important; 
-  -webkit-transform: scaleX(1) !important;
+  transform: scaleX(-1) !important; /* This will mirror it */
+  -webkit-transform: scaleX(-1) !important;
 }
 
 #reception-qr-reader img {
