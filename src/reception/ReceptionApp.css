@@ -399,6 +399,17 @@
   }
 }
 
+@media (max-width: 767px) {
+  html,
+  body {
+    min-width: 768px;
+  }
+
+  .reception-shell {
+    min-width: 768px;
+  }
+}
+
 .detail-card {
   background: #c9c5b2;
   border-radius: 16px;

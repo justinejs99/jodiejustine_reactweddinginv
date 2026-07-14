@@ -31,7 +31,7 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  min-height: 100vh;
+  min-height: 100dvh;
   background: linear-gradient(180deg, #eeede7 0%, #afaea7 100%);
   background-attachment: fixed;
 }
@@ -60,5 +60,5 @@ a {
 
 #root {
   width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
