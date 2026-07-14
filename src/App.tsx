@@ -316,13 +316,15 @@ function App() {
 
       {hasValidGroup && (
         <section className="panel rsvp-panel">
-          <div className="rsvp-heading">
-            <div>
-              <p className="section-kicker">RSVP</p>
-              <p className="valid-for">This invitation is valid for <strong>{content.invitation.validPax} pax</strong></p>
-              <p className="date-note">Kindly RSVP by <strong>{content.rsvp.deadline}</strong></p>
+          {!response && (
+            <div className="rsvp-heading">
+              <div>
+                <p className="section-kicker">RSVP</p>
+                <p className="valid-for">This invitation is valid for <strong>{content.invitation.validPax} pax</strong></p>
+                <p className="date-note">Kindly RSVP by <strong>{content.rsvp.deadline}</strong></p>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* ... existing response logic ... */}
           {response ? (
