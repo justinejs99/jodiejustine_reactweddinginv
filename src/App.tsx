@@ -371,9 +371,10 @@ function App() {
                 </div>
               )}
 
-              <p className="bold-text-thankyou" style={{ paddingBottom: 0}}>{attendance === 'yes' ? content.responses.accepted.title : content.responses.declined.title}</p>
-              <p className="normal-text-thankyou" style={{ paddingBottom: 20 }}>{attendance === 'yes' ? content.responses.accepted.body : content.responses.declined.body}</p> 
-              
+              <div> 
+                <p className="bold-text-thankyou" style={{ paddingBottom: 0}}>{attendance === 'yes' ? content.responses.accepted.title : content.responses.declined.title}</p>
+                <p className="normal-text-thankyou" style={{ paddingBottom: 20 }}>{attendance === 'yes' ? content.responses.accepted.body : content.responses.declined.body}</p> 
+              </div>
 
               <div className="submitted-contact">
                 <p className="bold-text" style={{ paddingBottom: 0 }}>For any queries please contact:</p>
