@@ -34,7 +34,26 @@ function App() {
         }
 
         setContent(siteContent)
-        setSelectedGuests(new Array(siteContent.invitation.validPax).fill(false))
+
+        const guestAttendances = siteContent.invitation.guests.map((guest) => guest.attendance)
+        const hasExistingRsvp = guestAttendances.some((status) => status !== 'Pending')
+
+        if (hasExistingRsvp) {
+          const selectedFromExistingRsvp = siteContent.invitation.guests.map((guest) => guest.attendance === 'Yes')
+          const hasAttendingGuests = selectedFromExistingRsvp.some(Boolean)
+
+          setSelectedGuests(selectedFromExistingRsvp)
+          setAttendance(hasAttendingGuests ? 'yes' : 'no')
+          setResponse({
+            success: true,
+            message: 'Loaded existing RSVP status.',
+            referenceId: 'existing-rsvp',
+          })
+        } else {
+          setSelectedGuests(new Array(siteContent.invitation.guests.length).fill(false))
+          setAttendance('yes')
+          setResponse(null)
+        }
       } catch (error) {
         if (!isMounted) {
           return
