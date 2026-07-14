@@ -164,6 +164,8 @@ function App() {
 
   const guests = content.invitation.guests
   const hasValidGroup = content.invitation.groupId > 0
+  const attendingGuests = guests.filter((_, i) => selectedGuests[i])
+  const tableNumber = attendingGuests.find((guest) => guest.tableNo !== null)?.tableNo
 
   return (
     <main className="shell">
@@ -325,68 +327,39 @@ function App() {
           {/* ... existing response logic ... */}
           {response ? (
             <div className="rsvp-submitted">
-              {attendance === 'yes' && (() => {
-                const attending = guests.filter((_, i) => selectedGuests[i])
-                const notAttending = guests.filter((_, i) => !selectedGuests[i])
-                return (
-                  <>
-                    <div className="qrcode-bg">
-                      {attending.length > 0 ? (
-                        <>
-                          <div className="rsvp-status-row">
-                            <p className="bold-text" style={{ paddingBottom: 4 }}>Attending</p>
-                            <button className="edit-rsvp-button" type="button" onClick={() => setResponse(null)}>Edit RSVP</button>
-                          </div>
-                          {attending.map(g => (
-                            <p className="normal-text" key={g.id} style={{ paddingBottom: 0 }}>
-                              {g.designation} {g.firstName} {g.lastName}{g.tableNo ? <strong> - [Table {g.tableNo}]</strong> : ''}
-                            </p>
-                          ))}
-                          {notAttending.length > 0 && (
-                            <>
-                              <p className="bold-text" style={{ paddingBottom: 4, paddingTop: 20 }}>Not attending</p>
-                              {notAttending.map(g => (
-                                <p className="normal-text" key={g.id} style={{ paddingBottom: 0 }}>
-                                  {g.designation} {g.firstName} {g.lastName}
-                                </p>
-                              ))}
-                            </>
-                          )}
-                        </>
-                      ) : (
-                        <>
-                          <div className="rsvp-status-row">
-                            <p className="bold-text" style={{ paddingBottom: 4 }}>Not attending</p>
-                            <button className="edit-rsvp-button" type="button" onClick={() => setResponse(null)}>Edit RSVP</button>
-                          </div>
-                          {notAttending.map(g => (
-                            <p className="normal-text" key={g.id} style={{ paddingBottom: 0 }}>
-                              {g.designation} {g.firstName} {g.lastName}
-                            </p>
-                          ))}
-                        </>
-                      )}
-                    </div>
+              {attendance === 'yes' && (
+                <div className="success-rsvp-card">
+                  <p className="success-kicker">THE WEDDING OF</p>
+                  <h2 className="success-couple-names">
+                    <span>{content.couple.groomName.toUpperCase()}</span>
+                    <img className="success-and-image" src={andImage} alt="and" />
+                    <span>{content.couple.brideName.toUpperCase()}</span>
+                  </h2>
+                  <p className="success-date-text">{`${content.weddingDate.weekday}${content.weddingDate.dateText}`.toUpperCase()}</p>
 
-                    <div className="qrcode-bg">
-                      <p className="bold-text">Please screenshot this QR code<br />for check in at the venue</p>
-                      {qrCodeDataUrl ? (
-                        <div className="qr-placeholder" aria-label="Generated QR code">
-                          <div className="qr-inner">
-                            <img src={qrCodeDataUrl} alt="Reception check-in QR code" />
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="qr-placeholder" aria-label="QR code loading">
-                          <div className="qr-inner">
-                            <span>Generating QR...</span>
-                          </div>
-                        </div>
-                      )}
+                  <p className="success-qr-note">PLEASE SCREENSHOT THIS QR CODE<br />FOR CHECK IN AT THE VENUE</p>
+
+                  {qrCodeDataUrl ? (
+                    <div className="success-qr-shell" aria-label="Generated QR code">
+                      <div className="success-qr-inner">
+                        <img src={qrCodeDataUrl} alt="Reception check-in QR code" />
+                      </div>
                     </div>
-                  </>
-                )
-              })()}
+                  ) : (
+                    <div className="success-qr-shell" aria-label="QR code loading">
+                      <div className="success-qr-inner">
+                        <span>QR CODE HERE</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {tableNumber ? <p className="success-table-text">TABLE NUMBER: {tableNumber}</p> : null}
+
+                  <button className="success-edit-rsvp-button" type="button" onClick={() => setResponse(null)}>
+                    Edit RSVP
+                  </button>
+                </div>
+              )}
 
               {attendance === 'no' && (
                 <div className="submit-row" style={{ justifyContent: 'flex-start', marginBottom: 20 }}>
