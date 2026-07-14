@@ -401,7 +401,7 @@
   align-items: center;
   text-align: center;
   gap: clamp(15px, 1.5vh, 20px);
-  height: 50%;
+  height: auto; 
 }
 
 .section-kicker{ 
@@ -486,7 +486,6 @@
   margin-top: 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
 }
 
 .verse-reference {

@@ -79,7 +79,7 @@ try {
             'contact' => ['display' => 'wa.me/6281389834762', 'whatsAppUrl' => 'https://wa.me/6281389834762'],
             'responses' => [
                 'accepted' => ['title' => 'Thank you!', 'body' => "We can't wait to see you!"],
-                'declined' => ['title' => 'We will miss you!', 'body' => 'Thank you for your love.']
+                'declined' => ['title' => 'We will miss you!', 'body' => 'Thank you for your response.']
             ],
             'qr' => ['message' => 'Screenshot this for check-in.']
         ]);
@@ -97,7 +97,7 @@ try {
             'brideParents' => 'DAUGHTER OF MR. RONY SUTRISNO & MRS. VIVI ISWANTI',
             'hashtag' => '#JODohnyaJJ',
             'verse' => 'Matthew 19:6',
-            'verseText' => 'So they are no longer two, but one flesh. Therefore what God has joined together, let no one separate'
+            'verseText' => '"Therefore what God has joined together,let no one separate.”'
         ],
         'invitation' => [
             'groupId' => $actualId,
