@@ -5,9 +5,17 @@ require __DIR__ . '/db.php';
 try {
     $conn = db();
     $groupId = isset($_GET['group']) ? $_GET['group'] : null;
+    $qrToken = $_GET['qr_token'] ?? ($_GET['token'] ?? null);
     $name = $_GET['name'] ?? null;
 
     $group = null;
+
+    if ($qrToken !== null && trim((string)$qrToken) !== '') {
+        $group = fetchOneRow($conn, 'SELECT * FROM groups_final WHERE qr_token = ?', 's', [trim((string)$qrToken)]);
+        if ($group) {
+            $groupId = $group['group_id'];
+        }
+    }
 
     if ($name) {
         // Try to find the group by guest name first (looking up group_id in guests_final)
@@ -51,7 +59,9 @@ try {
                 'brideName' => 'Justine', 'brideLastName' => 'Joy',
                 'groomParents' => 'SON OF MR. HARLY SETIAWAN & MRS. SUSAN DARMANTO',
                 'brideParents' => 'DAUGHTER OF MR. RONY SUTRISNO & MRS. VIVI ISWANTI',
-                'hashtag' => '#JODohnyaJJ', 'verse' => 'Matthew 19:6'
+                'hashtag' => '#JODohnyaJJ',
+                'verse' => 'Matthew 19:6',
+                'verseText' => 'So they are no longer two, but one flesh. Therefore what God has joined together, let no one separate'
             ],
             'invitation' => [
                 'groupId' => 0,
@@ -85,7 +95,9 @@ try {
             'brideName' => 'Justine', 'brideLastName' => 'Joy',
             'groomParents' => 'SON OF MR. HARLY SETIAWAN & MRS. SUSAN DARMANTO',
             'brideParents' => 'DAUGHTER OF MR. RONY SUTRISNO & MRS. VIVI ISWANTI',
-            'hashtag' => '#JODohnyaJJ', 'verse' => 'Matthew 19:6'
+            'hashtag' => '#JODohnyaJJ',
+            'verse' => 'Matthew 19:6',
+            'verseText' => 'So they are no longer two, but one flesh. Therefore what God has joined together, let no one separate'
         ],
         'invitation' => [
             'groupId' => $actualId,

@@ -10,6 +10,7 @@ export interface CoupleContent {
   brideParents: string
   hashtag: string
   verse: string
+  verseText: string
 }
 
 export interface Guest {

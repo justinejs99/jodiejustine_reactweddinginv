@@ -127,6 +127,11 @@ try {
 
     $idCol = pickColumn($columns, ['id', 'group_id', 'groupid'], 'id');
     $checkedCol = pickColumn($columns, ['checked_in', 'is_checked_in', 'checkin_status'], 'checked in');
+    
+    // Fallback to standard names if pickColumn returns something unexpected
+    $checkedAtCol = pickColumn($columns, ['checked_in_at', 'checkin_time', 'checkin_at'], 'checked in at', false) ?: 'checked_in_at';
+    $lastUpdatedCol = pickColumn($columns, ['last_updated', 'updated_at'], 'last updated', false) ?: 'last_updated';
+    
     $actualAdultCol = pickColumn($columns, ['checked_in_adults', 'actual_adult', 'checked_adult', 'adult_actual'], 'actual adult', false);
     $actualKidsCol = pickColumn($columns, ['checked_in_kids', 'actual_kids', 'checked_kids', 'kids_actual'], 'actual kids', false);
     $giftCol = pickColumn($columns, ['angbao_count', 'gift_count'], 'gift count', false);
@@ -151,6 +156,14 @@ try {
     $setParts = ["{$checkedCol} = 1"];
     $params = [];
     $types = '';
+
+    if ($checkedAtCol !== null) {
+        $setParts[] = "{$checkedAtCol} = NOW()";
+    }
+
+    if ($lastUpdatedCol !== null) {
+        $setParts[] = "{$lastUpdatedCol} = NOW()";
+    }
 
     if ($actualAdultCol !== null) {
         $setParts[] = "{$actualAdultCol} = ?";

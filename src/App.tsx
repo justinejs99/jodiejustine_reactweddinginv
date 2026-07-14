@@ -213,6 +213,7 @@ function App() {
           
           <div className="bible-verse">
             <p className="verse-reference">{content.couple.verse}</p>
+            <p className="verse-reference">{content.couple.verseText}</p>
           </div>
         </div>
 

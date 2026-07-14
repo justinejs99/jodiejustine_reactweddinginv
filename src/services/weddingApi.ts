@@ -20,14 +20,22 @@ async function requestJson<T>(path: string, options?: RequestInit): Promise<T> {
 export async function getWeddingSiteContent(): Promise<WeddingSiteContent> {
   const params = new URLSearchParams(window.location.search)
   const name = params.get('invitation_name')
+  const qrToken = params.get('qr_token')
   const group = params.get('group')
+
+  if (qrToken) {
+    return requestJson<WeddingSiteContent>(`/api/wedding.php?qr_token=${encodeURIComponent(qrToken)}`)
+  }
 
   if (name) {
     return requestJson<WeddingSiteContent>(`/api/wedding.php?name=${encodeURIComponent(name)}`)
   }
 
-  const groupId = group || '1'
-  return requestJson<WeddingSiteContent>(`/api/wedding.php?group=${encodeURIComponent(groupId)}`)
+  if (group) {
+    return requestJson<WeddingSiteContent>(`/api/wedding.php?group=${encodeURIComponent(group)}`)
+  }
+
+  return requestJson<WeddingSiteContent>('/api/wedding.php')
 }
 
 export async function submitRsvp(request: RsvpRequest): Promise<RsvpResponse> {
