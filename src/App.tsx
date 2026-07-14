@@ -166,6 +166,7 @@ function App() {
   const hasValidGroup = content.invitation.groupId > 0
   const attendingGuests = guests.filter((_, i) => selectedGuests[i])
   const tableNumber = attendingGuests.find((guest) => guest.tableNo !== null)?.tableNo
+  const shouldHideRsvpIntro = Boolean(response && attendance === 'yes' && qrCodeDataUrl)
 
   return (
     <main className="shell">
@@ -316,7 +317,7 @@ function App() {
 
       {hasValidGroup && (
         <section className="panel rsvp-panel">
-          {!response && (
+          {!shouldHideRsvpIntro && (
             <div className="rsvp-heading">
               <div>
                 <p className="section-kicker">RSVP</p>
