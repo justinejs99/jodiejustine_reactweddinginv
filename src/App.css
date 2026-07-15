@@ -328,12 +328,7 @@
   padding: 24px;
 }
 
-.event-details-card {
-  margin-top: 0;
-  border-radius: 28px;
-  padding: 52px 48px;
-}
-
+.event-details-card,
 .rsvp-content-card {
   width: 100%;
 }
@@ -1075,7 +1070,6 @@
 
   .event-details {
     min-height: auto;
-    padding: 18px 14px;
   }
 
   .rsvp-panel {
@@ -1085,11 +1079,6 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-  }
-
-  .event-details-card {
-    border-radius: 22px;
-    padding: 28px 20px;
   }
 
   .event-details-card .section-kicker {
