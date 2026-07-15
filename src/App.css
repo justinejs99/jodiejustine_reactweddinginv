@@ -58,9 +58,9 @@
 
   background-color: #eeede7;
   background-image: url('./assets/images/whitebg.png');
-  background-size: cover;
+  background-size: 100% auto;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: repeat-y;
 }
 
 .hero-panel {
@@ -1092,9 +1092,9 @@
     min-height: 100dvh;
     background-color: #eeede7;
     background-image: url('./assets/images/whitebg.png');
-    background-size: cover;
+    background-size: 100% auto;
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: repeat-y;
   }
 
   .rsvp-content-card {
