@@ -19,6 +19,11 @@
 .shell.is-unlocked {
   position: relative;
   overflow-y: auto;
+  background-color: #eeede7;
+  background-image: url('./assets/images/whitebg.png');
+  background-size: 100% auto;
+  background-position: center top;
+  background-repeat: repeat-y;
 }
 
 .shell::-webkit-scrollbar {
@@ -55,12 +60,7 @@
   align-content: start;
   row-gap: 12px;
   overflow: hidden;
-
-  background-color: #eeede7;
-  background-image: url('./assets/images/whitebg.png');
-  background-size: 100% auto;
-  background-position: center;
-  background-repeat: repeat-y;
+  background: transparent;
 }
 
 .hero-panel {
@@ -321,10 +321,7 @@
 
 .event-details {
   min-height: 100dvh;
-  background-image: url('./assets/images/whitebg.png');
-  background-size: 100% auto;
-  background-position: center;
-  background-repeat: repeat-y;
+  background: transparent;
   padding: 35px;
 }
 
@@ -1090,11 +1087,7 @@
 
   .rsvp-panel {
     min-height: 100dvh;
-    background-color: #eeede7;
-    background-image: url('./assets/images/whitebg.png');
-    background-size: 100% auto;
-    background-position: center;
-    background-repeat: repeat-y;
+    background: transparent;
   }
 
   .rsvp-content-card {
@@ -1232,16 +1225,6 @@
     line-height: 1.25;
   }
 }
-
-@media (min-width: 721px) {
-  .event-details,
-  .rsvp-panel {
-    background-size: auto 100%;
-    background-position: center top;
-    background-repeat: repeat-x;
-  }
-}
-
 
 .pax-badge strong {
   font-weight: bold;
