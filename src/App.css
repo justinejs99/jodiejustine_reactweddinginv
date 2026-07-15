@@ -54,6 +54,7 @@
   margin-top: -1px;
   align-content: start;
   row-gap: 12px;
+  overflow: visible;
   background-color: #eeede7;
   background-image: url('./assets/images/whitebg.png');
   background-size: cover;
@@ -342,6 +343,7 @@
 
 .rsvp-content-card {
   min-height: calc(min(932px, 100dvh) - 72px);
+  overflow: visible;
 }
 
 .event-details .section-kicker:first-of-type {
