@@ -315,7 +315,7 @@
 
 .event-details {
   min-height: auto;
-  background-image: url('./assets/images/redbg.png');
+  background-image: url('./assets/images/whitebg.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -325,7 +325,7 @@
 .panel-card {
   background: #f3f3ed;
   border-radius: 10px;
-  padding: 24px;
+  padding: 30px;
 }
 
 .event-details-card,
@@ -367,7 +367,7 @@
 .event-details-card .date-display {
   display: inline;
   font-family: var(--font-body);
-  font-size: clamp(32px, 4.8vw, 58px);
+  font-size: clamp(34px, 5.2vw, 64px);
   line-height: 0.95;
   margin: 0;
 }
@@ -384,7 +384,6 @@
   font-family: var(--font-body);
   display: grid;
   grid-template-columns: 168px 1fr;
-  gap: 28px;
   padding: 24px 0;
   border-radius: 0;
   background: transparent;
@@ -1104,7 +1103,7 @@
   }
 
   .event-details-card .date-display {
-    font-size: clamp(20px, 8vw, 34px);
+    font-size: clamp(22px, 9vw, 38px);
   }
 
   .timeline-item {
