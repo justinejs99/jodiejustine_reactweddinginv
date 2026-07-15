@@ -54,7 +54,8 @@
   margin-top: -1px;
   align-content: start;
   row-gap: 12px;
-  overflow: visible;
+  overflow: hidden;
+
   background-color: #eeede7;
   background-image: url('./assets/images/whitebg.png');
   background-size: cover;
@@ -1177,6 +1178,62 @@
   .success-qr-shell {
     border-radius: 20px;
     padding: 16px;
+  }
+}
+
+@media (max-width: 720px) and (max-height: 700px) {
+  .rsvp-content-card {
+    min-height: calc(100dvh - 72px);
+    padding: 20px;
+  }
+
+  .rsvp-submitted {
+    gap: 14px;
+  }
+
+  .success-rsvp-card {
+    padding: 10px 8px;
+  }
+
+  .success-kicker,
+  .success-date-text,
+  .success-qr-note,
+  .success-table-text {
+    font-size: 11px;
+  }
+
+  .success-couple-names {
+    font-size: 24px;
+    gap: 4px;
+  }
+
+  .success-and-image {
+    width: 18px;
+    transform: translateY(2px);
+  }
+
+  .success-qr-note {
+    margin-top: 10px;
+  }
+
+  .success-qr-shell {
+    width: min(100%, 228px);
+    padding: 8px;
+  }
+
+  .success-edit-rsvp-button {
+    margin-top: 6px;
+    padding: 6px 14px;
+    font-size: 11px;
+  }
+
+  .bold-text,
+  .bold-text-thankyou,
+  .normal-text,
+  .normal-text-thankyou,
+  .text-link {
+    font-size: 12px;
+    line-height: 1.25;
   }
 }
 
