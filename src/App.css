@@ -19,11 +19,6 @@
 .shell.is-unlocked {
   position: relative;
   overflow-y: auto;
-  background-color: #eeede7;
-  background-image: url('./assets/images/whitebg.png');
-  background-size: 100% auto;
-  background-position: center top;
-  background-repeat: repeat-y;
 }
 
 .shell::-webkit-scrollbar {
@@ -60,7 +55,12 @@
   align-content: start;
   row-gap: 12px;
   overflow: hidden;
-  background: transparent;
+
+  background-color: #eeede7;
+  background-image: url('./assets/images/whitebg.png');
+  background-size: 100% auto;
+  background-position: center;
+  background-repeat: repeat-y;
 }
 
 .hero-panel {
@@ -321,7 +321,10 @@
 
 .event-details {
   min-height: 100dvh;
-  background: transparent;
+  background-image: url('./assets/images/whitebg.png');
+  background-size: 100% auto;
+  background-position: center;
+  background-repeat: repeat-y;
   padding: 35px;
 }
 
@@ -1087,7 +1090,11 @@
 
   .rsvp-panel {
     min-height: 100dvh;
-    background: transparent;
+    background-color: #eeede7;
+    background-image: url('./assets/images/whitebg.png');
+    background-size: 100% auto;
+    background-position: center;
+    background-repeat: repeat-y;
   }
 
   .rsvp-content-card {
@@ -1223,6 +1230,15 @@
   .text-link {
     font-size: 12px;
     line-height: 1.25;
+  }
+}
+
+@media (min-width: 721px) {
+  .event-details,
+  .rsvp-panel {
+    background-size: auto 100%;
+    background-position: center top;
+    background-repeat: repeat-x;
   }
 }
 
