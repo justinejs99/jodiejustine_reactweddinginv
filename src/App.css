@@ -54,6 +54,7 @@
   margin-top: -1px;
   align-content: start;
   row-gap: 12px;
+  background-color: #eeede7;
   background-image: url('./assets/images/whitebg.png');
   background-size: cover;
   background-position: center;
@@ -318,7 +319,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding: 36px 24px;
+  padding: 35px;
 }
 
 .panel-card {
@@ -343,7 +344,7 @@
 
 .event-details-card .section-kicker {
   margin-bottom: 24px;
-  font-size: clamp(28px, 4.2vw, 48px);
+  font-size: clamp(20px, 3.2vw, 34px);
   line-height: 1.05;
 }
 
@@ -358,7 +359,7 @@
 .event-details-card .day-display {
   display: inline;
   font-family: 'Luxurious Script', cursive;
-  font-size: clamp(48px, 7.4vw, 90px);
+  font-size: clamp(34px, 5.2vw, 64px);
   line-height: 0.95;
   margin: 0;
 }
@@ -366,7 +367,7 @@
 .event-details-card .date-display {
   display: inline;
   font-family: var(--font-body);
-  font-size: clamp(48px, 6.2vw, 84px);
+  font-size: clamp(32px, 4.8vw, 58px);
   line-height: 0.95;
   margin: 0;
 }
@@ -774,7 +775,7 @@
 }
 
 .toggle-button {
-  background: #d0cdba;
+  background: #DAB6B6;
   color: #790606;
   text-align: left;
   padding: 0 20px;
@@ -783,7 +784,7 @@
 
 .toggle-button.active,
 .submit-button {
-  background: #d0cdba;
+  background: #DAB6B6;
   color: #790606;
   font-weight: 700;
   cursor: pointer;
@@ -808,7 +809,7 @@
 .guest-checkbox input[type="checkbox"] {
   width: 20px;
   height: 20px;
-  accent-color:#d0cdba;
+  accent-color:#DAB6B6;
   cursor: pointer;
 }
 
@@ -857,7 +858,7 @@
 }
 
 .qrcode-bg{ 
-  background: #d0cdba;
+  background: #DAB6B6;
   padding: 20px 20px;
   border-radius: 20px;
   margin-bottom: 20px;
@@ -1043,7 +1044,7 @@
   margin-top: 10px;
   border: 0;
   border-radius: 16px;
-  background: #d0cdba;
+  background: #DAB6B6;
   color: #790606;
   font-family: var(--font-body);
   font-size: 12px;
@@ -1079,6 +1080,11 @@
 
   .rsvp-panel {
     min-height: 100dvh;
+    background-color: #eeede7;
+    background-image: url('./assets/images/whitebg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
   .event-details-card {
@@ -1087,7 +1093,7 @@
   }
 
   .event-details-card .section-kicker {
-    font-size: clamp(18px, 7.2vw, 28px);
+    font-size: clamp(16px, 6vw, 22px);
     margin-bottom: 18px;
   }
 
@@ -1097,16 +1103,15 @@
   }
 
   .event-details-card .day-display {
-    font-size: clamp(28px, 11vw, 52px);
+    font-size: clamp(22px, 9vw, 38px);
   }
 
   .event-details-card .date-display {
-    font-size: clamp(24px, 10vw, 46px);
+    font-size: clamp(20px, 8vw, 34px);
   }
 
   .timeline-item {
     grid-template-columns: 108px 1fr;
-    gap: 12px;
     padding: 14px 0;
   }
 
