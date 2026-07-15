@@ -67,6 +67,7 @@ try {
                 'groupId' => 0,
                 'validPax' => 0,
                 'guestGroupName' => '',
+                'groupRsvpStatus' => 'Pending',
                 'guests' => []
             ],
             'integration' => ['modeLabel' => 'Live Mode'],
@@ -103,6 +104,7 @@ try {
             'groupId' => $actualId,
             'validPax' => (int)($group['max_pax'] ?? count($guests)),
             'guestGroupName' => $group['invitation_name'] ?? '',
+            'groupRsvpStatus' => $group['group_rsvp_status'] ?? 'Pending',
             'guests' => array_map(fn($g) => [
                 'id' => (int)$g['guest_id'],
                 'designation' => $g['designation'],

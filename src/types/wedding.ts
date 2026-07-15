@@ -1,5 +1,6 @@
 export type AttendanceStatus = 'yes' | 'no'
 export type GuestAttendance = 'Yes' | 'No' | 'Pending'
+export type GroupRsvpStatus = 'Yes' | 'No' | 'Pending'
 
 export interface CoupleContent {
   groomName: string
@@ -27,6 +28,7 @@ export interface InvitationContent {
   groupId: number
   validPax: number
   guestGroupName: string
+  groupRsvpStatus: GroupRsvpStatus
   guests: Guest[]
 }
 

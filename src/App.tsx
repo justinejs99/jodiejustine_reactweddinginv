@@ -40,15 +40,14 @@ function App() {
 
         setContent(siteContent)
 
-        const guestAttendances = siteContent.invitation.guests.map((guest) => guest.attendance)
-        const hasExistingRsvp = guestAttendances.some((status) => status !== 'Pending')
+        const hasExistingRsvp = siteContent.invitation.groupRsvpStatus !== 'Pending'
 
         if (hasExistingRsvp) {
           const selectedFromExistingRsvp = siteContent.invitation.guests.map((guest) => guest.attendance === 'Yes')
-          const hasAttendingGuests = selectedFromExistingRsvp.some(Boolean)
+          const isAttending = siteContent.invitation.groupRsvpStatus === 'Yes'
 
           setSelectedGuests(selectedFromExistingRsvp)
-          setAttendance(hasAttendingGuests ? 'yes' : 'no')
+          setAttendance(isAttending ? 'yes' : 'no')
           setResponse({
             success: true,
             message: 'Loaded existing RSVP status.',
