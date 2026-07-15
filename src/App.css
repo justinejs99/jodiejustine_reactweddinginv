@@ -331,6 +331,13 @@
 .event-details-card,
 .rsvp-content-card {
   width: 100%;
+  box-shadow:
+    0 10px 26px rgba(121, 6, 6, 0.08),
+    0 2px 8px rgba(121, 6, 6, 0.06);
+}
+
+.rsvp-content-card {
+  min-height: calc(min(932px, 100dvh) - 72px);
 }
 
 .event-details .section-kicker:first-of-type {
@@ -339,8 +346,6 @@
 
 .event-details-card .section-kicker {
   margin-bottom: 24px;
-  font-size: clamp(20px, 3.2vw, 34px);
-  line-height: 1.05;
 }
 
 .wedding-date-line {
@@ -1081,8 +1086,11 @@
     background-repeat: no-repeat;
   }
 
+  .rsvp-content-card {
+    min-height: calc(100dvh - 72px);
+  }
+
   .event-details-card .section-kicker {
-    font-size: clamp(16px, 6vw, 22px);
     margin-bottom: 18px;
   }
 
