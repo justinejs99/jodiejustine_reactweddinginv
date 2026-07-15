@@ -322,9 +322,9 @@
 .event-details {
   min-height: 100dvh;
   background-image: url('./assets/images/whitebg.png');
-  background-size: cover;
+  background-size: 100% auto;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: repeat-y;
   padding: 35px;
 }
 
@@ -1230,6 +1230,15 @@
   .text-link {
     font-size: 12px;
     line-height: 1.25;
+  }
+}
+
+@media (min-width: 721px) {
+  .event-details,
+  .rsvp-panel {
+    background-size: auto 100%;
+    background-position: center top;
+    background-repeat: repeat-x;
   }
 }
 
