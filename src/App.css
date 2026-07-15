@@ -54,6 +54,10 @@
   margin-top: -1px;
   align-content: start;
   row-gap: 12px;
+  background-image: url('./assets/images/whitebg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .hero-panel {
@@ -310,7 +314,11 @@
 
 .event-details {
   min-height: auto;
-  background: #eeede7;
+  background-image: url('./assets/images/redbg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 36px 24px;
 }
 
 .panel-card {
@@ -320,23 +328,47 @@
 }
 
 .event-details-card {
-  margin-top: 20px;
-  background-image: url('./assets/images/redbg.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  margin-top: 0;
+  border-radius: 28px;
+  padding: 52px 48px;
 }
 
 .rsvp-content-card {
   width: 100%;
-  background-image: url('./assets/images/whitebg.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
 .event-details .section-kicker:first-of-type {
   padding-top: 0;
+}
+
+.event-details-card .section-kicker {
+  margin-bottom: 24px;
+  font-size: clamp(28px, 4.2vw, 48px);
+  line-height: 1.05;
+}
+
+.wedding-date-line {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin: 0 0 56px;
+  flex-wrap: wrap;
+}
+
+.event-details-card .day-display {
+  display: inline;
+  font-family: 'Luxurious Script', cursive;
+  font-size: clamp(48px, 7.4vw, 90px);
+  line-height: 0.95;
+  margin: 0;
+}
+
+.event-details-card .date-display {
+  display: inline;
+  font-family: var(--font-body);
+  font-size: clamp(48px, 6.2vw, 84px);
+  line-height: 0.95;
+  margin: 0;
 }
 
 
@@ -344,18 +376,18 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  margin-top: 24px;
+  margin-top: 10px;
 }
 
 .timeline-item {
   font-family: var(--font-body);
   display: grid;
-  grid-template-columns: 80px 1fr;
-  gap: 45px;
-  padding: 10px 0;
+  grid-template-columns: 168px 1fr;
+  gap: 28px;
+  padding: 24px 0;
   border-radius: 0;
   background: transparent;
-  border-bottom: 2px solid #d4d4d4;
+  border-bottom: 2px solid #d0cdc6;
 }
 
 .timeline-item:last-child {
@@ -371,23 +403,24 @@
 
 .timeline-time {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: clamp(22px, 3vw, 36px);
   color: #790606;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   line-height: 1.4;
   width: max-content;
-  padding-right: 20px;
+  padding-right: 6px;
 }
 
 .timeline-item .timeline-subtitle {
   color: #790606;
   font-style: italic;
   font-weight: 400;
+  margin-top: 4px;
 }
 
 .timeline-item p.timeline-title {
-  font-size: 14px;
+  font-size: clamp(22px, 3vw, 38px);
   line-height: 1.4;
   font-style: normal;
   color: #790606;
@@ -395,10 +428,10 @@
 }
 
 .timeline-item p {
-  font-size: 14px;
+  font-size: clamp(18px, 2.5vw, 30px);
   line-height: 1.4;
   font-style: italic;
-  color: #666666;
+  color: #790606;
 }
 
 .film-image {
@@ -1041,10 +1074,52 @@
 
   .event-details {
     min-height: auto;
+    padding: 18px 14px;
   }
 
   .rsvp-panel {
     min-height: 100dvh;
+  }
+
+  .event-details-card {
+    border-radius: 22px;
+    padding: 28px 20px;
+  }
+
+  .event-details-card .section-kicker {
+    font-size: clamp(18px, 7.2vw, 28px);
+    margin-bottom: 18px;
+  }
+
+  .wedding-date-line {
+    gap: 10px;
+    margin-bottom: 34px;
+  }
+
+  .event-details-card .day-display {
+    font-size: clamp(28px, 11vw, 52px);
+  }
+
+  .event-details-card .date-display {
+    font-size: clamp(24px, 10vw, 46px);
+  }
+
+  .timeline-item {
+    grid-template-columns: 108px 1fr;
+    gap: 12px;
+    padding: 14px 0;
+  }
+
+  .timeline-time {
+    font-size: 14px;
+  }
+
+  .timeline-item p.timeline-title {
+    font-size: 14px;
+  }
+
+  .timeline-item p {
+    font-size: 14px;
   }
 
   .hero-panel {

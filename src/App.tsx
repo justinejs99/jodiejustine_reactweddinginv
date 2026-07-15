@@ -270,8 +270,10 @@ function App() {
           */}
           <div className="panel-card event-details-card">
             <p className="section-kicker">Wedding Date</p>
-            <p className="day-display">{content.weddingDate.weekday}</p>
-            <p className="date-display">{content.weddingDate.dateText}</p>
+            <div className="wedding-date-line">
+              <p className="day-display">{content.weddingDate.weekday}</p>
+              <p className="date-display">{content.weddingDate.dateText}</p>
+            </div>
             <p className="section-kicker">Schedule Of Events</p>
             <div className="timeline">
               {content.schedule.map((eventItem) => (

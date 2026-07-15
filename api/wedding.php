@@ -115,8 +115,9 @@ try {
         'integration' => ['modeLabel' => 'Live Mode'],
         // Static schedule as fallback
         'schedule' => [
-            ['time' => '09:00 WITA', 'title' => 'Holy Matrimony', 'venue' => 'Hotel Mercure', 'location' => 'Ballroom 5'],
-            ['time' => '18:30 WITA', 'title' => 'Wedding Reception', 'venue' => 'Hotel Mercure', 'location' => 'Ballroom 3']
+            ['time' => '09:00 WITA', 'title' => 'Holy Matrimony', 'venue' => 'Hotel Mercure Samarinda', 'location' => 'Crystal Ballroom 5 - Lt. 5'],
+            ['time' => '11:00 WITA', 'title' => 'Tea Pai Ceremony & Lunch', 'venue' => 'Hotel Mercure Samarinda', 'location' => 'Crystal Ballroom 5 - Lt. 5'],
+            ['time' => '18:30 WITA', 'title' => 'Wedding Reception', 'venue' => 'Hotel Mercure Samarinda', 'location' => 'Crystal Ballroom Lt.3']
         ],
         'weddingDate' => ['dateText' => '10.10.26', 'weekday' => 'Saturday, '],
         'rsvp' => ['deadline' => 'Sat, 26/09/26'],
