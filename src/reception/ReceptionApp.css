@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   font-family: var(--font-body);
-  color: #414141;
+  color: #790606;
 }
 
 /* ─── Header ─────────────────────────────────────────────────────────────── */
@@ -38,7 +38,7 @@
   border-radius: 10px;
   background: rgba(238, 237, 231, 0.85);
   cursor: pointer;
-  color: #414141;
+  color: #790606;
   flex-shrink: 0;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.10);
   transition: background 0.15s;
@@ -71,7 +71,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #414141;
+  color: #790606;
 }
 
 .header-names {
@@ -81,7 +81,7 @@
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #414141;
+  color: #790606;
   display: flex;
   align-items: baseline;
   justify-content: center;
@@ -125,7 +125,7 @@
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #414141;
+  color: #790606;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
@@ -188,7 +188,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #414141;
+  color: #790606;
 }
 
 .scan-card-top {
@@ -253,7 +253,7 @@
   background: #ffffff;
   font-family: var(--font-body);
   font-size: 13px;
-  color: #414141;
+  color: #790606;
   outline: none;
 }
 
@@ -427,7 +427,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #414141;
+  color: #790606;
   text-align: center;
 }
 
@@ -461,7 +461,7 @@
   font-size: 25px;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: #414141;
+  color: #790606;
   line-height: 1.35;
   text-align: center;
 }
@@ -482,7 +482,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #414141;
+  color: #790606;
   white-space: nowrap;
   align-self: center;
 }
@@ -493,7 +493,7 @@
   font-size: 18px;
   font-weight: 500;
   letter-spacing: 0.1em;
-  color: #414141;
+  color: #790606;
   align-self: center;
   padding-left: 20px; 
 }
@@ -523,7 +523,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #414141;
+  color: #790606;
 }
 
 .counter-controls {
@@ -538,7 +538,7 @@
   font-weight: 600;
   min-width: 36px;
   text-align: center;
-  color: #414141;
+  color: #790606;
   letter-spacing: 0.1em;
 }
 
