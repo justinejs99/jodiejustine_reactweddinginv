@@ -1263,7 +1263,6 @@
 
   .landing-media-stage,
   .landing-copy,
-  .family-details,
   .panel-card,
   .rsvp-content-card,
   .hero-top,
@@ -1272,6 +1271,10 @@
     width: min(100%, 430px);
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .family-invitation-text{
+    padding-left: clamp(50px,20vw,320px);
   }
 }
 
