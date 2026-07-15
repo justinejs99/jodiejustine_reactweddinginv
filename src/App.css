@@ -41,19 +41,126 @@
 .hero-panel {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  grid-template-columns: 1fr;
+  justify-content: center;
+  align-items: center;
+  gap: 72px;
   min-height: min(932px, 100dvh);
-  padding: 15% 28px 28px;
+  padding: 84px 28px 72px;
   position: relative;
   overflow: hidden;
   border: 0;
   border-radius: 0;
-  background-image: url('./assets/images/JJ-3305.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  box-shadow: 0 26px 80px rgba(93, 67, 54, 0.13);
+  background: #f3f0ea;
+  box-shadow: none;
+}
+
+.landing-panel {
+  text-align: center;
+}
+
+.landing-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.landing-kicker {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: #111111;
+}
+
+.landing-guest-name {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(22px, 5.8vw, 30px);
+  line-height: 1.15;
+  font-weight: 700;
+  color: #111111;
+}
+
+.landing-pax-note {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(16px, 4vw, 22px);
+  line-height: 1.25;
+  color: #222222;
+}
+
+.landing-pax-note strong {
+  font-weight: 400;
+}
+
+.landing-envelope-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.landing-script {
+  margin: 0;
+  font-family: 'Luxurious Script', cursive;
+  font-size: clamp(28px, 7.2vw, 36px);
+  line-height: 1;
+  color: #111111;
+}
+
+.landing-envelope-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  width: min(100%, 430px);
+}
+
+.landing-envelope-stage {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  background: #eeede7;
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-envelope-image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  opacity: 1;
+  transition: opacity 360ms ease;
+}
+
+.landing-envelope-image.is-faded {
+  opacity: 0;
+}
+
+.landing-envelope-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #eeede7;
+  opacity: 0;
+  transition: opacity 360ms ease;
+  pointer-events: none;
+}
+
+.landing-envelope-video.is-visible {
+  opacity: 1;
+}
+
+.landing-script-bottom {
+  margin-top: 2px;
 }
 
 .panel {
@@ -915,6 +1022,23 @@
   .hero-panel,
   .panel {
     min-height: 100dvh;
+  }
+
+  .hero-panel {
+    gap: 56px;
+    padding: 72px 24px 56px;
+  }
+
+  .landing-kicker {
+    font-size: 26px;
+  }
+
+  .landing-pax-note {
+    font-size: 16px;
+  }
+
+  .landing-envelope-button {
+    width: min(100%, 430px);
   }
 
   .success-rsvp-card {

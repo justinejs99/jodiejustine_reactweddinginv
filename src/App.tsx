@@ -1,10 +1,12 @@
-import { FormEvent, startTransition, useEffect, useState } from 'react'
+import { FormEvent, startTransition, useEffect, useRef, useState } from 'react'
 import './App.css'
 import { getWeddingSiteContent, submitRsvp } from './services/weddingApi'
 import type { RsvpRequest, RsvpResponse, WeddingSiteContent } from './types/wedding'
 import QRCode from 'qrcode'
 import andImage from './assets/images/and.jpg'
+import envelopeImage from './assets/images/envelope.png'
 import filmImage from './assets/images/FilmJJ.png'
+import envelopeOpenVideo from './assets/videos/envelope-open.mp4'
 import photoA from './assets/images/a.jpg'
 import photoB from './assets/images/b.jpg'
 import photoC from './assets/images/c.jpg'
@@ -21,6 +23,9 @@ function App() {
   const [attendance, setAttendance] = useState<RsvpRequest['attendance']>('yes')
   const [selectedGuests, setSelectedGuests] = useState<boolean[]>([])
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState('')
+  const invitationContentRef = useRef<HTMLElement | null>(null)
+  const envelopeVideoRef = useRef<HTMLVideoElement | null>(null)
+  const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false)
 
   useEffect(() => {
     let isMounted = true
@@ -168,41 +173,63 @@ function App() {
   const tableNumber = attendingGuests.find((guest) => guest.tableNo !== null)?.tableNo
   const shouldHideRsvpIntro = Boolean(response && attendance === 'yes' && qrCodeDataUrl)
 
+  function openInvitation() {
+    setIsEnvelopeOpen(true)
+    invitationContentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  useEffect(() => {
+    if (!isEnvelopeOpen) {
+      return
+    }
+
+    const video = envelopeVideoRef.current
+
+    if (!video) {
+      return
+    }
+
+    video.currentTime = 0
+    void video.play().catch(() => {})
+  }, [isEnvelopeOpen])
+
   return (
     <main className="shell">
-      <section className="hero-panel">
-        <div className="hero-top">
-          <p className="eyebrow">Wedding Invitation</p>
-          <h1 className="hero-title">
-            <span className="hero-title-line">
-              <span>{content.couple.groomName}</span>
-              <img className="hero-and-image" src={andImage} alt="and" />
-            </span>
-            <span className="hero-title-line">{content.couple.brideName}</span>
-          </h1>
+      <section className="hero-panel landing-panel">
+        <div className="landing-copy">
+          <p className="landing-kicker">DEAR</p>
+          <p className="landing-guest-name">{content.invitation.guestGroupName}</p>
+          <p className="landing-pax-note">
+            This invitation is valid for <strong>{content.invitation.validPax} pax</strong>
+          </p>
         </div>
 
-        <div className="hero-footer">
-          <div className="hero-middle">
-            {hasValidGroup ? (
-              <>
-                <p className="card-label">Dear</p>
-                <p className="guest-designation">{content.invitation.guestGroupName}</p>
-                <div className="pax-badge">This invitation is valid for <strong>{content.invitation.validPax} pax</strong></div>
-              </>
-            ) : (
-              <div style={{ height: '80px' }} /> 
-            )}
-          </div>
-
-          <div className="hero-bottom">
-            <p className="hero-hash">{content.couple.hashtag}</p>
-            <p className="hero-date">{content.weddingDate.dateText}</p>
-          </div>
+        <div className="landing-envelope-copy">
+          <p className="landing-script">you&apos;ve got a mail!</p>
+          <button className="landing-envelope-button" type="button" onClick={openInvitation} aria-label="Open invitation">
+            <div className="landing-envelope-stage" aria-hidden="true">
+              <img
+                className={isEnvelopeOpen ? 'landing-envelope-image is-faded' : 'landing-envelope-image'}
+                src={envelopeImage}
+                alt="Envelope invitation"
+              />
+              <video
+                ref={envelopeVideoRef}
+                className={isEnvelopeOpen ? 'landing-envelope-video is-visible' : 'landing-envelope-video'}
+                src={envelopeOpenVideo}
+                playsInline
+                preload="auto"
+                autoPlay={isEnvelopeOpen}
+                muted
+                onEnded={() => invitationContentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              />
+            </div>
+          </button>
+          <p className="landing-script landing-script-bottom">click the seal to open</p>
         </div>
       </section>
 
-      <section className="story-grid">
+      <section className="story-grid" ref={invitationContentRef}>
         <div className="panel family-details">
           <p className="family-invitation-text">
             Together with our families
