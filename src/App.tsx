@@ -220,10 +220,10 @@ function App() {
           </p>
         </div>
 
-        <div className="landing-envelope-copy">
+        {/* <div className="landing-envelope-copy">
           <p className="landing-script">you&apos;ve got a mail!</p>
           <p className="landing-script landing-script-bottom">click the seal to open</p>
-        </div>
+        </div> */}
       </section>
 
       <section className="story-grid" ref={invitationContentRef}>
