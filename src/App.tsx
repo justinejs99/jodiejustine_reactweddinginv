@@ -7,11 +7,11 @@ import andImage from './assets/images/and.jpg'
 import envelopeImage from './assets/images/envelope.png'
 import envelopeOpenVideo from './assets/videos/envelope-open.mp4'
 // import filmImage from './assets/images/FilmJJ.png'
-// import photoA from './assets/images/a.jpg'
-// import photoB from './assets/images/b.jpg'
-// import photoC from './assets/images/c.jpg'
-// import photoD from './assets/images/d.jpg'
-// import photoE from './assets/images/e.jpg'
+import photoA from './assets/images/a.jpg'
+import photoB from './assets/images/b.jpg'
+import photoC from './assets/images/c.jpg'
+import photoD from './assets/images/d.jpg'
+import photoE from './assets/images/e.jpg'
 
 function App() {
   const [content, setContent] = useState<WeddingSiteContent | null>(null)
@@ -290,7 +290,6 @@ function App() {
             </div>
           </div>
 
-          {/*
           <div className="polaroid-slider">
             <div className="polaroid-track">
               <div className="polaroid">
@@ -335,7 +334,6 @@ function App() {
               </div>
             </div>
           </div>
-          */}
         </div>
 
 
