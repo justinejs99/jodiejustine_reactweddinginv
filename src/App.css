@@ -1257,12 +1257,13 @@
   .panel,
   .event-details,
   .rsvp-panel {
-    padding-left: clamp(28px, 8vw, 120px);
-    padding-right: clamp(28px, 8vw, 120px);
+    padding-left: clamp(36px, 10vw, 180px);
+    padding-right: clamp(36px, 10vw, 180px);
   }
 
   .landing-media-stage,
   .landing-copy,
+  .family-details,
   .panel-card,
   .rsvp-content-card,
   .hero-top,
