@@ -49,6 +49,13 @@
   outline: 0;
 }
 
+
+.rsvp-panel {
+  margin-top: -1px;
+  align-content: start;
+  row-gap: 12px;
+}
+
 .hero-panel {
   display: flex;
   flex-direction: column;
@@ -70,11 +77,11 @@
 }
 
 .landing-media-stage {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  width: min(100%, 430px);
+  aspect-ratio: 9 / 16;
   background: #eeede7;
   overflow: hidden;
-  z-index: 0;
   padding: 0;
   border: 0;
   display: block;
@@ -87,8 +94,6 @@
   align-items: center;
   gap: 10px;
   width: 100%;
-  position: relative;
-  z-index: 1;
 }
 
 .landing-kicker {
@@ -120,20 +125,6 @@
 
 .landing-pax-note strong {
   font-weight: 400;
-}
-
-.landing-envelope-copy {
-.landing-media-stage {
-  position: relative;
-  width: min(100%, 430px);
-  aspect-ratio: 9 / 16;
-  background: #eeede7;
-  overflow: hidden;
-  z-index: 0;
-  padding: 0;
-  border: 0;
-  display: block;
-  cursor: pointer;
 }
 
 .landing-envelope-image {
@@ -170,22 +161,17 @@
 }
 
 .panel {
-    gap: 20px;
-    padding: 72px 24px 56px;
+  position: relative;
+  overflow: hidden;
   margin: 0;
   border: 0;
   border-radius: 0;
-    font-size: 16px;
+  background: #eeede7;
   backdrop-filter: blur(18px);
   box-shadow: none;
   padding: 36px;
-    font-size: 13px;
+  min-height: min(932px, 100dvh);
   box-sizing: border-box;
-}
-  .landing-media-stage {
-    width: min(100%, 392px);
-  align-content: start;
-  row-gap: 12px;
 }
 
 .rsvp-form {
@@ -323,10 +309,34 @@
 }
 
 .event-details {
-  background: #eeede7;}
+  min-height: auto;
+  background: #eeede7;
+}
+
+.panel-card {
+  background: #f3f3ed;
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.event-details-card {
+  margin-top: 20px;
+  background-image: url('./assets/images/redbg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.rsvp-content-card {
+  width: 100%;
+  background-image: url('./assets/images/whitebg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
 .event-details .section-kicker:first-of-type {
-  padding-top: 15%;
+  padding-top: 0;
 }
 
 
@@ -1029,12 +1039,21 @@
     min-height: 100dvh;
   }
 
+  .event-details {
+    min-height: auto;
+  }
+
+  .rsvp-panel {
+    min-height: 100dvh;
+  }
+
   .hero-panel {
     gap: 56px;
     padding: 72px 24px 56px;
   }
 
   .landing-media-stage {
+    width: min(100%, 392px);
     background: #eeede7;
   }
 
@@ -1044,11 +1063,6 @@
 
   .landing-pax-note {
     font-size: 16px;
-  }
-
-  .landing-envelope-button {
-    width: 76px;
-    height: 76px;
   }
 
   .success-rsvp-card {

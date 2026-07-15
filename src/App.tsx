@@ -5,13 +5,13 @@ import type { RsvpRequest, RsvpResponse, WeddingSiteContent } from './types/wedd
 import QRCode from 'qrcode'
 import andImage from './assets/images/and.jpg'
 import envelopeImage from './assets/images/envelope.png'
-import filmImage from './assets/images/FilmJJ.png'
 import envelopeOpenVideo from './assets/videos/envelope-open.mp4'
-import photoA from './assets/images/a.jpg'
-import photoB from './assets/images/b.jpg'
-import photoC from './assets/images/c.jpg'
-import photoD from './assets/images/d.jpg'
-import photoE from './assets/images/e.jpg'
+// import filmImage from './assets/images/FilmJJ.png'
+// import photoA from './assets/images/a.jpg'
+// import photoB from './assets/images/b.jpg'
+// import photoC from './assets/images/c.jpg'
+// import photoD from './assets/images/d.jpg'
+// import photoE from './assets/images/e.jpg'
 
 function App() {
   const [content, setContent] = useState<WeddingSiteContent | null>(null)
@@ -259,6 +259,7 @@ function App() {
         </div>
 
         <div className="panel event-details">
+          {/*
           <div className="film-strip-slider">
             <div className="film-strip-track">
               <img src={filmImage} alt="" />
@@ -266,24 +267,28 @@ function App() {
               <img src={filmImage} alt="" />
             </div>
           </div>
-          <p className="section-kicker">Wedding Date</p>
-          <p className="day-display">{content.weddingDate.weekday}</p>
-          <p className="date-display">{content.weddingDate.dateText}</p>
-          <p className="section-kicker">Schedule Of Events</p>
-          <div className="timeline">
-            {content.schedule.map((eventItem) => (
-              <div className="timeline-item" key={eventItem.title}>
-                <div className="timeline-time">{eventItem.time}</div>
-                <div>
-                  <p className="timeline-title">{eventItem.title}</p>
-                  {eventItem.subtitle ? <p className="timeline-subtitle">{eventItem.subtitle}</p> : null}
-                  <p>{eventItem.venue}</p>
-                  <p>{eventItem.location}</p>
+          */}
+          <div className="panel-card event-details-card">
+            <p className="section-kicker">Wedding Date</p>
+            <p className="day-display">{content.weddingDate.weekday}</p>
+            <p className="date-display">{content.weddingDate.dateText}</p>
+            <p className="section-kicker">Schedule Of Events</p>
+            <div className="timeline">
+              {content.schedule.map((eventItem) => (
+                <div className="timeline-item" key={eventItem.title}>
+                  <div className="timeline-time">{eventItem.time}</div>
+                  <div>
+                    <p className="timeline-title">{eventItem.title}</p>
+                    {eventItem.subtitle ? <p className="timeline-subtitle">{eventItem.subtitle}</p> : null}
+                    <p>{eventItem.venue}</p>
+                    <p>{eventItem.location}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
+          {/*
           <div className="polaroid-slider">
             <div className="polaroid-track">
               <div className="polaroid">
@@ -306,7 +311,6 @@ function App() {
                 <img src={photoE} alt="Photo 5" />
                 <p className="polaroid-caption">us</p>
               </div>
-              {/* Duplicated for seamless loop */}
               <div className="polaroid">
                 <img src={photoA} alt="Photo 1" />
                 <p className="polaroid-caption">memories</p>
@@ -329,6 +333,7 @@ function App() {
               </div>
             </div>
           </div>
+          */}
         </div>
 
 
@@ -336,121 +341,119 @@ function App() {
 
       {hasValidGroup && (
         <section className="panel rsvp-panel">
-          {!shouldHideRsvpIntro && (
-            <div className="rsvp-heading">
-              <div>
-                <p className="section-kicker">RSVP</p>
-                <p className="valid-for">This invitation is valid for <strong>{content.invitation.validPax} pax</strong></p>
-                <p className="date-note">Kindly RSVP by <strong>{content.rsvp.deadline}</strong></p>
+          <div className="panel-card rsvp-content-card">
+            {!shouldHideRsvpIntro && (
+              <div className="rsvp-heading">
+                <div>
+                  <p className="section-kicker">RSVP</p>
+                  <p className="valid-for">This invitation is valid for <strong>{content.invitation.validPax} pax</strong></p>
+                  <p className="date-note">Kindly RSVP by <strong>{content.rsvp.deadline}</strong></p>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* ... existing response logic ... */}
-          {response ? (
-            <div className="rsvp-submitted">
-              {attendance === 'yes' && (
-                <div className="success-rsvp-card">
-                  <p className="success-kicker">THE WEDDING OF</p>
-                  <h2 className="success-couple-names">
-                    <span>{content.couple.groomName.toUpperCase()}</span>
-                    <img className="success-and-image" src={andImage} alt="and" />
-                    <span>{content.couple.brideName.toUpperCase()}</span>
-                  </h2>
-                  <p className="success-date-text">{`${content.weddingDate.weekday}${content.weddingDate.dateText}`.toUpperCase()}</p>
+            {response ? (
+              <div className="rsvp-submitted">
+                {attendance === 'yes' && (
+                  <div className="success-rsvp-card">
+                    <p className="success-kicker">THE WEDDING OF</p>
+                    <h2 className="success-couple-names">
+                      <span>{content.couple.groomName.toUpperCase()}</span>
+                      <img className="success-and-image" src={andImage} alt="and" />
+                      <span>{content.couple.brideName.toUpperCase()}</span>
+                    </h2>
+                    <p className="success-date-text">{`${content.weddingDate.weekday}${content.weddingDate.dateText}`.toUpperCase()}</p>
 
-                  <p className="success-qr-note">PLEASE SCREENSHOT THIS QR CODE<br />FOR CHECK IN AT THE VENUE</p>
+                    <p className="success-qr-note">PLEASE SCREENSHOT THIS QR CODE<br />FOR CHECK IN AT THE VENUE</p>
 
-                  {qrCodeDataUrl ? (
-                    <div className="success-qr-shell" aria-label="Generated QR code">
-                      <div className="success-qr-inner">
-                        <img src={qrCodeDataUrl} alt="Reception check-in QR code" />
+                    {qrCodeDataUrl ? (
+                      <div className="success-qr-shell" aria-label="Generated QR code">
+                        <div className="success-qr-inner">
+                          <img src={qrCodeDataUrl} alt="Reception check-in QR code" />
+                        </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="success-qr-shell" aria-label="QR code loading">
-                      <div className="success-qr-inner">
-                        <span>QR CODE HERE</span>
+                    ) : (
+                      <div className="success-qr-shell" aria-label="QR code loading">
+                        <div className="success-qr-inner">
+                          <span>QR CODE HERE</span>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {tableNumber ? <p className="success-table-text">TABLE NUMBER: {tableNumber}</p> : null}
+                    {tableNumber ? <p className="success-table-text">TABLE NUMBER: {tableNumber}</p> : null}
 
-                  <button className="success-edit-rsvp-button" type="button" onClick={() => setResponse(null)}>
-                    Edit RSVP
+                    <button className="success-edit-rsvp-button" type="button" onClick={() => setResponse(null)}>
+                      Edit RSVP
+                    </button>
+                  </div>
+                )}
+
+                {attendance === 'no' && (
+                  <div className="submit-row" style={{ justifyContent: 'flex-start', marginBottom: 20 }}>
+                    <button className="submit-button" type="button" onClick={() => setResponse(null)}>
+                      Edit RSVP
+                    </button>
+                  </div>
+                )}
+
+                <div>
+                  <p className="bold-text-thankyou" style={{ paddingBottom: 0 }}>{attendance === 'yes' ? content.responses.accepted.title : content.responses.declined.title}</p>
+                  <p className="normal-text-thankyou" style={{ paddingBottom: 20 }}>{attendance === 'yes' ? content.responses.accepted.body : content.responses.declined.body}</p>
+                </div>
+
+                <div className="submitted-contact">
+                  <p className="bold-text" style={{ paddingBottom: 0 }}>For any queries please contact:</p>
+                  <a className="text-link" href={content.contact.whatsAppUrl} target="_blank" rel="noreferrer">
+                    {content.contact.display}
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <form className="rsvp-form" onSubmit={handleSubmit}>
+                <p className="bold-text">Will you be attending our wedding?</p>
+                <div className="attendance-toggle" role="radiogroup" aria-label="Attendance response">
+                  <button
+                    className={attendance === 'yes' ? 'toggle-button active' : 'toggle-button'}
+                    type="button"
+                    onClick={() => setAttendance('yes')}
+                  >
+                    Yes, with joy!
+                  </button>
+                  <button
+                    className={attendance === 'no' ? 'toggle-button active' : 'toggle-button'}
+                    type="button"
+                    onClick={() => setAttendance('no')}
+                  >
+                    Regretfully, I can't attend
                   </button>
                 </div>
-              )}
 
-              {attendance === 'no' && (
-                <div className="submit-row" style={{ justifyContent: 'flex-start', marginBottom: 20 }}>
-                  <button className="submit-button" type="button" onClick={() => setResponse(null)}>
-                    Edit RSVP
+                <p className="bold-text">Who will be attending?</p>
+
+                <div className="guest-fields">
+                  {guests.map((guest, index) => (
+                    <label className="guest-checkbox" key={guest.id}>
+                      <input
+                        type="checkbox"
+                        checked={selectedGuests[index] ?? false}
+                        onChange={() => toggleGuest(index)}
+                        disabled={attendance === 'no'}
+                      />
+                      <p className='normal-text'>{guest.designation} {guest.firstName} {guest.lastName}</p>
+                    </label>
+                  ))}
+                </div>
+
+                {formError ? <p className="form-message error">{formError}</p> : null}
+
+                <div className="submit-row">
+                  <button className="submit-button" type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? 'Sending RSVP...' : 'RSVP'}
                   </button>
                 </div>
-              )}
-
-              <div> 
-                <p className="bold-text-thankyou" style={{ paddingBottom: 0}}>{attendance === 'yes' ? content.responses.accepted.title : content.responses.declined.title}</p>
-                <p className="normal-text-thankyou" style={{ paddingBottom: 20 }}>{attendance === 'yes' ? content.responses.accepted.body : content.responses.declined.body}</p> 
-              </div>
-
-              <div className="submitted-contact">
-                <p className="bold-text" style={{ paddingBottom: 0 }}>For any queries please contact:</p>
-                <a className="text-link" href={content.contact.whatsAppUrl} target="_blank" rel="noreferrer">
-                  {content.contact.display}
-                </a>
-              </div>
-
-        
-            </div>
-          ) : (
-          <form className="rsvp-form" onSubmit={handleSubmit}>
-            <p className="bold-text">Will you be attending our wedding?</p>
-            <div className="attendance-toggle" role="radiogroup" aria-label="Attendance response">
-              <button
-                className={attendance === 'yes' ? 'toggle-button active' : 'toggle-button'}
-                type="button"
-                onClick={() => setAttendance('yes')}
-              >
-                Yes, with joy!
-              </button>
-              <button
-                className={attendance === 'no' ? 'toggle-button active' : 'toggle-button'}
-                type="button"
-                onClick={() => setAttendance('no')}
-              >
-                Regretfully, I can't attend
-              </button>
-            </div>
-
-            <p className="bold-text">Who will be attending?</p>
-
-            <div className="guest-fields">
-              {guests.map((guest, index) => (
-                <label className="guest-checkbox" key={guest.id}>
-                  <input
-                    type="checkbox"
-                    checked={selectedGuests[index] ?? false}
-                    onChange={() => toggleGuest(index)}
-                    disabled={attendance === 'no'}
-                  />
-                  <p className='normal-text'>{guest.designation} {guest.firstName} {guest.lastName}</p>
-                </label>
-              ))}
-            </div>
-
-            {formError ? <p className="form-message error">{formError}</p> : null}
-
-            <div className="submit-row">
-              <button className="submit-button" type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Sending RSVP...' : 'RSVP'}
-              </button>
-            </div>
-          </form>
-          )}
-
+              </form>
+            )}
+          </div>
         </section>
       )}
     </main>
