@@ -189,12 +189,20 @@ function App() {
   const shouldHideRsvpIntro = Boolean(response && attendance === 'yes' && qrCodeDataUrl)
 
   function openInvitation() {
-    setIsEnvelopeOpen(true)
+    setIsEnvelopeOpen((current) => !current)
   }
 
   return (
-    <main className="shell">
+    <main className={isEnvelopeOpen ? 'shell is-unlocked' : 'shell is-locked'}>
       <section className="hero-panel landing-panel">
+        <div className="landing-copy">
+          <p className="landing-kicker">DEAR</p>
+          <p className="landing-guest-name">{content.invitation.guestGroupName}</p>
+          <p className="landing-pax-note">
+            This invitation is valid for <strong>{content.invitation.validPax} pax</strong>
+          </p>
+        </div>
+
         <button className="landing-media-stage" type="button" onClick={openInvitation} aria-label="Open invitation">
           <img
             className={isEnvelopeOpen ? 'landing-envelope-image is-faded' : 'landing-envelope-image'}
@@ -211,19 +219,6 @@ function App() {
             muted
           />
         </button>
-
-        <div className="landing-copy">
-          <p className="landing-kicker">DEAR</p>
-          <p className="landing-guest-name">{content.invitation.guestGroupName}</p>
-          <p className="landing-pax-note">
-            This invitation is valid for <strong>{content.invitation.validPax} pax</strong>
-          </p>
-        </div>
-
-        {/* <div className="landing-envelope-copy">
-          <p className="landing-script">you&apos;ve got a mail!</p>
-          <p className="landing-script landing-script-bottom">click the seal to open</p>
-        </div> */}
       </section>
 
       <section className="story-grid" ref={invitationContentRef}>
