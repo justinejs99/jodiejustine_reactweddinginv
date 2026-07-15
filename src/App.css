@@ -58,6 +58,18 @@
   text-align: center;
 }
 
+.landing-media-stage {
+  position: absolute;
+  inset: 0;
+  background: #eeede7;
+  overflow: hidden;
+  z-index: 0;
+  padding: 0;
+  border: 0;
+  display: block;
+  cursor: pointer;
+}
+
 .landing-copy {
   display: flex;
   flex-direction: column;
@@ -67,6 +79,8 @@
   padding: 20px 20px 18px;
   border-radius: 20px;
   background: rgba(238, 237, 231, 0.65);
+  position: relative;
+  z-index: 1;
 }
 
 .landing-kicker {
@@ -106,6 +120,8 @@
   align-items: center;
   gap: 14px;
   width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .landing-script {
@@ -121,15 +137,17 @@
   border: 0;
   background: transparent;
   cursor: pointer;
-  width: min(100%, 430px);
+  width: 84px;
+  height: 84px;
+  display: grid;
+  place-items: center;
 }
 
-.landing-envelope-stage {
+.landing-envelope-seal {
   width: 100%;
-  aspect-ratio: 9 / 16;
-  background: #eeede7;
-  position: relative;
-  overflow: hidden;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(238, 237, 231, 0.25);
 }
 
 .landing-envelope-image {
@@ -137,10 +155,11 @@
   inset: 0;
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: contain;
   opacity: 1;
   transition: opacity 360ms ease;
+  z-index: 0;
 }
 
 .landing-envelope-image.is-faded {
@@ -157,6 +176,7 @@
   opacity: 0;
   transition: opacity 360ms ease;
   pointer-events: none;
+  z-index: 0;
 }
 
 .landing-envelope-video.is-visible {
@@ -1033,6 +1053,10 @@
     padding: 72px 24px 56px;
   }
 
+  .landing-media-stage {
+    background: #eeede7;
+  }
+
   .landing-kicker {
     font-size: 26px;
   }
@@ -1042,7 +1066,8 @@
   }
 
   .landing-envelope-button {
-    width: min(100%, 430px);
+    width: 76px;
+    height: 76px;
   }
 
   .success-rsvp-card {

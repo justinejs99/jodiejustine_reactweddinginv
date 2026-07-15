@@ -190,12 +190,28 @@ function App() {
 
   function openInvitation() {
     setIsEnvelopeOpen(true)
-    invitationContentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   return (
     <main className="shell">
       <section className="hero-panel landing-panel">
+        <button className="landing-media-stage" type="button" onClick={openInvitation} aria-label="Open invitation">
+          <img
+            className={isEnvelopeOpen ? 'landing-envelope-image is-faded' : 'landing-envelope-image'}
+            src={envelopeImage}
+            alt="Envelope invitation"
+          />
+          <video
+            ref={envelopeVideoRef}
+            className={isEnvelopeOpen ? 'landing-envelope-video is-visible' : 'landing-envelope-video'}
+            src={envelopeOpenVideo}
+            playsInline
+            preload="auto"
+            autoPlay={isEnvelopeOpen}
+            muted
+          />
+        </button>
+
         <div className="landing-copy">
           <p className="landing-kicker">DEAR</p>
           <p className="landing-guest-name">{content.invitation.guestGroupName}</p>
@@ -206,25 +222,6 @@ function App() {
 
         <div className="landing-envelope-copy">
           <p className="landing-script">you&apos;ve got a mail!</p>
-          <button className="landing-envelope-button" type="button" onClick={openInvitation} aria-label="Open invitation">
-            <div className="landing-envelope-stage" aria-hidden="true">
-              <img
-                className={isEnvelopeOpen ? 'landing-envelope-image is-faded' : 'landing-envelope-image'}
-                src={envelopeImage}
-                alt="Envelope invitation"
-              />
-              <video
-                ref={envelopeVideoRef}
-                className={isEnvelopeOpen ? 'landing-envelope-video is-visible' : 'landing-envelope-video'}
-                src={envelopeOpenVideo}
-                playsInline
-                preload="auto"
-                autoPlay={isEnvelopeOpen}
-                muted
-                onEnded={() => invitationContentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-              />
-            </div>
-          </button>
           <p className="landing-script landing-script-bottom">click the seal to open</p>
         </div>
       </section>
