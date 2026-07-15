@@ -113,6 +113,21 @@ function App() {
     }
   }, [content])
 
+  useEffect(() => {
+    if (!isEnvelopeOpen) {
+      return
+    }
+
+    const video = envelopeVideoRef.current
+
+    if (!video) {
+      return
+    }
+
+    video.currentTime = 0
+    void video.play().catch(() => {})
+  }, [isEnvelopeOpen])
+
   function toggleGuest(index: number) {
     setSelectedGuests((current) => {
       const next = [...current]
@@ -177,21 +192,6 @@ function App() {
     setIsEnvelopeOpen(true)
     invitationContentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
-
-  useEffect(() => {
-    if (!isEnvelopeOpen) {
-      return
-    }
-
-    const video = envelopeVideoRef.current
-
-    if (!video) {
-      return
-    }
-
-    video.currentTime = 0
-    void video.play().catch(() => {})
-  }, [isEnvelopeOpen])
 
   return (
     <main className="shell">
