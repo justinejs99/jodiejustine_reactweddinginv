@@ -1244,6 +1244,10 @@
 }
 
 @media (min-width: 721px) {
+  .polaroid-slider {
+    padding-top: clamp(5%, 5vw, 15%);
+  }
+
   .event-details,
   .rsvp-panel {
     background-color: #eeede7;
