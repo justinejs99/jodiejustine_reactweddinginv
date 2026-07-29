@@ -5,7 +5,7 @@ import type { RsvpRequest, RsvpResponse, WeddingSiteContent } from './types/wedd
 import QRCode from 'qrcode'
 import andImage from './assets/images/and.jpg'
 import envelopeImage from './assets/images/envelope.png'
-import envelopeOpenGif from './assets/videos/envelope-open.gif'
+import envelopeOpenVideo from './assets/videos/envelope-open.mp4'
 // import filmImage from './assets/images/FilmJJ.png'
 import photoA from './assets/images/a.jpg'
 import photoB from './assets/images/b.jpg'
@@ -24,6 +24,7 @@ function App() {
   const [selectedGuests, setSelectedGuests] = useState<boolean[]>([])
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState('')
   const invitationContentRef = useRef<HTMLElement | null>(null)
+  const envelopeVideoRef = useRef<HTMLVideoElement | null>(null)
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false)
 
   useEffect(() => {
@@ -76,6 +77,21 @@ function App() {
       isMounted = false
     }
   }, [])
+
+  useEffect(() => {
+    if (!isEnvelopeOpen) {
+      return
+    }
+
+    const video = envelopeVideoRef.current
+
+    if (!video) {
+      return
+    }
+
+    video.currentTime = 0
+    void video.play().catch(() => {})
+  }, [isEnvelopeOpen])
 
   useEffect(() => {
     if (!content) {
@@ -172,7 +188,7 @@ function App() {
   const shouldHideRsvpIntro = Boolean(response && attendance === 'yes' && qrCodeDataUrl)
 
   function openInvitation() {
-    setIsEnvelopeOpen((current) => !current)
+    setIsEnvelopeOpen(true)
   }
 
   return (
@@ -192,10 +208,14 @@ function App() {
             src={envelopeImage}
             alt="Envelope invitation"
           />
-          <img
+          <video
+            ref={envelopeVideoRef}
             className={isEnvelopeOpen ? 'landing-envelope-video is-visible' : 'landing-envelope-video'}
-            src={envelopeOpenGif}
-            alt="Envelope opening animation"
+            src={envelopeOpenVideo}
+            playsInline
+            preload="auto"
+            autoPlay={isEnvelopeOpen}
+            muted
           />
         </button>
       </section>

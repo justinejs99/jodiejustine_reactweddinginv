@@ -146,7 +146,7 @@
   transform: scale(1.25);
   transform-origin: center center;
   opacity: 1;
-  transition: opacity 360ms ease;
+  transition: opacity 300ms ease;
   z-index: 0;
 }
 
@@ -164,7 +164,7 @@
   transform-origin: center center;
   background-color: transparent;
   opacity: 0;
-  transition: opacity 360ms ease;
+  transition: opacity 300ms ease;
   pointer-events: none;
   z-index: 0;
 }
