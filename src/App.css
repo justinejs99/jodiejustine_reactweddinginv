@@ -142,7 +142,8 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transform: scale(1.15);
+  background-color: transparent;
+  transform: scale(1.25);
   transform-origin: center center;
   opacity: 1;
   transition: opacity 360ms ease;
@@ -159,9 +160,9 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transform: scale(1.15);
+  transform: scale(1.25);
   transform-origin: center center;
-  background: #eeede7;
+  background-color: transparent;
   opacity: 0;
   transition: opacity 360ms ease;
   pointer-events: none;
