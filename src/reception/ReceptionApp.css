@@ -20,7 +20,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  filter: blur(6px);
+  filter: blur(1px);
   transform: scale(1.03);
   z-index: -2;
 }
@@ -29,7 +29,7 @@
   content: '';
   position: fixed;
   inset: 0;
-  background: rgba(238, 237, 231, 0.24);
+  background: rgba(238, 237, 231, 0.18);
   z-index: -1;
 }
 
@@ -195,7 +195,7 @@
 /* ─── QR Scan card ───────────────────────────────────────────────────────── */
 
 .scan-card-outer {
-  width: min(640px, 100%);
+  width: min(580px, 100%);
   aspect-ratio: 1 / 1;
   background: #f3f3ed;
   border-radius: 18px;

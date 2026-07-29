@@ -139,7 +139,7 @@ function QrScanner({ onGroupId, onError, facingMode }: QrScannerProps) {
 
       const config = {
         fps: 10,
-        qrbox: { width: 240, height: 240 },
+        qrbox: { width: 200, height: 200 },
         disableFlip: true
       }
 

@@ -25,7 +25,7 @@ body {
 .home-reception-shell {
   min-height: 100vh;
   width: 100%;
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.54), rgba(255, 255, 255, 0.66)), url('./src/assets/images/reception_homepage.JPG');
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.5)), url('./src/assets/images/reception_homepage.JPG');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -46,7 +46,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 12px;
   text-align: center;
   color: var(--home-text);
   text-shadow: 0 2px 8px var(--home-shadow);
@@ -68,7 +68,6 @@ body {
 }
 
 .home-names {
-  margin-top: 4px;
   font-family: var(--home-font-display);
   font-size: clamp(72px, 9.3vw, 112px);
   font-weight: 400;
@@ -91,7 +90,7 @@ body {
 
 .event-line {
   font-family: var(--home-font-body);
-  font-size: clamp(17px, 2.1vw, 24px);
+  font-size: clamp(14px, 1.7vw, 19px);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -104,7 +103,7 @@ body {
   padding: 12px 30px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.2);
+  background: #790606;
   backdrop-filter: blur(8px);
   color: #ffffff;
   text-decoration: none;
@@ -119,12 +118,12 @@ body {
 .guest-signin-btn:hover,
 .guest-signin-btn:focus-visible {
   transform: translateY(-2px);
-  background: rgba(255, 255, 255, 0.32);
+  background: #650505;
 }
 
 @media (max-width: 640px) {
   .home-reception-center {
-    gap: 6px;
+    gap: 10px;
   }
 
   .guest-signin-btn {
