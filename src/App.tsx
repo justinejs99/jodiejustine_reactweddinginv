@@ -90,6 +90,7 @@ function App() {
       return
     }
 
+    video.playbackRate = 1.12
     video.currentTime = 0
     void video.play().catch(() => {})
   }, [isEnvelopeOpen])
