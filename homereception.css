@@ -3,8 +3,8 @@
 :root {
   --home-font-display: 'The Seasons', serif;
   --home-font-body: 'Montserrat', sans-serif;
-  --home-text: #ffffff;
-  --home-shadow: rgba(0, 0, 0, 0.45);
+  --home-text: #790606;
+  --home-shadow: rgba(0, 0, 0, 0.14);
 }
 
 * {
@@ -25,7 +25,7 @@ body {
 .home-reception-shell {
   min-height: 100vh;
   width: 100%;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.45)), url('./src/assets/images/reception_homepage.JPG');
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.54), rgba(255, 255, 255, 0.66)), url('./src/assets/images/reception_homepage.JPG');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -46,26 +46,54 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   text-align: center;
   color: var(--home-text);
-  text-shadow: 0 4px 20px var(--home-shadow);
+  text-shadow: 0 2px 8px var(--home-shadow);
 }
 
-.welcome-line,
+.home-eyebrow,
+.home-names,
 .event-line {
   margin: 0;
-  font-family: var(--home-font-display);
-  letter-spacing: 0.02em;
   line-height: 1.12;
 }
 
-.welcome-line {
-  font-size: clamp(30px, 5.2vw, 54px);
+.home-eyebrow {
+  font-family: var(--home-font-body);
+  font-size: clamp(17px, 2.3vw, 26px);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.home-names {
+  margin-top: 4px;
+  font-family: var(--home-font-display);
+  font-size: clamp(72px, 9.3vw, 112px);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  line-height: 1;
+}
+
+.home-and-img {
+  height: 0.72em;
+  width: auto;
+  object-fit: contain;
+  vertical-align: baseline;
+  mix-blend-mode: multiply;
 }
 
 .event-line {
-  font-size: clamp(23px, 4vw, 36px);
+  font-family: var(--home-font-body);
+  font-size: clamp(17px, 2.1vw, 24px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .guest-signin-btn {

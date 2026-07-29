@@ -6,11 +6,31 @@
   flex-direction: column;
   font-family: var(--font-body);
   color: #790606;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   background-color: #eeede7;
+}
+
+.reception-shell::before {
+  content: '';
+  position: fixed;
+  inset: 0;
   background-image: url('../assets/images/receptionbg.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  filter: blur(6px);
+  transform: scale(1.03);
+  z-index: -2;
+}
+
+.reception-shell::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(238, 237, 231, 0.24);
+  z-index: -1;
 }
 
 /* ─── Header ─────────────────────────────────────────────────────────────── */
@@ -175,7 +195,8 @@
 /* ─── QR Scan card ───────────────────────────────────────────────────────── */
 
 .scan-card-outer {
-  width: min(500px, 100%);
+  width: min(640px, 100%);
+  aspect-ratio: 1 / 1;
   background: #f3f3ed;
   border-radius: 18px;
   padding: 22px 22px 26px;
@@ -294,10 +315,11 @@
 
 .scan-card-inner {
   width: 100%;
+  flex: 1;
   background: #f3f3ed;
   border-radius: 12px;
   overflow: hidden;
-  min-height: 260px;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -342,6 +364,7 @@
   .scan-card-outer {
     width: 100%;
     max-width: 420px;
+    aspect-ratio: 1 / 1;
     margin: 0 auto;
     padding: 16px 14px 18px;
   }
