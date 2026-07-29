@@ -23,6 +23,7 @@ function App() {
   const [attendance, setAttendance] = useState<RsvpRequest['attendance']>('yes')
   const [selectedGuests, setSelectedGuests] = useState<boolean[]>([])
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState('')
+  const shellRef = useRef<HTMLElement | null>(null)
   const invitationContentRef = useRef<HTMLElement | null>(null)
   const envelopeVideoRef = useRef<HTMLVideoElement | null>(null)
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false)
@@ -188,11 +189,26 @@ function App() {
   const shouldHideRsvpIntro = Boolean(response && attendance === 'yes' && qrCodeDataUrl)
 
   function openInvitation() {
+    if (isEnvelopeOpen) {
+      const video = envelopeVideoRef.current
+      const shell = shellRef.current
+
+      if (video) {
+        video.pause()
+        video.currentTime = 0
+      }
+
+      shell?.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+      setIsEnvelopeOpen(false)
+      return
+    }
+
     setIsEnvelopeOpen(true)
   }
 
   return (
-    <main className={isEnvelopeOpen ? 'shell is-unlocked' : 'shell is-locked'}>
+    <main ref={shellRef} className={isEnvelopeOpen ? 'shell is-unlocked' : 'shell is-locked'}>
       <section className="hero-panel landing-panel">
         <div className="landing-copy">
           <p className="landing-kicker">DEAR</p>
