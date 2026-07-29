@@ -262,23 +262,22 @@ function CounterRow({ label, value, max, onChange }: CounterRowProps) {
 // ─── Page Header ──────────────────────────────────────────────────────────────
 
 interface PageHeaderProps {
-  onHomeClick: () => void
+  homeHref: string
 }
 
-function PageHeader({ onHomeClick }: PageHeaderProps) {
+function PageHeader({ homeHref }: PageHeaderProps) {
   return (
     <header className="reception-header">
-      <button
-        type="button"
+      <a
         className="header-icon-btn"
-        aria-label="Return to scanner"
-        onClick={onHomeClick}
+        aria-label="Go to reception home"
+        href={homeHref}
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
           <polyline points="9 22 9 12 15 12 15 22" />
         </svg>
-      </button>
+      </a>
 
       <div className="header-title">
         <p className="header-eyebrow">Welcome to the wedding of</p>
@@ -398,9 +397,12 @@ export default function ReceptionApp() {
     setErrorMsg('')
   }
 
+  const basePath = window.location.pathname.includes('/JodieJustine/') ? '/JodieJustine' : ''
+  const homeReceptionHref = `${basePath}/homereception.html`
+
   return (
     <div className="reception-shell">
-      <PageHeader onHomeClick={handleHome} />
+      <PageHeader homeHref={homeReceptionHref} />
 
       <main className="reception-main">
         {/* ── SCANNING ── */}

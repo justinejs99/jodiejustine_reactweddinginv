@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=The+Seasons:wght@400;600;700&family=Montserrat:wght@400;600;700&display=swap');
+
+:root {
+  --home-font-display: 'The Seasons', serif;
+  --home-font-body: 'Montserrat', sans-serif;
+  --home-text: #ffffff;
+  --home-shadow: rgba(0, 0, 0, 0.45);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--home-font-body);
+}
+
+.home-reception-shell {
+  min-height: 100vh;
+  width: 100%;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.45)), url('./src/assets/images/reception_homepage.JPG');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.home-reception-overlay {
+  min-height: 100vh;
+  width: 100%;
+  padding: clamp(20px, 5vw, 48px);
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  align-items: center;
+}
+
+.home-reception-center {
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  color: var(--home-text);
+  text-shadow: 0 4px 20px var(--home-shadow);
+}
+
+.welcome-line,
+.event-line {
+  margin: 0;
+  font-family: var(--home-font-display);
+  letter-spacing: 0.02em;
+  line-height: 1.12;
+}
+
+.welcome-line {
+  font-size: clamp(30px, 5.2vw, 54px);
+}
+
+.event-line {
+  font-size: clamp(23px, 4vw, 36px);
+}
+
+.guest-signin-btn {
+  grid-row: 3;
+  justify-self: center;
+  align-self: end;
+  margin-bottom: clamp(12px, 4.2vh, 52px);
+  padding: 12px 30px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-family: var(--home-font-body);
+  font-weight: 700;
+  font-size: clamp(12px, 2.3vw, 14px);
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.guest-signin-btn:hover,
+.guest-signin-btn:focus-visible {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.32);
+}
+
+@media (max-width: 640px) {
+  .home-reception-center {
+    gap: 6px;
+  }
+
+  .guest-signin-btn {
+    width: min(92vw, 340px);
+    text-align: center;
+  }
+}

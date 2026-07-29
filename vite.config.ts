@@ -9,6 +9,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: 'index.html',
+        homereception: 'homereception.html',
         reception: 'reception.html',
       },
     },
