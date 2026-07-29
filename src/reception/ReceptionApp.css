@@ -16,7 +16,7 @@
   content: '';
   position: fixed;
   inset: 0;
-  background-image: url('../assets/images/receptionbg.png');
+  background-image: url('../assets/images/reception_homepage.JPG');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -49,7 +49,7 @@
 
 .reception-header::after {
   content: "";
-  width: 48px; /* matching .header-icon-btn width */
+  width: 52px; /* matching .header-icon-btn width */
   flex-shrink: 0;
 }
 
@@ -57,11 +57,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border: none;
   border-radius: 10px;
-  background: #dab6b6;
+  background: #ffffff;
   cursor: pointer;
   color: #790606;
   flex-shrink: 0;
@@ -70,7 +70,7 @@
 }
 
 .header-icon-btn:hover:not(:disabled) {
-  background: #d1aaaa;
+  background: #f3f3ed;
 }
 
 .header-icon-btn:disabled {
@@ -79,8 +79,8 @@
 }
 
 .header-icon-btn svg {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
 }
 
 .header-title {
@@ -119,7 +119,7 @@
   width: auto;
   object-fit: contain;
   vertical-align: baseline;
-  mix-blend-mode: multiply;
+  mix-blend-mode: normal;
 }
 
 /* ─── Main content ───────────────────────────────────────────────────────── */
@@ -228,7 +228,7 @@
 .camera-toggle-btn {
   display: none;
   border: none;
-  background: #dab6b6;
+  background: #ffffff;
   color: #790606;
   border-radius: 8px;
   width: 36px;
@@ -239,7 +239,7 @@
 }
 
 .camera-toggle-btn:hover {
-  background: #d1aaaa;
+  background: #f3f3ed;
 }
 
 .camera-toggle-icon {
@@ -298,7 +298,7 @@
   padding: 9px 18px;
   border: none;
   border-radius: 8px;
-  background: #dab6b6;
+  background: #ffffff;
   color: #790606;
   font-family: var(--font-body);
   font-size: 12px;
@@ -310,7 +310,7 @@
 }
 
 .manual-entry-btn:hover {
-  background: #d1aaaa;
+  background: #f3f3ed;
 }
 
 .scan-card-inner {
@@ -343,17 +343,17 @@
   }
 
   .reception-header::after {
-    width: 40px; /* smaller for mobile if needed, but home btn is 48px */
+    width: 44px; /* smaller for mobile if needed, but home btn is 44px */
   }
 
   /* Make home btn match the balanced empty space */
   .header-icon-btn {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
   }
 
   .reception-header::after {
-    width: 40px;
+    width: 44px;
   }
 
   .reception-main {
@@ -578,7 +578,7 @@
   height: 28px;
   border-radius: 50%;
   border: none;
-  background: #dab6b6;
+  background: #ffffff;
   color: #790606;
   font-size: 18px;
   font-weight: 700;
@@ -589,7 +589,7 @@
 }
 
 .counter-btn:hover:not(:disabled) {
-  background: #d1aaaa;
+  background: #f3f3ed;
 }
 
 .counter-btn:disabled {
@@ -619,7 +619,7 @@
   padding: 10px 28px;
   border: none;
   border-radius: 8px;
-  background: #dab6b6;
+  background: #ffffff;
   color: #790606;
   font-family: var(--font-body);
   font-size: 12px;
@@ -631,7 +631,7 @@
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: #d1aaaa;
+  background: #f3f3ed;
 }
 
 .submit-btn:disabled {
