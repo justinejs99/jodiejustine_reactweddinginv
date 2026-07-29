@@ -6,6 +6,11 @@
   flex-direction: column;
   font-family: var(--font-body);
   color: #790606;
+  background-color: #eeede7;
+  background-image: url('../assets/images/receptionbg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* ─── Header ─────────────────────────────────────────────────────────────── */
@@ -36,7 +41,7 @@
   height: 48px;
   border: none;
   border-radius: 10px;
-  background: rgba(238, 237, 231, 0.85);
+  background: #dab6b6;
   cursor: pointer;
   color: #790606;
   flex-shrink: 0;
@@ -45,7 +50,7 @@
 }
 
 .header-icon-btn:hover:not(:disabled) {
-  background: #e0ddd4;
+  background: #d1aaaa;
 }
 
 .header-icon-btn:disabled {
@@ -112,7 +117,7 @@
 
 .status-card {
   width: min(420px, 100%);
-  background: #c9c5b2;
+  background: #f3f3ed;
   border-radius: 18px;
   padding: 25px;
   text-align: center;
@@ -171,7 +176,7 @@
 
 .scan-card-outer {
   width: min(500px, 100%);
-  background: #c9c5b2;
+  background: #f3f3ed;
   border-radius: 18px;
   padding: 22px 22px 26px;
   display: flex;
@@ -202,18 +207,18 @@
 .camera-toggle-btn {
   display: none;
   border: none;
-  background: transparent;
-  color: #1b1b1b;
-  border-radius: 0;
+  background: #dab6b6;
+  color: #790606;
+  border-radius: 8px;
   width: 36px;
   height: 36px;
   padding: 0;
   cursor: pointer;
-  transition: opacity 0.15s;
+  transition: background 0.15s, opacity 0.15s;
 }
 
 .camera-toggle-btn:hover {
-  opacity: 0.7;
+  background: #d1aaaa;
 }
 
 .camera-toggle-icon {
@@ -272,8 +277,8 @@
   padding: 9px 18px;
   border: none;
   border-radius: 8px;
-  background: #4a4640;
-  color: #ffffff;
+  background: #dab6b6;
+  color: #790606;
   font-family: var(--font-body);
   font-size: 12px;
   font-weight: 700;
@@ -284,12 +289,12 @@
 }
 
 .manual-entry-btn:hover {
-  background: #333030;
+  background: #d1aaaa;
 }
 
 .scan-card-inner {
   width: 100%;
-  background: #ffffff;
+  background: #f3f3ed;
   border-radius: 12px;
   overflow: hidden;
   min-height: 260px;
@@ -411,7 +416,7 @@
 }
 
 .detail-card {
-  background: #c9c5b2;
+  background: #f3f3ed;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
@@ -432,7 +437,7 @@
 }
 
 .detail-card-body {
-  background: #ffffff;
+  background: #f3f3ed;
   margin: 0 12px 12px;
   border-radius: 10px;
   padding: 0 20px;
@@ -443,7 +448,7 @@
 }
 
 .detail-card-body-counter {
-  background: #ffffff;
+  background: #f3f3ed;
   margin: 0 12px 12px;
   border-radius: 10px;
   padding: 15px 20px;
@@ -550,8 +555,8 @@
   height: 28px;
   border-radius: 50%;
   border: none;
-  background: #c9a87c;
-  color: #ffffff;
+  background: #dab6b6;
+  color: #790606;
   font-size: 18px;
   font-weight: 700;
   line-height: 1;
@@ -561,7 +566,7 @@
 }
 
 .counter-btn:hover:not(:disabled) {
-  background: #b8956a;
+  background: #d1aaaa;
 }
 
 .counter-btn:disabled {
@@ -591,8 +596,8 @@
   padding: 10px 28px;
   border: none;
   border-radius: 8px;
-  background: #4a4640;
-  color: #ffffff;
+  background: #dab6b6;
+  color: #790606;
   font-family: var(--font-body);
   font-size: 12px;
   font-weight: 700;
@@ -603,7 +608,7 @@
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: #333030;
+  background: #d1aaaa;
 }
 
 .submit-btn:disabled {
