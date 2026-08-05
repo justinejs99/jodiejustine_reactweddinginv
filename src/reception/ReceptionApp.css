@@ -451,7 +451,7 @@
   margin: 0;
   padding: 10px 18px;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -460,7 +460,7 @@
 }
 
 .detail-card-body {
-  background: transparent;
+  background: #ffffff;
   margin: 0 12px 12px;
   border-radius: 10px;
   padding: 0 20px;
@@ -471,7 +471,7 @@
 }
 
 .detail-card-body-counter {
-  background: transparent;
+  background: #ffffff;
   margin: 0 12px 12px;
   border-radius: 10px;
   padding: 15px 20px;
@@ -486,7 +486,7 @@
 .guest-name-display {
   margin: 0;
   font-family: var(--font-body);
-  font-size: 18px;
+  font-size: 35px;
   font-weight: 700;
   letter-spacing: 0.1em;
   color: #790606;
@@ -506,7 +506,7 @@
 
 .detail-list dt {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -518,7 +518,7 @@
 .detail-list dd {
   margin: 0;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 20px;
   font-weight: 500;
   letter-spacing: 0.1em;
   color: #790606;
@@ -547,7 +547,7 @@
 
 .counter-label {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -562,9 +562,9 @@
 
 .counter-value {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 20px;
   font-weight: 600;
-  min-width: 36px;
+  min-width: 60px;
   text-align: center;
   color: #790606;
   letter-spacing: 0.1em;
@@ -578,7 +578,7 @@
   height: 28px;
   border-radius: 50%;
   border: none;
-  background: #ffffff;
+  background: #f3f3ed;
   color: #790606;
   font-size: 18px;
   font-weight: 700;
@@ -593,8 +593,8 @@
 }
 
 .counter-btn:disabled {
-  opacity: 0.35;
   cursor: default;
+  color: #aaa9a4;
 }
 
 .counter-divider {
@@ -631,7 +631,8 @@
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: #f3f3ed;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .submit-btn:disabled {

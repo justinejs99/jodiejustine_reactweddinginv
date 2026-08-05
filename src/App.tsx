@@ -7,6 +7,7 @@ import andImage from './assets/images/and.jpg'
 import envelopeImage from './assets/images/envelope.png'
 import logoJjWhite from './assets/images/logojjwhite.png'
 import envelopeOpenVideo from './assets/videos/envelope-open.mp4'
+import preludeVideo from './assets/videos/paperplanestopmo.mp4'
 // import filmImage from './assets/images/FilmJJ.png'
 import photoA from './assets/images/a.jpg'
 import photoB from './assets/images/b.jpg'
@@ -292,6 +293,14 @@ function App() {
 
       <section className="story-grid" ref={invitationContentRef}>
         <div className="panel prelude-panel" aria-label="Wedding prelude page">
+          <video
+            className="prelude-bg-video"
+            src={preludeVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
           <img className="prelude-logo" src={logoJjWhite} alt="Sean and Cynthia wedding monogram" />
         </div>
 

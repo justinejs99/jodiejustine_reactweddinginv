@@ -193,18 +193,23 @@
   justify-content: flex-start;
   gap: 0;
   padding: 25dvh 24px 24px;
-  background-image: url('./assets/images/JJ-3305.jpg');
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
+  background: #000;
   isolation: isolate;
 }
 
 .panel.prelude-panel {
-  background-image: url('./assets/images/JJ-3305.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: #000;
+}
+
+.prelude-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .prelude-logo {
@@ -213,6 +218,8 @@
   display: block;
   margin: 0;
   filter: drop-shadow(0 4px 12px rgba(5, 22, 54, 0.32));
+  position: relative;
+  z-index: 1;
 }
 
 @media (max-width: 720px) {
