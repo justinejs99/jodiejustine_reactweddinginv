@@ -16,7 +16,7 @@
   content: '';
   position: fixed;
   inset: 0;
-  background-image: url('../assets/images/reception_homepage.JPG');
+  background-image: url('../assets/images/receptionbg.png'), url('../assets/images/reception_homepage.JPG');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

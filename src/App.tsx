@@ -352,11 +352,6 @@ function App() {
           </div>
 
           <section className="memory-gallery" aria-label="Wedding memories gallery">
-            <header className="memory-gallery-header">
-              <h3 className="memory-gallery-title">Gallery Photo</h3>
-              <p className="memory-gallery-tag">#SENdingloveforCYN</p>
-            </header>
-
             <div className="memory-carousel" role="region" aria-label="Swipe to browse gallery photos">
               <article className="memory-slide">
                 <img src={photoA} alt="Sean and Cynthia by the sea" />
