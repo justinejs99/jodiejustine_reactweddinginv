@@ -26,9 +26,9 @@ body {
   min-height: 100vh;
   width: 100%;
   background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.5)), url('./src/assets/images/reception_homepage.JPG');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
 }
 
 .home-reception-shell,
