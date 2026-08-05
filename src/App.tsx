@@ -11,7 +11,6 @@ import photoA from './assets/images/a.jpg'
 import photoB from './assets/images/b.jpg'
 import photoC from './assets/images/c.jpg'
 import photoD from './assets/images/d.jpg'
-import photoE from './assets/images/e.jpg'
 
 function App() {
   const [content, setContent] = useState<WeddingSiteContent | null>(null)
@@ -341,47 +340,26 @@ function App() {
             </div>
           </div>
 
-          <div className="polaroid-slider">
-            <div className="polaroid-track">
-              <div className="polaroid">
-                <img src={photoA} alt="Photo 1" />
-                <p className="polaroid-caption">memories</p>
+          <div className="memory-gallery" aria-label="Wedding memories gallery">
+            <div className="memory-gallery-grid">
+              <div className="memory-card memory-card--main">
+                <img src={photoA} alt="A cherished wedding memory" />
+                <p className="memory-caption">our beginning</p>
               </div>
-              <div className="polaroid">
-                <img src={photoB} alt="Photo 2" />
-                <p className="polaroid-caption">together</p>
-              </div>
-              <div className="polaroid">
-                <img src={photoC} alt="Photo 3" />
-                <p className="polaroid-caption">forever</p>
-              </div>
-              <div className="polaroid">
-                <img src={photoD} alt="Photo 4" />
-                <p className="polaroid-caption">love</p>
-              </div>
-              <div className="polaroid">
-                <img src={photoE} alt="Photo 5" />
-                <p className="polaroid-caption">us</p>
-              </div>
-              <div className="polaroid">
-                <img src={photoA} alt="Photo 1" />
-                <p className="polaroid-caption">memories</p>
-              </div>
-              <div className="polaroid">
-                <img src={photoB} alt="Photo 2" />
-                <p className="polaroid-caption">together</p>
-              </div>
-              <div className="polaroid">
-                <img src={photoC} alt="Photo 3" />
-                <p className="polaroid-caption">forever</p>
-              </div>
-              <div className="polaroid">
-                <img src={photoD} alt="Photo 4" />
-                <p className="polaroid-caption">love</p>
-              </div>
-              <div className="polaroid">
-                <img src={photoE} alt="Photo 5" />
-                <p className="polaroid-caption">us</p>
+
+              <div className="memory-gallery-stack">
+                <div className="memory-card memory-card--secondary">
+                  <img src={photoB} alt="A tender wedding memory" />
+                  <p className="memory-caption">softly</p>
+                </div>
+                <div className="memory-card memory-card--secondary">
+                  <img src={photoC} alt="A joyful wedding memory" />
+                  <p className="memory-caption">together</p>
+                </div>
+                <div className="memory-card memory-card--secondary">
+                  <img src={photoD} alt="A romantic wedding memory" />
+                  <p className="memory-caption">forever</p>
+                </div>
               </div>
             </div>
           </div>
