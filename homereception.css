@@ -3,7 +3,7 @@
 :root {
   --home-font-display: 'The Seasons', serif;
   --home-font-body: 'Montserrat', sans-serif;
-  --home-text: #000000;
+  --home-text: #414141;
   --home-shadow: rgba(0, 0, 0, 0.14);
 }
 
@@ -25,7 +25,7 @@ body {
 .home-reception-shell {
   min-height: 100vh;
   width: 100%;
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.5)), url('./src/assets/images/receptionbg.png'), url('./src/assets/images/reception_homepage.JPG');
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.5)), url('./src/assets/images/reception_homepage.JPG');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -33,7 +33,7 @@ body {
 
 .home-reception-shell,
 .home-reception-shell * {
-  color: #000000;
+  color: #414141;
 }
 
 .home-reception-overlay {
@@ -111,7 +111,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.7);
   background: #790606;
   backdrop-filter: blur(8px);
-  color: #000000;
+  color: #ffffff;
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.14em;

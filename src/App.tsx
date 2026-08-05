@@ -274,13 +274,7 @@ function App() {
 
       <section className="story-grid" ref={invitationContentRef}>
         <div className="panel prelude-panel" aria-label="Wedding prelude page">
-          <p className="section-kicker prelude-kicker">The Wedding Of</p>
           <img className="prelude-logo" src={logoJjWhite} alt="Sean and Cynthia wedding monogram" />
-          <h2 className="prelude-names">
-            Jodie
-            <img src={andImage} alt="and" className="prelude-and-img" />
-            Justine
-          </h2>
         </div>
 
         <div className="panel family-details">
