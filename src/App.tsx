@@ -27,6 +27,8 @@ function App() {
   const invitationContentRef = useRef<HTMLElement | null>(null)
   const envelopeVideoRef = useRef<HTMLVideoElement | null>(null)
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false)
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
+  const [isVideoReady, setIsVideoReady] = useState(false)
 
   useEffect(() => {
     let isMounted = true
@@ -80,7 +82,8 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (!isEnvelopeOpen) {
+    if (!isEnvelopeOpen || !shouldLoadVideo) {
+      setIsVideoReady(false)
       return
     }
 
@@ -90,10 +93,36 @@ function App() {
       return
     }
 
-    video.playbackRate = 1.12
+    const handleReady = () => {
+      setIsVideoReady(true)
+    }
+
+    const handleError = () => {
+      setIsVideoReady(false)
+    }
+
+    if (video.readyState >= 2) {
+      handleReady()
+    } else {
+      video.addEventListener('loadeddata', handleReady)
+      video.addEventListener('canplay', handleReady)
+      video.addEventListener('canplaythrough', handleReady)
+      video.addEventListener('error', handleError)
+    }
+
     video.currentTime = 0
+    video.playbackRate = 1.12
     void video.play().catch(() => {})
-  }, [isEnvelopeOpen])
+
+    return () => {
+      video.pause()
+      video.removeEventListener('loadeddata', handleReady)
+      video.removeEventListener('canplay', handleReady)
+      video.removeEventListener('canplaythrough', handleReady)
+      video.removeEventListener('error', handleError)
+      setIsVideoReady(false)
+    }
+  }, [isEnvelopeOpen, shouldLoadVideo])
 
   useEffect(() => {
     if (!content) {
@@ -201,10 +230,14 @@ function App() {
 
       shell?.scrollTo({ top: 0, left: 0, behavior: 'auto' })
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+      setShouldLoadVideo(false)
+      setIsVideoReady(false)
       setIsEnvelopeOpen(false)
       return
     }
 
+    setShouldLoadVideo(true)
+    setIsVideoReady(false)
     setIsEnvelopeOpen(true)
   }
 
@@ -225,15 +258,17 @@ function App() {
             src={envelopeImage}
             alt="Envelope invitation"
           />
-          <video
-            ref={envelopeVideoRef}
-            className={isEnvelopeOpen ? 'landing-envelope-video is-visible' : 'landing-envelope-video'}
-            src={envelopeOpenVideo}
-            playsInline
-            preload="auto"
-            autoPlay={isEnvelopeOpen}
-            muted
-          />
+          {shouldLoadVideo ? (
+            <video
+              ref={envelopeVideoRef}
+              className={isEnvelopeOpen && isVideoReady ? 'landing-envelope-video is-visible' : 'landing-envelope-video'}
+              src={envelopeOpenVideo}
+              poster={envelopeImage}
+              playsInline
+              preload="metadata"
+              muted
+            />
+          ) : null}
         </button>
       </section>
 

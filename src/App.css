@@ -177,6 +177,7 @@
   transition: opacity 300ms ease;
   pointer-events: none;
   z-index: 0;
+  will-change: opacity;
 }
 
 .landing-envelope-video.is-visible {
