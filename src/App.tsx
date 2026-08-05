@@ -347,29 +347,27 @@ function App() {
             </div>
           </div>
 
-          <div className="memory-gallery" aria-label="Wedding memories gallery">
-            <div className="memory-gallery-grid">
-              <div className="memory-card memory-card--main">
-                <img src={photoA} alt="A cherished wedding memory" />
-                <p className="memory-caption">our beginning</p>
-              </div>
+          <section className="memory-gallery" aria-label="Wedding memories gallery">
+            <header className="memory-gallery-header">
+              <h3 className="memory-gallery-title">Gallery Photo</h3>
+              <p className="memory-gallery-tag">#SENdingloveforCYN</p>
+            </header>
 
-              <div className="memory-gallery-stack">
-                <div className="memory-card memory-card--secondary">
-                  <img src={photoB} alt="A tender wedding memory" />
-                  <p className="memory-caption">softly</p>
-                </div>
-                <div className="memory-card memory-card--secondary">
-                  <img src={photoC} alt="A joyful wedding memory" />
-                  <p className="memory-caption">together</p>
-                </div>
-                <div className="memory-card memory-card--secondary">
-                  <img src={photoD} alt="A romantic wedding memory" />
-                  <p className="memory-caption">forever</p>
-                </div>
-              </div>
+            <div className="memory-carousel" role="region" aria-label="Swipe to browse gallery photos">
+              <article className="memory-slide">
+                <img src={photoA} alt="Sean and Cynthia by the sea" />
+              </article>
+              <article className="memory-slide">
+                <img src={photoB} alt="Sean and Cynthia in a candid moment" />
+              </article>
+              <article className="memory-slide">
+                <img src={photoC} alt="Sean and Cynthia sharing a quiet moment" />
+              </article>
+              <article className="memory-slide">
+                <img src={photoD} alt="Sean and Cynthia portrait" />
+              </article>
             </div>
-          </div>
+          </section>
         </div>
 
 
