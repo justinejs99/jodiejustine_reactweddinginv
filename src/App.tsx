@@ -5,6 +5,7 @@ import type { RsvpRequest, RsvpResponse, WeddingSiteContent } from './types/wedd
 import QRCode from 'qrcode'
 import andImage from './assets/images/and.jpg'
 import envelopeImage from './assets/images/envelope.png'
+import logoJjWhite from './assets/images/logojjwhite.png'
 import envelopeOpenVideo from './assets/videos/envelope-open.mp4'
 // import filmImage from './assets/images/FilmJJ.png'
 import photoA from './assets/images/a.jpg'
@@ -272,6 +273,12 @@ function App() {
       </section>
 
       <section className="story-grid" ref={invitationContentRef}>
+        <div className="panel prelude-panel" aria-label="Wedding prelude page">
+          <p className="section-kicker prelude-kicker">The Wedding Of</p>
+          <img className="prelude-logo" src={logoJjWhite} alt="Sean and Cynthia wedding monogram" />
+          <p className="prelude-couple">{content.couple.groomName} &amp; {content.couple.brideName}</p>
+        </div>
+
         <div className="panel family-details">
           <p className="family-invitation-text">
             Together with our families
