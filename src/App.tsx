@@ -276,7 +276,11 @@ function App() {
         <div className="panel prelude-panel" aria-label="Wedding prelude page">
           <p className="section-kicker prelude-kicker">The Wedding Of</p>
           <img className="prelude-logo" src={logoJjWhite} alt="Sean and Cynthia wedding monogram" />
-          <p className="prelude-couple">{content.couple.groomName} &amp; {content.couple.brideName}</p>
+          <h2 className="prelude-names">
+            Jodie
+            <img src={andImage} alt="and" className="prelude-and-img" />
+            Justine
+          </h2>
         </div>
 
         <div className="panel family-details">
