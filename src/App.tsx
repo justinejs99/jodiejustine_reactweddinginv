@@ -29,6 +29,7 @@ function App() {
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false)
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
   const [isVideoReady, setIsVideoReady] = useState(false)
+  const [isVideoEnded, setIsVideoEnded] = useState(false)
 
   useEffect(() => {
     let isMounted = true
@@ -97,8 +98,14 @@ function App() {
       setIsVideoReady(true)
     }
 
+    const handleEnded = () => {
+      setIsVideoEnded(true)
+    }
+
     const handleError = () => {
       setIsVideoReady(false)
+      // On error, still allow scrolling so user isn't stuck
+      setIsVideoEnded(true)
     }
 
     if (video.readyState >= 2) {
@@ -110,17 +117,24 @@ function App() {
       video.addEventListener('error', handleError)
     }
 
+    video.addEventListener('ended', handleEnded)
+
     video.currentTime = 0
     video.playbackRate = 1.12
-    void video.play().catch(() => {})
+    void video.play().catch(() => {
+      // If play is blocked, unlock scroll so user isn't stuck
+      setIsVideoEnded(true)
+    })
 
     return () => {
       video.pause()
       video.removeEventListener('loadeddata', handleReady)
       video.removeEventListener('canplay', handleReady)
       video.removeEventListener('canplaythrough', handleReady)
+      video.removeEventListener('ended', handleEnded)
       video.removeEventListener('error', handleError)
       setIsVideoReady(false)
+      setIsVideoEnded(false)
     }
   }, [isEnvelopeOpen, shouldLoadVideo])
 
@@ -232,17 +246,21 @@ function App() {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
       setShouldLoadVideo(false)
       setIsVideoReady(false)
+      setIsVideoEnded(false)
       setIsEnvelopeOpen(false)
       return
     }
 
     setShouldLoadVideo(true)
     setIsVideoReady(false)
+    setIsVideoEnded(false)
     setIsEnvelopeOpen(true)
   }
 
+  const isScrollUnlocked = isEnvelopeOpen && isVideoEnded
+
   return (
-    <main ref={shellRef} className={isEnvelopeOpen ? 'shell is-unlocked' : 'shell is-locked'}>
+    <main ref={shellRef} className={isScrollUnlocked ? 'shell is-unlocked' : 'shell is-locked'}>
       <section className="hero-panel landing-panel">
         <div className="landing-copy">
           <p className="landing-kicker">DEAR</p>
