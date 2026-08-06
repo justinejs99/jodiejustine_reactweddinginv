@@ -411,6 +411,10 @@
   overflow: visible;
 }
 
+.rsvp-content-card.is-submitted {
+  overflow: hidden;
+}
+
 .event-details .section-kicker:first-of-type {
   padding-top: 0;
 }
@@ -982,6 +986,12 @@
   gap: 24px;
 }
 
+.rsvp-submitted p,
+.submitted-contact .text-link {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .rsvp-submitted .qr-placeholder {
   width: 50%;
   aspect-ratio: 1;
@@ -1220,10 +1230,10 @@
   }
 
   .success-rsvp-card {
-    border-radius: 0;
-    margin-inline: calc(var(--page-padding) * -1);
-    padding-inline: var(--page-padding);
-    max-width: none;
+    border-radius: 16px;
+    margin-inline: 0;
+    padding-inline: 14px;
+    max-width: 100%;
   }
 
   .success-couple-names {

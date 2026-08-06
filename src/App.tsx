@@ -5,12 +5,27 @@ import type { RsvpRequest, RsvpResponse, WeddingSiteContent } from './types/wedd
 import QRCode from 'qrcode'
 import andImage from './assets/images/and.jpg'
 import envelopeImage from './assets/images/envelope.png'
+import envelopeOpenVideoMobile from './assets/videos/envelope-open-mobile.mp4'
 import envelopeOpenVideo from './assets/videos/envelope-open.mp4'
+import preludeVideoMobile from './assets/videos/paperplanestopmo-mobile.mp4'
 import preludeVideo from './assets/videos/paperplanestopmo.mp4'
 // import filmImage from './assets/images/FilmJJ.png'
 
 const envelopeVideoVersion = import.meta.env.VITE_ENVELOPE_VIDEO_VERSION ?? '2026-08-06-1'
-const envelopeOpenVideoSrc = `${envelopeOpenVideo}?v=${envelopeVideoVersion}`
+
+function shouldUseMobileVideo(): boolean {
+  if (typeof window === 'undefined') {
+    return false
+  }
+
+  const isSmallScreen = window.matchMedia('(max-width: 900px)').matches
+  const connection = (navigator as Navigator & {
+    connection?: { saveData?: boolean; effectiveType?: string }
+  }).connection
+  const isConstrainedNetwork = Boolean(connection?.saveData) || /2g|3g/i.test(connection?.effectiveType ?? '')
+
+  return isSmallScreen || isConstrainedNetwork
+}
 
 const memoryPhotoModules = import.meta.glob('./assets/images/slide-cards-photos-optimized/cards*.jpg', {
   eager: true,
@@ -42,6 +57,11 @@ function App() {
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false)
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
   const [isVideoReady, setIsVideoReady] = useState(false)
+  const [useMobileVideo, setUseMobileVideo] = useState(shouldUseMobileVideo)
+
+  const activeEnvelopeVideo = useMobileVideo ? envelopeOpenVideoMobile : envelopeOpenVideo
+  const envelopeOpenVideoSrc = `${activeEnvelopeVideo}?v=${envelopeVideoVersion}`
+  const preludeVideoSrc = useMobileVideo ? preludeVideoMobile : preludeVideo
 
   useEffect(() => {
     let isMounted = true
@@ -92,6 +112,40 @@ function App() {
     return () => {
       isMounted = false
     }
+  }, [])
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 900px)')
+    const updateVideoPreference = () => {
+      setUseMobileVideo(shouldUseMobileVideo())
+    }
+
+    updateVideoPreference()
+    if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', updateVideoPreference)
+    } else {
+      mediaQuery.addListener(updateVideoPreference)
+    }
+
+    const connection = (navigator as Navigator & {
+      connection?: { addEventListener?: (type: string, listener: () => void) => void; removeEventListener?: (type: string, listener: () => void) => void }
+    }).connection
+
+    connection?.addEventListener?.('change', updateVideoPreference)
+
+    return () => {
+      if (typeof mediaQuery.removeEventListener === 'function') {
+        mediaQuery.removeEventListener('change', updateVideoPreference)
+      } else {
+        mediaQuery.removeListener(updateVideoPreference)
+      }
+      connection?.removeEventListener?.('change', updateVideoPreference)
+    }
+  }, [])
+
+  useEffect(() => {
+    // Warm the envelope-open video early so tap-to-open feels immediate on mobile.
+    setShouldLoadVideo(true)
   }, [])
 
   useEffect(() => {
@@ -155,12 +209,12 @@ function App() {
     video.loop = true
     video.muted = true
     video.playbackRate = 1
-    video.preload = 'auto'
+    video.preload = useMobileVideo ? 'metadata' : 'auto'
 
     void video.play().catch(() => {
       // Keep video configured to autoplay as soon as the browser allows it.
     })
-  }, [])
+  }, [useMobileVideo])
 
   useEffect(() => {
     if (!content) {
@@ -268,7 +322,6 @@ function App() {
 
       shell?.scrollTo({ top: 0, left: 0, behavior: 'auto' })
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
-      setShouldLoadVideo(false)
       setIsVideoReady(false)
       setIsEnvelopeOpen(false)
       return
@@ -305,7 +358,7 @@ function App() {
               src={envelopeOpenVideoSrc}
               poster={envelopeImage}
               playsInline
-              preload="metadata"
+              preload="auto"
               muted
             />
           ) : null}
@@ -317,12 +370,12 @@ function App() {
           <video
             ref={preludeVideoRef}
             className="prelude-bg-video"
-            src={preludeVideo}
+            src={preludeVideoSrc}
             autoPlay
             loop
             muted
             playsInline
-            preload="auto"
+            preload={useMobileVideo ? 'metadata' : 'auto'}
           />
         </div>
 
@@ -410,7 +463,7 @@ function App() {
 
       {hasValidGroup && (
         <section className="panel rsvp-panel">
-          <div className="panel-card rsvp-content-card">
+          <div className={response ? 'panel-card rsvp-content-card is-submitted' : 'panel-card rsvp-content-card'}>
             {!shouldHideRsvpIntro && (
               <div className="rsvp-heading">
                 <div>
