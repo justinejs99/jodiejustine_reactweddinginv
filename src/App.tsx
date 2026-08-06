@@ -12,7 +12,7 @@ import preludeVideo from './assets/videos/paperplanestopmo.mp4'
 const envelopeVideoVersion = import.meta.env.VITE_ENVELOPE_VIDEO_VERSION ?? '2026-08-06-1'
 const envelopeOpenVideoSrc = `${envelopeOpenVideo}?v=${envelopeVideoVersion}`
 
-const memoryPhotoModules = import.meta.glob('./assets/images/slide-cards-photos/cards*.jpg', {
+const memoryPhotoModules = import.meta.glob('./assets/images/slide-cards-photos-optimized/cards*.jpg', {
   eager: true,
   import: 'default',
 }) as Record<string, string>
@@ -38,6 +38,7 @@ function App() {
   const shellRef = useRef<HTMLElement | null>(null)
   const invitationContentRef = useRef<HTMLElement | null>(null)
   const envelopeVideoRef = useRef<HTMLVideoElement | null>(null)
+  const preludeVideoRef = useRef<HTMLVideoElement | null>(null)
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false)
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
   const [isVideoReady, setIsVideoReady] = useState(false)
@@ -143,6 +144,23 @@ function App() {
       setIsVideoReady(false)
     }
   }, [isEnvelopeOpen, shouldLoadVideo])
+
+  useEffect(() => {
+    const video = preludeVideoRef.current
+
+    if (!video) {
+      return
+    }
+
+    video.loop = true
+    video.muted = true
+    video.playbackRate = 1
+    video.preload = 'auto'
+
+    void video.play().catch(() => {
+      // Keep video configured to autoplay as soon as the browser allows it.
+    })
+  }, [])
 
   useEffect(() => {
     if (!content) {
@@ -297,12 +315,14 @@ function App() {
       <section className="story-grid" ref={invitationContentRef}>
         <div className="panel prelude-panel" aria-label="Wedding prelude page">
           <video
+            ref={preludeVideoRef}
             className="prelude-bg-video"
             src={preludeVideo}
             autoPlay
             loop
             muted
             playsInline
+            preload="auto"
           />
         </div>
 
@@ -378,7 +398,7 @@ function App() {
             <div className="memory-carousel" role="region" aria-label="Swipe to browse gallery photos">
               {memoryPhotos.map((photo, index) => (
                 <article className="memory-slide" key={photo}>
-                  <img src={photo} alt={`Memory card ${index + 1}`} loading="lazy" />
+                  <img src={photo} alt={`Memory card ${index + 1}`} loading="lazy" decoding="async" />
                 </article>
               ))}
             </div>
