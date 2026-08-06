@@ -123,6 +123,26 @@ function App() {
 
     updateVideoPreference()
     if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', updateVideoPreference)
+    } else {
+      mediaQuery.addListener(updateVideoPreference)
+    }
+
+    const connection = (navigator as Navigator & {
+      connection?: { addEventListener?: (type: string, listener: () => void) => void; removeEventListener?: (type: string, listener: () => void) => void }
+    }).connection
+
+    connection?.addEventListener?.('change', updateVideoPreference)
+
+    return () => {
+      if (typeof mediaQuery.removeEventListener === 'function') {
+        mediaQuery.removeEventListener('change', updateVideoPreference)
+      } else {
+        mediaQuery.removeListener(updateVideoPreference)
+      }
+      connection?.removeEventListener?.('change', updateVideoPreference)
+    }
+  }, [])
 
   useEffect(() => {
     const carousel = memoryCarouselRef.current
@@ -182,26 +202,6 @@ function App() {
       carousel.removeEventListener('wheel', pauseAutoScroll)
       carousel.removeEventListener('focusin', pauseAutoScroll)
       carousel.removeEventListener('mouseenter', pauseAutoScroll)
-    }
-  }, [])
-      mediaQuery.addEventListener('change', updateVideoPreference)
-    } else {
-      mediaQuery.addListener(updateVideoPreference)
-    }
-
-    const connection = (navigator as Navigator & {
-      connection?: { addEventListener?: (type: string, listener: () => void) => void; removeEventListener?: (type: string, listener: () => void) => void }
-    }).connection
-
-    connection?.addEventListener?.('change', updateVideoPreference)
-
-    return () => {
-      if (typeof mediaQuery.removeEventListener === 'function') {
-        mediaQuery.removeEventListener('change', updateVideoPreference)
-      } else {
-        mediaQuery.removeListener(updateVideoPreference)
-      }
-      connection?.removeEventListener?.('change', updateVideoPreference)
     }
   }, [])
 
