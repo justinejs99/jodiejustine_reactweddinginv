@@ -145,6 +145,10 @@ function App() {
   }, [])
 
   useEffect(() => {
+    if (!content) {
+      return
+    }
+
     const carousel = memoryCarouselRef.current
 
     if (!carousel) {
@@ -203,7 +207,7 @@ function App() {
       carousel.removeEventListener('focusin', pauseAutoScroll)
       carousel.removeEventListener('mouseenter', pauseAutoScroll)
     }
-  }, [])
+  }, [content])
 
   useEffect(() => {
     // Warm the envelope-open video early so tap-to-open feels immediate on mobile.

@@ -226,7 +226,9 @@
 }
 
 .camera-toggle-btn {
-  display: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   background: #ffffff;
   color: #790606;
@@ -323,14 +325,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-@media (max-width: 1024px) {
-  .camera-toggle-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
 }
 
 @media (max-width: 600px) {
@@ -638,4 +632,60 @@
 .submit-btn:disabled {
   opacity: 0.55;
   cursor: default;
+}
+
+/* iPad Air sizing pass (2360x1640 device pixels ~= 1180x820 CSS pixels). */
+@media (min-width: 820px) and (max-width: 1180px) {
+  .reception-header {
+    max-width: 1040px;
+    padding: 30px 30px 0;
+  }
+
+  .header-names {
+    font-size: 31px;
+  }
+
+  .reception-main {
+    padding: 34px 30px;
+  }
+
+  .scan-card-outer {
+    width: min(520px, 100%);
+    padding: 18px 18px 22px;
+    gap: 12px;
+  }
+
+  .details-layout {
+    max-width: 1040px;
+    gap: 12px;
+  }
+
+  .detail-card-header {
+    font-size: 18px;
+  }
+
+  .guest-name-display {
+    font-size: 30px;
+  }
+
+  .detail-list dt,
+  .detail-list dd,
+  .counter-label,
+  .counter-value {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1180px) and (max-height: 900px) {
+  .reception-header {
+    padding-top: 22px;
+  }
+
+  .reception-main {
+    padding-top: 22px;
+  }
+
+  .scan-card-outer {
+    width: min(500px, 100%);
+  }
 }
