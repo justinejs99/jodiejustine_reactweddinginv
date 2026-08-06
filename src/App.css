@@ -149,7 +149,7 @@
   height: calc(100% + 2px);
   object-fit: contain;
   background-color: transparent;
-  transform: scale(1.1);
+  transform: scale(1.2);
   transform-origin: center center;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -168,7 +168,7 @@
   width: calc(100% + 2px);
   height: calc(100% + 2px);
   object-fit: contain;
-  transform: scale(1.1);
+  transform: scale(1.2);
   transform-origin: center center;
   background-color: transparent;
   backface-visibility: hidden;
