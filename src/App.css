@@ -570,6 +570,8 @@
   overflow-y: hidden;
   padding: 8px 8px 14px;
   scroll-snap-type: x proximity;
+  scroll-behavior: auto;
+  touch-action: pan-x;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }

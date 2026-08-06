@@ -53,6 +53,8 @@ function App() {
   const invitationContentRef = useRef<HTMLElement | null>(null)
   const envelopeVideoRef = useRef<HTMLVideoElement | null>(null)
   const preludeVideoRef = useRef<HTMLVideoElement | null>(null)
+  const memoryCarouselRef = useRef<HTMLDivElement | null>(null)
+  const memoryCarouselPauseUntilRef = useRef(0)
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false)
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
   const [isVideoReady, setIsVideoReady] = useState(false)
@@ -121,6 +123,67 @@ function App() {
 
     updateVideoPreference()
     if (typeof mediaQuery.addEventListener === 'function') {
+
+  useEffect(() => {
+    const carousel = memoryCarouselRef.current
+
+    if (!carousel) {
+      return
+    }
+
+    const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    if (reduceMotionQuery.matches) {
+      return
+    }
+
+    let animationFrameId = 0
+    let previousTimestamp = 0
+    const autoScrollSpeed = 14
+
+    const pauseAutoScroll = () => {
+      memoryCarouselPauseUntilRef.current = window.performance.now() + 2000
+    }
+
+    const animate = (timestamp: number) => {
+      if (!previousTimestamp) {
+        previousTimestamp = timestamp
+      }
+
+      const elapsed = timestamp - previousTimestamp
+      previousTimestamp = timestamp
+
+      if (timestamp < memoryCarouselPauseUntilRef.current || carousel.scrollWidth <= carousel.clientWidth) {
+        animationFrameId = window.requestAnimationFrame(animate)
+        return
+      }
+
+      const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth
+      const nextScrollLeft = carousel.scrollLeft + (autoScrollSpeed * elapsed) / 1000
+
+      carousel.scrollLeft = nextScrollLeft >= maxScrollLeft ? 0 : nextScrollLeft
+      animationFrameId = window.requestAnimationFrame(animate)
+    }
+
+    const interactionOptions = { passive: true } as const
+
+    carousel.addEventListener('pointerdown', pauseAutoScroll, interactionOptions)
+    carousel.addEventListener('touchstart', pauseAutoScroll, interactionOptions)
+    carousel.addEventListener('wheel', pauseAutoScroll, interactionOptions)
+    carousel.addEventListener('focusin', pauseAutoScroll)
+    carousel.addEventListener('mouseenter', pauseAutoScroll)
+
+    animationFrameId = window.requestAnimationFrame(animate)
+
+    return () => {
+      window.cancelAnimationFrame(animationFrameId)
+      carousel.removeEventListener('pointerdown', pauseAutoScroll)
+      carousel.removeEventListener('touchstart', pauseAutoScroll)
+      carousel.removeEventListener('wheel', pauseAutoScroll)
+      carousel.removeEventListener('focusin', pauseAutoScroll)
+      carousel.removeEventListener('mouseenter', pauseAutoScroll)
+    }
+  }, [])
       mediaQuery.addEventListener('change', updateVideoPreference)
     } else {
       mediaQuery.addListener(updateVideoPreference)
@@ -447,7 +510,7 @@ function App() {
           </div>
 
           <section className="memory-gallery" aria-label="Wedding memories gallery">
-            <div className="memory-carousel" role="region" aria-label="Swipe to browse gallery photos">
+            <div ref={memoryCarouselRef} className="memory-carousel" role="region" aria-label="Swipe to browse gallery photos">
               {memoryPhotos.map((photo, index) => (
                 <article className="memory-slide" key={photo}>
                   <img src={photo} alt={`Memory card ${index + 1}`} loading="lazy" decoding="async" />
