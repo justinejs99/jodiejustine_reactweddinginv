@@ -9,6 +9,9 @@ import envelopeOpenVideo from './assets/videos/envelope-open.mp4'
 import preludeVideo from './assets/videos/paperplanestopmo.mp4'
 // import filmImage from './assets/images/FilmJJ.png'
 
+const envelopeVideoVersion = import.meta.env.VITE_ENVELOPE_VIDEO_VERSION ?? '2026-08-06-1'
+const envelopeOpenVideoSrc = `${envelopeOpenVideo}?v=${envelopeVideoVersion}`
+
 const memoryPhotoModules = import.meta.glob('./assets/images/slide-cards-photos/cards*.jpg', {
   eager: true,
   import: 'default',
@@ -281,7 +284,7 @@ function App() {
             <video
               ref={envelopeVideoRef}
               className={isEnvelopeOpen && isVideoReady ? 'landing-envelope-video is-visible' : 'landing-envelope-video'}
-              src={envelopeOpenVideo}
+              src={envelopeOpenVideoSrc}
               poster={envelopeImage}
               playsInline
               preload="metadata"

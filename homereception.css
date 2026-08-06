@@ -47,34 +47,28 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0;
-  animation: slide-show 8s steps(1) infinite;
+  transition: opacity 1100ms ease-in-out;
+  will-change: opacity;
+}
+
+.slide.is-active {
+  opacity: 1;
 }
 
 .slide-1 {
-  background-image: url('./src/assets/images/Bubblepic_1.jpg');
-  animation-delay: 0s;
+  background-image: url('./src/assets/images/Bubblepic_1_home.jpg');
 }
 
 .slide-2 {
-  background-image: url('./src/assets/images/Bubblepic_2.jpg');
-  animation-delay: 2s;
+  background-image: url('./src/assets/images/Bubblepic_2_home.jpg');
 }
 
 .slide-3 {
-  background-image: url('./src/assets/images/Bubblepic_3.jpg');
-  animation-delay: 4s;
+  background-image: url('./src/assets/images/Bubblepic_3_home.jpg');
 }
 
 .slide-4 {
-  background-image: url('./src/assets/images/Bubblepic_4.jpg');
-  animation-delay: 6s;
-}
-
-@keyframes slide-show {
-  0%    { opacity: 1; }
-  24.99% { opacity: 1; }
-  25%   { opacity: 0; }
-  100%  { opacity: 0; }
+  background-image: url('./src/assets/images/Bubblepic_4_home.jpg');
 }
 
 .slideshow-overlay {
