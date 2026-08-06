@@ -564,7 +564,7 @@
   gap: 0;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 8px calc((100vw - var(--memory-slide-width)) / 2) 14px;
+  padding: 8px 8px 14px;
   scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
@@ -575,7 +575,7 @@
 }
 
 .memory-slide {
-  scroll-snap-align: center;
+  scroll-snap-align: start;
   flex: 0 0 var(--memory-slide-width);
   margin-left: calc(-1 * var(--memory-overlap));
   border-radius: 18px;
@@ -605,7 +605,6 @@
   .memory-carousel {
     --memory-slide-width: clamp(132px, 44vw, 220px);
     --memory-overlap: clamp(5px, 2.2vw, 10px);
-    padding-inline: calc((100vw - var(--memory-slide-width)) / 2);
   }
 
   .memory-slide {
