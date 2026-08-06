@@ -5,14 +5,22 @@ import type { RsvpRequest, RsvpResponse, WeddingSiteContent } from './types/wedd
 import QRCode from 'qrcode'
 import andImage from './assets/images/and.jpg'
 import envelopeImage from './assets/images/envelope.png'
-import logoJjWhite from './assets/images/logojjwhite.png'
 import envelopeOpenVideo from './assets/videos/envelope-open.mp4'
 import preludeVideo from './assets/videos/paperplanestopmo.mp4'
 // import filmImage from './assets/images/FilmJJ.png'
-import photoA from './assets/images/a.jpg'
-import photoB from './assets/images/b.jpg'
-import photoC from './assets/images/c.jpg'
-import photoD from './assets/images/d.jpg'
+
+const memoryPhotoModules = import.meta.glob('./assets/images/slide-cards-photos/cards*.jpg', {
+  eager: true,
+  import: 'default',
+}) as Record<string, string>
+
+const memoryPhotos = Object.entries(memoryPhotoModules)
+  .sort((a, b) => {
+    const first = Number(a[0].match(/cards(\d+)\.jpg$/)?.[1] ?? 0)
+    const second = Number(b[0].match(/cards(\d+)\.jpg$/)?.[1] ?? 0)
+    return first - second
+  })
+  .map(([, src]) => src)
 
 function App() {
   const [content, setContent] = useState<WeddingSiteContent | null>(null)
@@ -30,7 +38,6 @@ function App() {
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false)
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
   const [isVideoReady, setIsVideoReady] = useState(false)
-  const [isVideoEnded, setIsVideoEnded] = useState(false)
 
   useEffect(() => {
     let isMounted = true
@@ -100,13 +107,10 @@ function App() {
     }
 
     const handleEnded = () => {
-      setIsVideoEnded(true)
     }
 
     const handleError = () => {
       setIsVideoReady(false)
-      // On error, still allow scrolling so user isn't stuck
-      setIsVideoEnded(true)
     }
 
     if (video.readyState >= 2) {
@@ -123,8 +127,7 @@ function App() {
     video.currentTime = 0
     video.playbackRate = 1.12
     void video.play().catch(() => {
-      // If play is blocked, unlock scroll so user isn't stuck
-      setIsVideoEnded(true)
+      // If autoplay is blocked, keep the invitation open with static poster.
     })
 
     return () => {
@@ -135,7 +138,6 @@ function App() {
       video.removeEventListener('ended', handleEnded)
       video.removeEventListener('error', handleError)
       setIsVideoReady(false)
-      setIsVideoEnded(false)
     }
   }, [isEnvelopeOpen, shouldLoadVideo])
 
@@ -247,18 +249,16 @@ function App() {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
       setShouldLoadVideo(false)
       setIsVideoReady(false)
-      setIsVideoEnded(false)
       setIsEnvelopeOpen(false)
       return
     }
 
     setShouldLoadVideo(true)
     setIsVideoReady(false)
-    setIsVideoEnded(false)
     setIsEnvelopeOpen(true)
   }
 
-  const isScrollUnlocked = isEnvelopeOpen && isVideoEnded
+  const isScrollUnlocked = isEnvelopeOpen
 
   return (
     <main ref={shellRef} className={isScrollUnlocked ? 'shell is-unlocked' : 'shell is-locked'}>
@@ -301,7 +301,6 @@ function App() {
             muted
             playsInline
           />
-          <img className="prelude-logo" src={logoJjWhite} alt="Sean and Cynthia wedding monogram" />
         </div>
 
         <div className="panel family-details">
@@ -374,18 +373,11 @@ function App() {
 
           <section className="memory-gallery" aria-label="Wedding memories gallery">
             <div className="memory-carousel" role="region" aria-label="Swipe to browse gallery photos">
-              <article className="memory-slide">
-                <img src={photoA} alt="Sean and Cynthia by the sea" />
-              </article>
-              <article className="memory-slide">
-                <img src={photoB} alt="Sean and Cynthia in a candid moment" />
-              </article>
-              <article className="memory-slide">
-                <img src={photoC} alt="Sean and Cynthia sharing a quiet moment" />
-              </article>
-              <article className="memory-slide">
-                <img src={photoD} alt="Sean and Cynthia portrait" />
-              </article>
+              {memoryPhotos.map((photo, index) => (
+                <article className="memory-slide" key={photo}>
+                  <img src={photo} alt={`Memory card ${index + 1}`} loading="lazy" />
+                </article>
+              ))}
             </div>
           </section>
         </div>
