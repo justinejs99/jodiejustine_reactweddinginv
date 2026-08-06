@@ -5,13 +5,12 @@ import type { RsvpRequest, RsvpResponse, WeddingSiteContent } from './types/wedd
 import QRCode from 'qrcode'
 import andImage from './assets/images/and.jpg'
 import envelopeImage from './assets/images/envelope.png'
-import envelopeOpenVideoMobile from './assets/videos/envelope-open-mobile.mp4'
 import envelopeOpenVideo from './assets/videos/envelope-open.mp4'
 import preludeVideoMobile from './assets/videos/paperplanestopmo-mobile.mp4'
 import preludeVideo from './assets/videos/paperplanestopmo.mp4'
 // import filmImage from './assets/images/FilmJJ.png'
 
-const envelopeVideoVersion = import.meta.env.VITE_ENVELOPE_VIDEO_VERSION ?? '2026-08-06-1'
+const envelopeVideoVersion = import.meta.env.VITE_ENVELOPE_VIDEO_VERSION ?? '2026-08-06-2'
 
 function shouldUseMobileVideo(): boolean {
   if (typeof window === 'undefined') {
@@ -59,7 +58,7 @@ function App() {
   const [isVideoReady, setIsVideoReady] = useState(false)
   const [useMobileVideo, setUseMobileVideo] = useState(shouldUseMobileVideo)
 
-  const activeEnvelopeVideo = useMobileVideo ? envelopeOpenVideoMobile : envelopeOpenVideo
+  const activeEnvelopeVideo = envelopeOpenVideo
   const envelopeOpenVideoSrc = `${activeEnvelopeVideo}?v=${envelopeVideoVersion}`
   const preludeVideoSrc = useMobileVideo ? preludeVideoMobile : preludeVideo
 
