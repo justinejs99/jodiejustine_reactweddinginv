@@ -3,7 +3,7 @@
 :root {
   --home-font-display: 'The Seasons', serif;
   --home-font-body: 'Montserrat', sans-serif;
-  --home-text: #414141;
+  --home-text: #ffffff;
   --home-shadow: rgba(0, 0, 0, 0.14);
 }
 
@@ -31,7 +31,7 @@ body {
 
 .home-reception-shell,
 .home-reception-shell * {
-  color: #414141;
+  color: #ffffff;
 }
 
 .slideshow {
@@ -80,7 +80,7 @@ body {
 .slideshow-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.5));
+  background: linear-gradient(to bottom, rgba(34, 34, 34, 0.08), rgba(34, 34, 34, 0.22));
   z-index: 1;
 }
 
