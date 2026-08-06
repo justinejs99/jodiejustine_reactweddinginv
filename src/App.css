@@ -983,7 +983,6 @@
 .rsvp-submitted {
   display: flex;
   flex-direction: column;
-  gap: 24px;
 }
 
 .rsvp-submitted p,
