@@ -118,7 +118,7 @@ body {
 
 .home-names {
   font-family: var(--home-font-display);
-  font-size: clamp(72px, 9.3vw, 112px);
+  font-size: clamp(72px, 8.3vw, 93px);
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -149,7 +149,7 @@ body {
   grid-row: 3;
   justify-self: center;
   align-self: end;
-  margin-bottom: clamp(18px, 4.8vh, 60px);
+  margin-bottom: clamp(18px, 4.8vh, 90px);
   padding: 12px 30px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.7);
