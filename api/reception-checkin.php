@@ -151,6 +151,7 @@ try {
     $giftCount = isset($data['giftCount']) ? (int)$data['giftCount'] : 0;
     $souvenirCount = isset($data['souvenirCount']) ? (int)$data['souvenirCount'] : 0;
     $titipanGiftCount = isset($data['titipanGiftCount']) ? (int)$data['titipanGiftCount'] : 0;
+    $totalAngbaoCount = $giftCount + $titipanGiftCount;
 
     // Build update statement from available columns in groups_final.
     $setParts = ["{$checkedCol} = 1"];
@@ -179,7 +180,7 @@ try {
 
     if ($giftCol !== null) {
         $setParts[] = "{$giftCol} = ?";
-        $params[] = $giftCount;
+        $params[] = $totalAngbaoCount;
         $types .= 'i';
     }
 
