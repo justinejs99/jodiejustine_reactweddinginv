@@ -219,9 +219,9 @@ function App() {
       }
 
       const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth
-      const nextScrollLeft = carousel.scrollLeft + (autoScrollSpeed * elapsed) / 1000
+      const nextScrollLeft = carousel.scrollLeft - (autoScrollSpeed * elapsed) / 1000
 
-      carousel.scrollLeft = nextScrollLeft >= maxScrollLeft ? 0 : nextScrollLeft
+      carousel.scrollLeft = nextScrollLeft <= 0 ? maxScrollLeft : nextScrollLeft
       animationFrameId = window.requestAnimationFrame(animate)
     }
 
@@ -232,6 +232,10 @@ function App() {
     carousel.addEventListener('wheel', pauseAutoScroll, interactionOptions)
     carousel.addEventListener('focusin', pauseAutoScroll)
     carousel.addEventListener('mouseenter', pauseAutoScroll)
+
+    if (carousel.scrollWidth > carousel.clientWidth) {
+      carousel.scrollLeft = carousel.scrollWidth - carousel.clientWidth
+    }
 
     animationFrameId = window.requestAnimationFrame(animate)
 
