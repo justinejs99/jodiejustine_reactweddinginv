@@ -8,9 +8,11 @@ import envelopeImage from './assets/images/envelope.png'
 import envelopeOpenVideo from './assets/videos/envelope-open.mp4'
 import preludeVideoMobile from './assets/videos/paperplanestopmo-mobile.mp4'
 import preludeVideo from './assets/videos/paperplanestopmo.mp4'
+import backgroundSong from './assets/song/howsweetitisjamestaylor.mp3'
 // import filmImage from './assets/images/FilmJJ.png'
 
 const envelopeVideoVersion = import.meta.env.VITE_ENVELOPE_VIDEO_VERSION ?? '2026-08-06-2'
+let persistentBackgroundAudio: HTMLAudioElement | null = null
 
 function shouldUseMobileVideo(): boolean {
   if (typeof window === 'undefined') {
@@ -112,6 +114,40 @@ function App() {
 
     return () => {
       isMounted = false
+    }
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return
+    }
+
+    if (!persistentBackgroundAudio) {
+      persistentBackgroundAudio = new Audio(backgroundSong)
+      persistentBackgroundAudio.preload = 'auto'
+      persistentBackgroundAudio.loop = true
+      persistentBackgroundAudio.volume = 1
+    }
+
+    const audio = persistentBackgroundAudio
+    const interactionEvents: Array<keyof WindowEventMap> = ['pointerdown', 'touchstart', 'keydown']
+
+    const unlockAndPlay = () => {
+      void audio.play().catch(() => {
+        // Keep trying on future interactions until playback is allowed.
+      })
+    }
+
+    unlockAndPlay()
+
+    interactionEvents.forEach((eventName) => {
+      window.addEventListener(eventName, unlockAndPlay)
+    })
+
+    return () => {
+      interactionEvents.forEach((eventName) => {
+        window.removeEventListener(eventName, unlockAndPlay)
+      })
     }
   }, [])
 
