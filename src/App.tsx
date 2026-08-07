@@ -208,14 +208,14 @@ function App() {
       }
 
       const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth
-      const nextScrollLeft = carousel.scrollLeft - (autoScrollSpeed * elapsed) / 1000
+      const nextScrollLeft = carousel.scrollLeft + (autoScrollSpeed * elapsed) / 1000
 
-      carousel.scrollLeft = nextScrollLeft <= 0 ? maxScrollLeft : nextScrollLeft
+      carousel.scrollLeft = nextScrollLeft >= maxScrollLeft ? 0 : nextScrollLeft
       animationFrameId = window.requestAnimationFrame(animate)
     }
 
     if (carousel.scrollWidth > carousel.clientWidth) {
-      carousel.scrollLeft = carousel.scrollWidth - carousel.clientWidth
+      carousel.scrollLeft = 0
     }
 
     animationFrameId = window.requestAnimationFrame(animate)
