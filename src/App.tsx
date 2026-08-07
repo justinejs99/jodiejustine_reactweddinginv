@@ -56,7 +56,6 @@ function App() {
   const envelopeVideoRef = useRef<HTMLVideoElement | null>(null)
   const preludeVideoRef = useRef<HTMLVideoElement | null>(null)
   const memoryCarouselRef = useRef<HTMLDivElement | null>(null)
-  const memoryCarouselPauseUntilRef = useRef(0)
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false)
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
   const [isVideoReady, setIsVideoReady] = useState(false)
@@ -191,19 +190,9 @@ function App() {
       return
     }
 
-    const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-
-    if (reduceMotionQuery.matches) {
-      return
-    }
-
     let animationFrameId = 0
     let previousTimestamp = 0
-    const autoScrollSpeed = 14
-
-    const pauseAutoScroll = () => {
-      memoryCarouselPauseUntilRef.current = window.performance.now() + 2000
-    }
+    const autoScrollSpeed = 42
 
     const animate = (timestamp: number) => {
       if (!previousTimestamp) {
@@ -213,7 +202,7 @@ function App() {
       const elapsed = timestamp - previousTimestamp
       previousTimestamp = timestamp
 
-      if (timestamp < memoryCarouselPauseUntilRef.current || carousel.scrollWidth <= carousel.clientWidth) {
+      if (carousel.scrollWidth <= carousel.clientWidth) {
         animationFrameId = window.requestAnimationFrame(animate)
         return
       }
@@ -225,14 +214,6 @@ function App() {
       animationFrameId = window.requestAnimationFrame(animate)
     }
 
-    const interactionOptions = { passive: true } as const
-
-    carousel.addEventListener('pointerdown', pauseAutoScroll, interactionOptions)
-    carousel.addEventListener('touchstart', pauseAutoScroll, interactionOptions)
-    carousel.addEventListener('wheel', pauseAutoScroll, interactionOptions)
-    carousel.addEventListener('focusin', pauseAutoScroll)
-    carousel.addEventListener('mouseenter', pauseAutoScroll)
-
     if (carousel.scrollWidth > carousel.clientWidth) {
       carousel.scrollLeft = carousel.scrollWidth - carousel.clientWidth
     }
@@ -241,11 +222,6 @@ function App() {
 
     return () => {
       window.cancelAnimationFrame(animationFrameId)
-      carousel.removeEventListener('pointerdown', pauseAutoScroll)
-      carousel.removeEventListener('touchstart', pauseAutoScroll)
-      carousel.removeEventListener('wheel', pauseAutoScroll)
-      carousel.removeEventListener('focusin', pauseAutoScroll)
-      carousel.removeEventListener('mouseenter', pauseAutoScroll)
     }
   }, [content])
 
