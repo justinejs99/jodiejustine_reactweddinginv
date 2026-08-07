@@ -427,7 +427,7 @@ export default function ReceptionApp() {
     <title>Gift Labels</title>
     <style>
       @page {
-        size: 40mm 30mm;
+        size: 40mm 30mm landscape;
         margin: 0;
       }
 
@@ -447,6 +447,8 @@ export default function ReceptionApp() {
         display: flex;
         align-items: center;
         justify-content: center;
+        writing-mode: horizontal-tb;
+        text-orientation: mixed;
         page-break-after: always;
         break-after: page;
       }
