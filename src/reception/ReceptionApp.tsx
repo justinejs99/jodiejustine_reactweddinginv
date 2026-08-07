@@ -487,30 +487,51 @@ export default function ReceptionApp() {
       return
     }
 
-    const printWindow = window.open('', '_blank', 'noopener,noreferrer,width=420,height=420')
+    const printHtml = buildPrintHtml(group.groupName, labelCount)
+    const printFrame = document.createElement('iframe')
+    printFrame.style.position = 'fixed'
+    printFrame.style.width = '0'
+    printFrame.style.height = '0'
+    printFrame.style.border = '0'
+    printFrame.style.right = '0'
+    printFrame.style.bottom = '0'
+    printFrame.style.visibility = 'hidden'
+    document.body.appendChild(printFrame)
 
-    if (!printWindow) {
-      setPrintStatusMsg('Unable to open print preview. Please allow pop-ups and try again.')
+    const frameDoc = printFrame.contentWindow?.document
+
+    if (!frameDoc || !printFrame.contentWindow) {
+      printFrame.remove()
+      setPrintStatusMsg('Unable to start printing in this browser.')
       return
     }
 
-    const printHtml = buildPrintHtml(group.groupName, labelCount)
-    printWindow.document.open()
-    printWindow.document.write(printHtml)
-    printWindow.document.close()
+    frameDoc.open()
+    frameDoc.write(printHtml)
+    frameDoc.close()
 
     const triggerPrint = () => {
-      printWindow.focus()
-      printWindow.print()
+      const frameWindow = printFrame.contentWindow
+      if (!frameWindow) {
+        printFrame.remove()
+        return
+      }
+
+      frameWindow.focus()
+      frameWindow.print()
+
+      window.setTimeout(() => {
+        printFrame.remove()
+      }, 1200)
     }
 
-    if (printWindow.document.readyState === 'complete') {
+    if (frameDoc.readyState === 'complete') {
       triggerPrint()
     } else {
-      printWindow.addEventListener('load', triggerPrint, { once: true })
+      printFrame.addEventListener('load', triggerPrint, { once: true })
     }
 
-    setPrintStatusMsg(`Opened print preview for ${labelCount} label${labelCount > 1 ? 's' : ''} (40mm x 30mm).`)
+    setPrintStatusMsg(`Opened print dialog for ${labelCount} label${labelCount > 1 ? 's' : ''} (40mm x 30mm).`)
   }
 
   const basePath = window.location.pathname.includes('/JodieJustine/') ? '/JodieJustine' : ''
