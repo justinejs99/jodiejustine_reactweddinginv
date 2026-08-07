@@ -190,6 +190,18 @@
 .status-card-actions {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.print-status-text {
+  margin: 0;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #790606;
+  text-align: center;
 }
 
 /* ─── QR Scan card ───────────────────────────────────────────────────────── */
@@ -606,6 +618,7 @@
 .registration-footer {
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
   padding: 10px 12px 12px;
 }
 

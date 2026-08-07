@@ -298,9 +298,11 @@ export default function ReceptionApp() {
   const [cameraFacingMode, setCameraFacingMode] = useState<'environment' | 'user'>('environment')
   const [group, setGroup] = useState<CheckinGroup | null>(null)
   const [errorMsg, setErrorMsg] = useState('')
+  const [printStatusMsg, setPrintStatusMsg] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
+  const [lastSubmittedForm, setLastSubmittedForm] = useState<RegistrationForm | null>(null)
   const [form, setForm] = useState<RegistrationForm>({
     adultCount: 0,
     kidsCount: 0,
@@ -311,6 +313,8 @@ export default function ReceptionApp() {
 
   const handleGroupId = useCallback(async (groupRef: string) => {
     setView('loading')
+    setPrintStatusMsg('')
+    setLastSubmittedForm(null)
     try {
       const data = await fetchCheckinGroup(groupRef)
       setGroup(data)
@@ -356,6 +360,8 @@ export default function ReceptionApp() {
     setFirstName('')
     setLastName('')
     setView('loading')
+    setPrintStatusMsg('')
+    setLastSubmittedForm(null)
     try {
       const data = await fetchCheckinGroupByName(fullName)
       setGroup(data)
@@ -382,6 +388,8 @@ export default function ReceptionApp() {
     setIsSubmitting(true)
     try {
       await submitCheckin(group.groupId, form)
+      setLastSubmittedForm({ ...form })
+      setPrintStatusMsg('')
       setView('success')
     } catch (err) {
       setErrorMsg(err instanceof Error ? err.message : 'Failed to save check-in.')
@@ -395,6 +403,114 @@ export default function ReceptionApp() {
     setView('scanning')
     setGroup(null)
     setErrorMsg('')
+    setPrintStatusMsg('')
+    setLastSubmittedForm(null)
+  }
+
+  function buildPrintHtml(groupName: string, count: number): string {
+    const safeGroupName = groupName
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+
+    const labelItems = Array.from({ length: count }, (_, index) => {
+      const labelText = `${safeGroupName} ${index + 1}/${count}`
+      return `<section class="label"><p>${labelText}</p></section>`
+    }).join('')
+
+    return `<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Gift Labels</title>
+    <style>
+      @page {
+        size: 40mm 30mm;
+        margin: 0;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      }
+
+      .label {
+        width: 40mm;
+        height: 30mm;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        page-break-after: always;
+        break-after: page;
+      }
+
+      .label:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+
+      .label p {
+        margin: 0;
+        padding: 0 2.5mm;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        font-size: 3.2mm;
+        line-height: 1.1;
+        font-weight: 600;
+        color: #000;
+        word-break: break-word;
+      }
+    </style>
+  </head>
+  <body>${labelItems}</body>
+</html>`
+  }
+
+  async function handlePrintLabels() {
+    if (!group) {
+      return
+    }
+
+    const source = lastSubmittedForm ?? form
+    const labelCount = Math.max(0, source.giftCount) + Math.max(0, source.titipanGiftCount)
+
+    if (labelCount < 1) {
+      setPrintStatusMsg('Set Gift or Titipan Gift to at least 1 before printing.')
+      return
+    }
+
+    const printWindow = window.open('', '_blank', 'noopener,noreferrer,width=420,height=420')
+
+    if (!printWindow) {
+      setPrintStatusMsg('Unable to open print preview. Please allow pop-ups and try again.')
+      return
+    }
+
+    const printHtml = buildPrintHtml(group.groupName, labelCount)
+    printWindow.document.open()
+    printWindow.document.write(printHtml)
+    printWindow.document.close()
+
+    const triggerPrint = () => {
+      printWindow.focus()
+      printWindow.print()
+    }
+
+    if (printWindow.document.readyState === 'complete') {
+      triggerPrint()
+    } else {
+      printWindow.addEventListener('load', triggerPrint, { once: true })
+    }
+
+    setPrintStatusMsg(`Opened print preview for ${labelCount} label${labelCount > 1 ? 's' : ''} (40mm x 30mm).`)
   }
 
   const basePath = window.location.pathname.includes('/JodieJustine/') ? '/JodieJustine' : ''
@@ -494,6 +610,7 @@ export default function ReceptionApp() {
                 Next Guest
               </button>
             </div>
+            {printStatusMsg ? <p className="print-status-text">{printStatusMsg}</p> : null}
           </div>
         )}
 
@@ -564,6 +681,14 @@ export default function ReceptionApp() {
               </div>
 
               <div className="registration-footer">
+                <button
+                  type="button"
+                  className="submit-btn"
+                  disabled={isSubmitting}
+                  onClick={handlePrintLabels}
+                >
+                  Print Labels
+                </button>
                 <button
                   type="button"
                   className="submit-btn"
